@@ -9407,6 +9407,1652 @@ WHERE ${this.check_str}`);
         this.data['_bvb_bbafteriso_cbet_flop'] = isNaN(result) ? 0 : result;
         this.formulas['_bvb_bbafteriso_cbet_flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
+
+    async vpip_ep_vs_open_2_4_bb_less28bb_EV() {
+        this.res.write("vpip_ep_vs_open_2_4_bb_less28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_ep_vs_open_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_ep_vs_open_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_mp_vs_ep_2_4_bb_less28bb_EV() {
+        this.res.write("vpip_mp_vs_ep_2_4_bb_less28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_mp_vs_ep_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_mp_vs_ep_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_mp_vs_mp_2_4_bb_less28bb_EV() {
+        this.res.write("vpip_mp_vs_mp_2_4_bb_less28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_mp_vs_mp_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_mp_vs_mp_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_co_vs_ep_2_4_bb_less28bb_EV() {
+        this.res.write("vpip_co_vs_ep_2_4_bb_less28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 1
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 1
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_co_vs_ep_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_co_vs_ep_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_co_vs_mp_2_4_bb_less28bb_EV() {
+        this.res.write("vpip_co_vs_mp_2_4_bb_less28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 1
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 1
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_co_vs_mp_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_co_vs_mp_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_bu_vs_ep_2_4_bb_less28bb_EV() {
+        this.res.write("vpip_bu_vs_ep_2_4_bb_less28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 0
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 0
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_bu_vs_ep_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_bu_vs_ep_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_bu_vs_mp_2_4_bb_less28bb_EV() {
+        this.res.write("vpip_bu_vs_mp_2_4_bb_less28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 0
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+		and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 0
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_bu_vs_mp_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_bu_vs_mp_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_bu_vs_co_2_4_bb_less28bb_EV() {
+        this.res.write("vpip_bu_vs_co_2_4_bb_less28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'	
+		AND tourney_hand_player_statistics.position = 0
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+		and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
+		AND tourney_hand_player_statistics.position = 0
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_bu_vs_co_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_bu_vs_co_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_sb_vs_ep_2_4_bb_less28bb_EV() {
+        this.res.write("vpip_sb_vs_ep_2_4_bb_less28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+        and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+		and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_sb_vs_ep_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_sb_vs_ep_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_sb_vs_mp_2_4_bb_less28bb_EV() {
+        this.res.write("vpip_sb_vs_mp_2_4_bb_less28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+        and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+		and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_sb_vs_mp_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_sb_vs_mp_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_sb_vs_co_2_4_bb_less28bb_EV() {
+        this.res.write("vpip_sb_vs_co_2_4_bb_less28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+		and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_sb_vs_co_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_sb_vs_co_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_sb_vs_bu_2_4_bb_less28bb_EV() {
+        this.res.write("vpip_sb_vs_bu_2_4_bb_less28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+		and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_sb_vs_bu_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_sb_vs_bu_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_ep_vs_open_2_4_bb_great28bb_EV() {
+        this.res.write("vpip_ep_vs_open_2_4_bb_great28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_ep_vs_open_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_ep_vs_open_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_mp_vs_ep_2_4_bb_great28bb_EV() {
+        this.res.write("vpip_mp_vs_ep_2_4_bb_great28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_mp_vs_ep_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_mp_vs_ep_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_mp_vs_mp_2_4_bb_great28bb_EV() {
+        this.res.write("vpip_mp_vs_mp_2_4_bb_great28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_mp_vs_mp_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_mp_vs_mp_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_co_vs_ep_2_4_bb_great28bb_EV() {
+        this.res.write("vpip_co_vs_ep_2_4_bb_great28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 1
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 1
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_co_vs_ep_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_co_vs_ep_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_co_vs_mp_2_4_bb_great28bb_EV() {
+        this.res.write("vpip_co_vs_mp_2_4_bb_great28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 1
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 1
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_co_vs_mp_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_co_vs_mp_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_bu_vs_ep_2_4_bb_great28bb_EV() {
+        this.res.write("vpip_bu_vs_ep_2_4_bb_great28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 0
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 0
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_bu_vs_ep_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_bu_vs_ep_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_bu_vs_mp_2_4_bb_great28bb_EV() {
+        this.res.write("vpip_bu_vs_mp_2_4_bb_great28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 0
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+		and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 0
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_bu_vs_mp_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_bu_vs_mp_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_bu_vs_co_2_4_bb_great28bb_EV() {
+        this.res.write("vpip_bu_vs_co_2_4_bb_great28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'	
+		AND tourney_hand_player_statistics.position = 0
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+		and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
+		AND tourney_hand_player_statistics.position = 0
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_bu_vs_co_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_bu_vs_co_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_sb_vs_ep_2_4_bb_great28bb_EV() {
+        this.res.write("vpip_sb_vs_ep_2_4_bb_great28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+        and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+		and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_sb_vs_ep_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_sb_vs_ep_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_sb_vs_mp_2_4_bb_great28bb_EV() {
+        this.res.write("vpip_sb_vs_mp_2_4_bb_great28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+        and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+		and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_sb_vs_mp_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_sb_vs_mp_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_sb_vs_co_2_4_bb_great28bb_EV() {
+        this.res.write("vpip_sb_vs_co_2_4_bb_great28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+		and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_sb_vs_co_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_sb_vs_co_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async vpip_sb_vs_bu_2_4_bb_great28bb_EV() {
+        this.res.write("vpip_sb_vs_bu_2_4_bb_great28bb_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
+		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
+		and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
+		AND tourney_hand_player_statistics.position = 9
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['vpip_sb_vs_bu_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['vpip_sb_vs_bu_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async foldvs1R_2_4_bb_vs_ep_EV() {
+        this.res.write("foldvs1R_2_4_bb_vs_ep_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND lookup_actions.action LIKE 'F%'
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.4
+        and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 8
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.4
+        and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND tourney_hand_player_statistics.position = 8
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['foldvs1R_2_4_bb_vs_ep_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['foldvs1R_2_4_bb_vs_ep_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async foldvs1R_2_4_bb_vs_mp_EV() {
+        this.res.write("foldvs1R_2_4_bb_vs_mp_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND lookup_actions.action LIKE 'F%'
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.4
+        and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 8
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.4
+        and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
+		AND tourney_hand_player_statistics.position = 8
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['foldvs1R_2_4_bb_vs_mp_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['foldvs1R_2_4_bb_vs_mp_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async foldvs1R_2_4_bb_vs_co_EV() {
+        this.res.write("foldvs1R_2_4_bb_vs_co_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND lookup_actions.action LIKE 'F%'
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.4
+        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
+		AND tourney_hand_player_statistics.position = 8
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.4
+        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
+		AND tourney_hand_player_statistics.position = 8
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['foldvs1R_2_4_bb_vs_co_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['foldvs1R_2_4_bb_vs_co_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async foldvs1R_2_4_bb_vs_bu_EV() {
+        this.res.write("foldvs1R_2_4_bb_vs_bu_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND lookup_actions.action LIKE 'F%'
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.4
+        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
+		AND tourney_hand_player_statistics.position = 8
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.4
+        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
+		AND tourney_hand_player_statistics.position = 8
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['foldvs1R_2_4_bb_vs_bu_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['foldvs1R_2_4_bb_vs_bu_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async bvb_sb_raise_EV() {
+        this.res.write("bvb_sb_raise_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND tourney_hand_player_statistics.flg_p_open_opp 
+		AND lookup_actions.action LIKE 'R%'
+		AND tourney_hand_player_statistics.position = 9
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND tourney_hand_player_statistics.flg_p_open_opp 
+		AND tourney_hand_player_statistics.position = 9
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['bvb_sb_raise_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['bvb_sb_raise_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async bvb_sb_limp_EV() {
+        this.res.write("bvb_sb_limp_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND tourney_hand_player_statistics.flg_p_open_opp 
+		AND lookup_actions.action LIKE 'C%'
+		AND tourney_hand_player_statistics.position = 9
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND tourney_hand_player_statistics.flg_p_open_opp 
+		AND tourney_hand_player_statistics.position = 9
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['bvb_sb_limp_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['bvb_sb_limp_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async bvb_sb_limp_fold_EV() {
+        this.res.write("bvb_sb_limp_fold_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+		INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND tourney_hand_player_statistics.flg_p_limp 
+		AND lookup_actions.action = 'CF'
+		AND tourney_hand_player_statistics.flg_p_open_opp
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+		INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND tourney_hand_player_statistics.flg_p_limp 
+		AND tourney_hand_player_statistics.flg_p_open_opp
+		AND tourney_hand_player_statistics.flg_p_face_raise
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['bvb_sb_limp_fold_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['bvb_sb_limp_fold_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async bvb_sb_limp_raise_EV() {
+        this.res.write("bvb_sb_limp_raise_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+		INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND tourney_hand_player_statistics.flg_p_limp 
+		AND lookup_actions.action = 'CR'
+		AND tourney_hand_player_statistics.flg_p_open_opp
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+		INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND tourney_hand_player_statistics.flg_p_limp 
+		AND tourney_hand_player_statistics.flg_p_open_opp
+		AND tourney_hand_player_statistics.flg_p_face_raise
+		AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['bvb_sb_limp_raise_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['bvb_sb_limp_raise_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async bvb_bb_iso_EV() {
+        this.res.write("bvb_bb_iso_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+		INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND tourney_hand_player_statistics.position = 8 
+		and tourney_hand_player_statistics.cnt_p_face_limpers = 1 
+		and substring(tourney_hand_summary.str_actors_p from 1 for 1) = '9' 
+		and lookup_actions.action Like 'R%'
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+		INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+        ${this.check_str}
+        AND tourney_hand_player_statistics.position = 8 
+		and tourney_hand_player_statistics.cnt_p_face_limpers = 1 
+		and substring(tourney_hand_summary.str_actors_p from 1 for 1) = '9' 
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['bvb_bb_iso_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['bvb_bb_iso_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async bvb_bb_fold_vs_raise_less2_4_EV() {
+        this.res.write("bvb_bb_fold_vs_raise_less2_4_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+		${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND lookup_actions.action LIKE 'F%'
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.4
+        and substring(tourney_hand_summary.str_actors_p from 1 for 1) = '9' 
+		AND tourney_hand_player_statistics.position = 8
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+		${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.4
+        and substring(tourney_hand_summary.str_actors_p from 1 for 1) = '9' 
+		AND tourney_hand_player_statistics.position = 8
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['bvb_bb_fold_vs_raise_less2_4_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['bvb_bb_fold_vs_raise_less2_4_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async bvb_bb_fold_vs_raise_less2_8_EV() {
+        this.res.write("bvb_bb_fold_vs_raise_less2_8_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+		${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND lookup_actions.action LIKE 'F%'
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+        and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb >= 1.4
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.8
+        and substring(tourney_hand_summary.str_actors_p from 1 for 1) = '9' 
+		AND tourney_hand_player_statistics.position = 8
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+		${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb >= 1.4
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.8
+        and substring(tourney_hand_summary.str_actors_p from 1 for 1) = '9' 
+		AND tourney_hand_player_statistics.position = 8
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['bvb_bb_fold_vs_raise_less2_8_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['bvb_bb_fold_vs_raise_less2_8_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async bvb_bb_fold_vs_raise_less3_7_EV() {
+        this.res.write("bvb_bb_fold_vs_raise_less3_7_EV")
+        let a = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+		${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND lookup_actions.action LIKE 'F%'
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+        and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb >= 1.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 2.7
+        and substring(tourney_hand_summary.str_actors_p from 1 for 1) = '9' 
+		AND tourney_hand_player_statistics.position = 8
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let b = await this.DB.query(`
+        SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
+        FROM tourney_hand_player_statistics 
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+        WHERE
+		${this.check_str}
+		AND NOT(tourney_hand_player_statistics.flg_p_limp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb >= 1.8
+		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 2.7
+        and substring(tourney_hand_summary.str_actors_p from 1 for 1) = '9' 
+		AND tourney_hand_player_statistics.position = 8
+		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['bvb_bb_fold_vs_raise_less3_7_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['bvb_bb_fold_vs_raise_less3_7_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
 }
 
 module.exports = Stats
