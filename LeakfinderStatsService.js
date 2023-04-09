@@ -516,7 +516,7 @@ WHERE ${this.check_str}`);
         SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
         FROM tourney_hand_player_statistics
         INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
-        and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
+        AND tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
         INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
         WHERE
         ${this.check_str}
@@ -578,7 +578,7 @@ WHERE ${this.check_str}`);
         SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
         FROM tourney_hand_player_statistics
         INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
-        and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
+        AND tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
         INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
         WHERE
         ${this.check_str}
@@ -607,7 +607,7 @@ WHERE ${this.check_str}`);
         AND tourney_hand_player_statistics.flg_p_open_opp 
         AND tourney_hand_player_statistics.position = 3
         AND tourney_hand_player_statistics.amt_p_raise_made < (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante)*0.8
-        AND tourney_hand_player_statistics.flg_p_first_raise
+        AND tourney_hand_player_statistics.flg_p_first_raise 
         `);
 
         let b = await this.DB.query(`
@@ -640,7 +640,7 @@ WHERE ${this.check_str}`);
         SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
         FROM tourney_hand_player_statistics
         INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
-        and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
+        AND tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
         INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
         WHERE
         ${this.check_str}
@@ -669,7 +669,7 @@ WHERE ${this.check_str}`);
         AND tourney_hand_player_statistics.flg_p_open_opp 
         AND tourney_hand_player_statistics.position = 2
         AND (tourney_hand_player_statistics.amt_p_raise_made / (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante)) < 0.5
-        AND tourney_hand_player_statistics.flg_p_first_raise
+        AND tourney_hand_player_statistics.flg_p_first_raise 
         `);
 
         let b = await this.DB.query(`
@@ -702,7 +702,7 @@ WHERE ${this.check_str}`);
         SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
         FROM tourney_hand_player_statistics
         INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
-        and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
+        AND tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
         INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
         WHERE
         ${this.check_str}
@@ -731,7 +731,7 @@ WHERE ${this.check_str}`);
         AND tourney_hand_player_statistics.flg_p_open_opp 
         AND tourney_hand_player_statistics.position = 1
         AND tourney_hand_player_statistics.amt_p_raise_made < (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante)*0.8
-        AND tourney_hand_player_statistics.flg_p_first_raise
+        AND tourney_hand_player_statistics.flg_p_first_raise 
         `);
 
         let b = await this.DB.query(`
@@ -764,7 +764,7 @@ WHERE ${this.check_str}`);
         SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
         FROM tourney_hand_player_statistics
         INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
-        and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
+        AND tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
         INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
         WHERE
         ${this.check_str}
@@ -793,7 +793,7 @@ WHERE ${this.check_str}`);
         AND tourney_hand_player_statistics.flg_p_open_opp 
         AND tourney_hand_player_statistics.position = 0
         AND (tourney_hand_player_statistics.amt_p_raise_made / (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante)) < 0.5
-        AND tourney_hand_player_statistics.flg_p_first_raise
+        AND tourney_hand_player_statistics.flg_p_first_raise 
         `);
 
         let b = await this.DB.query(`
