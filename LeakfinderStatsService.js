@@ -287,21 +287,35 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
 
     async __ev_bb_unopend_total_50bb() {
         this.res.write("__ev_bb_unopend_total_50bb")
-        let a = await this.DB.query(`SELECT (CASE WHEN ActionOpportunities = 0 THEN 0 ELSE (CAST(ActionCount AS REAL)/(ActionOpportunities)*100) END) AS result
-                                FROM(
-                                SELECT(SUM(CASE WHEN(
-                                char_length(THS.str_aggressors_p) = 1 
-                                and (THPS.amt_before - THPS.amt_ante) / TB.amt_bb < 50
-                                ) 
-                                                                THEN THPS.amt_expected_won / TB.amt_bb ELSE 0 END)) AS ActionCount,
-                                                                (SUM(CASE WHEN(
-                                char_length(THS.str_aggressors_p) = 1 
-                                and (THPS.amt_before - THPS.amt_ante) / TB.amt_bb < 50
-                                ) 
-                                THEN 1 ELSE 0 END)) AS ActionOpportunities ${this.check2_str}`);
-        let result = a.rows[0]["result"];
+        let a = await this.DB.query(`
+            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) /
+                  tourney_blinds.amt_bb < 50
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND char_length(tourney_hand_summary.str_aggressors_p) = 1
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) /
+                  tourney_blinds.amt_bb < 50
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['__ev_bb_unopend_total_50bb'] = isNaN(result) ? 0 : result;
-        this.formulas['__ev_bb_unopend_total_50bb'] = `${a.rows[0]["result"]}`;
+        this.formulas['__ev_bb_unopend_total_50bb'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async __ev_bb_vs_1r_total_50bb() {
