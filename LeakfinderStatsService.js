@@ -568,8 +568,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['rfi_wai_ep'] = isNaN(result) ? 0 : result;
         this.formulas['rfi_wai_ep'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['rfi_wai_ep'] = `${c.rows[0].count}`;
-        this.matrix_open['rfi_wai_ep'] = `${d.rows[0].count}`;
+        this.matrix_fold['rfi_wai_ep'] = c.rows;
+        this.matrix_open['rfi_wai_ep'] = d.rows;
     }
 
     async rfi_wai_mp() {
@@ -630,8 +630,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['rfi_wai_mp'] = isNaN(result) ? 0 : result;
         this.formulas['rfi_wai_mp'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['rfi_wai_mp'] = `${c.rows[0].count}`;
-        this.matrix_open['rfi_wai_mp'] = `${d.rows[0].count}`;
+        this.matrix_fold['rfi_wai_mp'] = c.rows;
+        this.matrix_open['rfi_wai_mp'] = d.rows;
     }
 
     async rfi_wai_mp1() {
@@ -692,8 +692,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['rfi_wai_mp1'] = isNaN(result) ? 0 : result;
         this.formulas['rfi_wai_mp1'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['rfi_wai_mp1'] = `${c.rows[0].count}`;
-        this.matrix_open['rfi_wai_mp1'] = `${d.rows[0].count}`;
+        this.matrix_fold['rfi_wai_mp1'] = c.rows;
+        this.matrix_open['rfi_wai_mp1'] = d.rows;
     }
 
     async rfi_wai_hj() {
@@ -754,8 +754,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['rfi_wai_hj'] = isNaN(result) ? 0 : result;
         this.formulas['rfi_wai_hj'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['rfi_wai_hj'] = `${c.rows[0].count}`;
-        this.matrix_open['rfi_wai_hj'] = `${d.rows[0].count}`;
+        this.matrix_fold['rfi_wai_hj'] = c.rows;
+        this.matrix_open['rfi_wai_hj'] = d.rows;
     }
 
     async rfi_wai_co() {
@@ -816,8 +816,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['rfi_wai_co'] = isNaN(result) ? 0 : result;
         this.formulas['rfi_wai_co'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['rfi_wai_co'] = `${c.rows[0].count}`;
-        this.matrix_open['rfi_wai_co'] = `${d.rows[0].count}`;
+        this.matrix_fold['rfi_wai_co'] = c.rows;
+        this.matrix_open['rfi_wai_co'] = d.rows;
     }
 
     async rfi_wai_bu() {
@@ -878,8 +878,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['rfi_wai_bu'] = isNaN(result) ? 0 : result;
         this.formulas['rfi_wai_bu'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['rfi_wai_bu'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_cc_ep'] = `${d.rows[0].count}`;
+        this.matrix_fold['rfi_wai_bu'] = c.rows;
+        this.matrix_open['rfi_wai_bu'] = d.rows;
     }
 
     async foldvs3bet_wai_ep() {
@@ -958,8 +958,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['foldvs3bet_wai_ep'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs3bet_wai_ep'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['foldvs3bet_wai_ep'] = `${c.rows[0].count}`;
-        this.matrix_open['foldvs3bet_wai_ep'] = `${d.rows[0].count}`;
+        this.matrix_fold['foldvs3bet_wai_ep'] = c.rows;
+        this.matrix_open['foldvs3bet_wai_ep'] = d.rows;
     }
 
     async foldvs3bet_wai_mp() {
@@ -1038,8 +1038,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['foldvs3bet_wai_mp'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs3bet_wai_mp'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['foldvs3bet_wai_mp'] = `${c.rows[0].count}`;
-        this.matrix_open['foldvs3bet_wai_mp'] = `${d.rows[0].count}`;
+        this.matrix_fold['foldvs3bet_wai_mp'] = c.rows;
+        this.matrix_open['foldvs3bet_wai_mp'] = d.rows;
     }
 
     async foldvs3bet_wai_mp1() {
@@ -1118,8 +1118,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['foldvs3bet_wai_mp1'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs3bet_wai_mp1'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['foldvs3bet_wai_mp1'] = `${c.rows[0].count}`;
-        this.matrix_open['foldvs3bet_wai_mp1'] = `${d.rows[0].count}`;
+        this.matrix_fold['foldvs3bet_wai_mp1'] = c.rows;
+        this.matrix_open['foldvs3bet_wai_mp1'] = d.rows;
     }
 
     async foldvs3bet_wai_hj() {
@@ -1198,8 +1198,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['foldvs3bet_wai_hj'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs3bet_wai_hj'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['foldvs3bet_wai_hj'] = `${c.rows[0].count}`;
-        this.matrix_open['foldvs3bet_wai_hj'] = `${d.rows[0].count}`;
+        this.matrix_fold['foldvs3bet_wai_hj'] = c.rows;
+        this.matrix_open['foldvs3bet_wai_hj'] = d.rows;
     }
 
     async foldvs3bet_wai_co() {
@@ -1278,8 +1278,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['foldvs3bet_wai_co'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs3bet_wai_co'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['foldvs3bet_wai_co'] = `${c.rows[0].count}`;
-        this.matrix_open['foldvs3bet_wai_co'] = `${d.rows[0].count}`;
+        this.matrix_fold['foldvs3bet_wai_co'] = c.rows;
+        this.matrix_open['foldvs3bet_wai_co'] = d.rows;
     }
 
     async foldvs3bet_wai_bu() {
@@ -1358,8 +1358,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['foldvs3bet_wai_bu'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs3bet_wai_bu'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['foldvs3bet_wai_bu'] = `${c.rows[0].count}`;
-        this.matrix_open['foldvs3bet_wai_bu'] = `${d.rows[0].count}`;
+        this.matrix_fold['foldvs3bet_wai_bu'] = c.rows;
+        this.matrix_open['foldvs3bet_wai_bu'] = d.rows;
     }
 
     async vs1r_wai_cc_ep() {
@@ -1463,8 +1463,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_cc_ep'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_cc_ep'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_cc_ep'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_cc_ep'] = `${d.rows[0].count}`;
+        this.matrix_fold['vs1r_wai_cc_ep'] = c.rows;
+        this.matrix_open['vs1r_wai_cc_ep'] = d.rows;
     }
 
     async vs1r_wai_cc_mp() {
@@ -1574,8 +1574,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_cc_mp'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_cc_mp'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_cc_mp'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_cc_mp'] = `${d.rows[0].count}`;
+        this.matrix_fold['vs1r_wai_cc_mp'] = c.rows;
+        this.matrix_open['vs1r_wai_cc_mp'] = d.rows;
     }
 
     async vs1r_wai_cc_co() {
@@ -1680,8 +1680,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_cc_co'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_cc_co'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_cc_co'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_cc_co'] = `${d.rows[0].count}`;
+        this.matrix_fold['vs1r_wai_cc_co'] = c.rows;
+        this.matrix_open['vs1r_wai_cc_co'] = d.rows;
     }
 
     async vs1r_wai_cc_bu() {
@@ -1786,8 +1786,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_cc_bu'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_cc_bu'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_cc_bu'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_cc_bu'] = `${d.rows[0].count}`;
+        this.matrix_fold['vs1r_wai_cc_bu'] = c.rows;
+        this.matrix_open['vs1r_wai_cc_bu'] = d.rows;
     }
 
     async vs1r_wai_cc_sb() {
@@ -1892,8 +1892,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_cc_sb'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_cc_sb'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_cc_sb'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_cc_sb'] = `${d.rows[0].count}`;
+        this.matrix_fold['vs1r_wai_cc_sb'] = c.rows;
+        this.matrix_open['vs1r_wai_cc_sb'] = d.rows;
     }
 
     async vs1r_wai_cc_bb() {
@@ -1998,8 +1998,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_cc_bb'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_cc_bb'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_cc_bb'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_cc_bb'] = `${d.rows[0].count}`;
+        this.matrix_fold['vs1r_wai_cc_bb'] = c.rows;
+        this.matrix_open['vs1r_wai_cc_bb'] = d.rows;
     }
 
     async vs1r_wai_3betwai_ep() {
@@ -2105,8 +2105,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_3betwai_ep'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_3betwai_ep'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_3betwai_ep'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_3betwai_ep'] = `${d.rows[0].count}`;
+        this.matrix_fold['vs1r_wai_3betwai_ep'] = c.rows;
+        this.matrix_open['vs1r_wai_3betwai_ep'] = d.rows;
     }
 
     async vs1r_wai_3betwai_mp() {
@@ -2219,8 +2219,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_3betwai_mp'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_3betwai_mp'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_3betwai_mp'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_3betwai_mp'] = `${d.rows[0].count}`;
+        this.matrix_fold['vs1r_wai_3betwai_mp'] = c.rows;
+        this.matrix_open['vs1r_wai_3betwai_mp'] = d.rows;
     }
 
     async vs1r_wai_3betwai_co() {
@@ -2324,8 +2324,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_3betwai_co'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_3betwai_co'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_3betwai_co'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_3betwai_co'] = `${d.rows[0].count}`;
+        this.matrix_fold['vs1r_wai_3betwai_co'] = c.rows;
+        this.matrix_open['vs1r_wai_3betwai_co'] = d.rows;
     }
 
     async vs1r_wai_3betwai_bu() {
@@ -2433,8 +2433,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_3betwai_bu'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_3betwai_bu'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_3betwai_bu'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_3betwai_bu'] = `${d.rows[0].count}`;
+        this.matrix_fold['vs1r_wai_3betwai_bu'] = c.rows;
+        this.matrix_open['vs1r_wai_3betwai_bu'] = d.rows;
     }
 
     async vs1r_wai_3betwai_sb() {
@@ -2542,8 +2542,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_3betwai_sb'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_3betwai_sb'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_3betwai_sb'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_3betwai_sb'] = `${d.rows[0].count}`;
+        this.matrix_fold['vs1r_wai_3betwai_sb'] = c.rows;
+        this.matrix_open['vs1r_wai_3betwai_sb'] = d.rows;
     }
 
     async vs1r_wai_3betwai_bb() {
@@ -2651,8 +2651,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_3betwai_bb'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_3betwai_bb'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_3betwai_bb'] = `${c.rows[0].count}`;
-        this.matrix_open['vs1r_wai_3betwai_bb'] = `${d.rows[0].count}`;
+        this.matrix_fold['vs1r_wai_3betwai_bb'] = c.rows;
+        this.matrix_open['vs1r_wai_3betwai_bb'] = d.rows;
     }
 
     async vs1r_wai_3betai_greater8_ep() {
@@ -4960,8 +4960,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['foldvs1R_2_4_bb_vs_ep'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs1R_2_4_bb_vs_ep'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['foldvs1R_2_4_bb_vs_ep'] = `${c.rows[0].count}`;
-        this.matrix_open['foldvs1R_2_4_bb_vs_ep'] = `${d.rows[0].count}`;
+        this.matrix_fold['foldvs1R_2_4_bb_vs_ep'] = c.rows;
+        this.matrix_open['foldvs1R_2_4_bb_vs_ep'] = d.rows;
     }
 
     async foldvs1R_2_4_bb_vs_mp() {
@@ -5043,8 +5043,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['foldvs1R_2_4_bb_vs_mp'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs1R_2_4_bb_vs_mp'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['foldvs1R_2_4_bb_vs_mp'] = `${c.rows[0].count}`;
-        this.matrix_open['foldvs1R_2_4_bb_vs_mp'] = `${d.rows[0].count}`;
+        this.matrix_fold['foldvs1R_2_4_bb_vs_mp'] = c.rows;
+        this.matrix_open['foldvs1R_2_4_bb_vs_mp'] = d.rows;
     }
 
     async foldvs1R_2_4_bb_vs_co() {
@@ -5126,8 +5126,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['foldvs1R_2_4_bb_vs_co'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs1R_2_4_bb_vs_co'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['foldvs1R_2_4_bb_vs_co'] = `${c.rows[0].count}`;
-        this.matrix_open['foldvs1R_2_4_bb_vs_co'] = `${d.rows[0].count}`;
+        this.matrix_fold['foldvs1R_2_4_bb_vs_co'] = c.rows;
+        this.matrix_open['foldvs1R_2_4_bb_vs_co'] = d.rows;
     }
 
     async foldvs1R_2_4_bb_vs_bu() {
@@ -5209,8 +5209,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['foldvs1R_2_4_bb_vs_bu'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs1R_2_4_bb_vs_bu'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['foldvs1R_2_4_bb_vs_bu'] = `${c.rows[0].count}`;
-        this.matrix_open['foldvs1R_2_4_bb_vs_bu'] = `${d.rows[0].count}`;
+        this.matrix_fold['foldvs1R_2_4_bb_vs_bu'] = c.rows;
+        this.matrix_open['foldvs1R_2_4_bb_vs_bu'] = d.rows;
     }
 
     //bvb sb
@@ -5471,8 +5471,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['bvb_bb_fold_vs_raise_less2_4'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_bb_fold_vs_raise_less2_4'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['bvb_bb_fold_vs_raise_less2_4'] = `${c.rows[0].count}`;
-        this.matrix_open['bvb_bb_fold_vs_raise_less2_4'] = `${d.rows[0].count}`;
+        this.matrix_fold['bvb_bb_fold_vs_raise_less2_4'] = c.rows;
+        this.matrix_open['bvb_bb_fold_vs_raise_less2_4'] = d.rows;
     }
 
     async bvb_bb_fold_vs_raise_less2_8() {
@@ -5560,8 +5560,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['bvb_bb_fold_vs_raise_less2_8'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_bb_fold_vs_raise_less2_8'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['bvb_bb_fold_vs_raise_less2_8'] = `${c.rows[0].count}`;
-        this.matrix_open['bvb_bb_fold_vs_raise_less2_8'] = `${d.rows[0].count}`;
+        this.matrix_fold['bvb_bb_fold_vs_raise_less2_8'] = c.rows;
+        this.matrix_open['bvb_bb_fold_vs_raise_less2_8'] = d.rows;
     }
 
     async bvb_bb_fold_vs_raise_less3_7() {
@@ -5652,8 +5652,8 @@ WHERE ${this.check_str}`);
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['bvb_bb_fold_vs_raise_less3_7'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_bb_fold_vs_raise_less3_7'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['bvb_bb_fold_vs_raise_less3_7'] = `${c.rows[0].count}`;
-        this.matrix_open['bvb_bb_fold_vs_raise_less3_7'] = `${d.rows[0].count}`;
+        this.matrix_fold['bvb_bb_fold_vs_raise_less3_7'] = c.rows;
+        this.matrix_open['bvb_bb_fold_vs_raise_less3_7'] = d.rows;
     }
 
 
