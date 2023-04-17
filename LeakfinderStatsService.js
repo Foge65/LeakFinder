@@ -116,7 +116,7 @@ class Stats {
         //     this.line_chart_data = []
         // }
 
-        this.res.write("line_chart")
+        if (this.res) this.res.write("line_chart")
 
         let a = await this.DB.query(`SELECT THPS.id_hand, THPS.amt_won/TB.amt_bb AS amt_won, THPS.amt_expected_won/TB.amt_bb AS amt_expected_won, THPS.flg_showdown
                             FROM tourney_summary as TS, tourney_hand_player_statistics as THPS, player as PL, tourney_blinds as TB
@@ -166,7 +166,7 @@ class Stats {
     }
 
     async count_hands() {
-        this.res.write("count_hands")
+        if (this.res) this.res.write("count_hands")
 
         let a = await this.DB.query(`SELECT COUNT(tourney_hand_player_statistics.id_hand)
         FROM tourney_hand_player_statistics, player
@@ -179,7 +179,7 @@ class Stats {
     }
 
     async ev_total() {
-        this.res.write("ev_total")
+        if (this.res) this.res.write("ev_total")
 
         let a = await this.DB.query(`SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100 
         FROM tourney_hand_player_statistics INNER JOIN player 
@@ -192,7 +192,7 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
     }
 
     async ev_bb_199_ss_60() {
-        this.res.write("ev_bb_199_ss_60")
+        if (this.res) this.res.write("ev_bb_199_ss_60")
         let a = await this.DB.query(`SELECT (CASE WHEN ActionOpportunities = 0 THEN 0 ELSE (CAST(ActionCount AS REAL)/(ActionOpportunities)*100) END) AS result
                                 FROM(
                                 SELECT(SUM(CASE WHEN(TB.amt_bb > 199 
@@ -207,7 +207,7 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
     }
 
     async ev_bb_999() {
-        this.res.write("ev_bb_999")
+        if (this.res) this.res.write("ev_bb_999")
         let a = await this.DB.query(`
         SELECT (CASE WHEN ActionOpportunities = 0 THEN 0 ELSE (CAST(ActionCount AS REAL)/(ActionOpportunities)*100) END) AS result
         FROM(
@@ -225,7 +225,7 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
     }
 
     async ev_bb_4999() {
-        this.res.write("ev_bb_4999")
+        if (this.res) this.res.write("ev_bb_4999")
         let a = await this.DB.query(`
         SELECT (CASE WHEN ActionOpportunities = 0 THEN 0 ELSE (CAST(ActionCount AS REAL)/(ActionOpportunities)*100) END) AS result
         FROM(
@@ -243,7 +243,7 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
     }
 
     async ev_bb_25_ss() {
-        this.res.write("ev_bb_25_ss")
+        if (this.res) this.res.write("ev_bb_25_ss")
         let a = await this.DB.query(`SELECT (CASE WHEN ActionOpportunities = 0 THEN 0 ELSE (CAST(ActionCount AS REAL)/(ActionOpportunities)*100) END) AS result
         FROM(
         SELECT (SUM(CASE WHEN(
@@ -258,7 +258,7 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
     }
 
     async ev_bb_25_60_ss() {
-        this.res.write("ev_bb_25_60_ss")
+        if (this.res) this.res.write("ev_bb_25_60_ss")
         let a = await this.DB.query(`SELECT (CASE WHEN ActionOpportunities = 0 THEN 0 ELSE (CAST(ActionCount AS REAL)/(ActionOpportunities)*100) END) AS result
         FROM(
         SELECT (SUM(CASE WHEN(
@@ -274,7 +274,7 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
     }
 
     async ev_bb_60_ss() {
-        this.res.write("ev_bb_60_ss")
+        if (this.res) this.res.write("ev_bb_60_ss")
         let a = await this.DB.query(`SELECT (CASE WHEN ActionOpportunities = 0 THEN 0 ELSE (CAST(ActionCount AS REAL)/(ActionOpportunities)*100) END) AS result
         FROM(
         SELECT (SUM(CASE WHEN(
@@ -289,7 +289,7 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
     }
 
     async __ev_bb_unopend_total_50bb() {
-        this.res.write("__ev_bb_unopend_total_50bb")
+        if (this.res) this.res.write("__ev_bb_unopend_total_50bb")
         let a = await this.DB.query(`
             SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
             FROM tourney_hand_player_statistics
@@ -322,7 +322,7 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
     }
 
     async __ev_bb_vs_1r_total_50bb() {
-        this.res.write("__ev_bb_vs_1r_total_50bb")
+        if (this.res) this.res.write("__ev_bb_vs_1r_total_50bb")
         let a = await this.DB.query(`
             SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
             FROM tourney_hand_player_statistics
@@ -373,7 +373,7 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
     }
 
     async count_torney() {
-        this.res.write("count_torney")
+        if (this.res) this.res.write("count_torney")
         let a = await this.DB.query(`SELECT COUNT(distinct tourney_hand_player_statistics.id_tourney) 
 FROM tourney_hand_player_statistics INNER JOIN player 
 ON tourney_hand_player_statistics.id_player = player.id_player
@@ -385,7 +385,7 @@ WHERE ${this.check_str}`);
     }
 
     async wwsf() {
-        this.res.write("wwsf")
+        if (this.res) this.res.write("wwsf")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -409,7 +409,7 @@ WHERE ${this.check_str}`);
     }
 
     async wtsd() {
-        this.res.write("wtsd")
+        if (this.res) this.res.write("wtsd")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -438,7 +438,7 @@ WHERE ${this.check_str}`);
     }
 
     async wasd() {
-        this.res.write("wasd")
+        if (this.res) this.res.write("wasd")
         let a = await this.DB.query(`SELECT COUNT(*) 
         FROM tourney_hand_player_statistics 
         INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
@@ -463,7 +463,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip() {
-        this.res.write("vpip")
+        if (this.res) this.res.write("vpip")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -489,7 +489,7 @@ WHERE ${this.check_str}`);
 
     // Пенсионный фонд россии?
     async pfr() {
-        this.res.write("pfr")
+        if (this.res) this.res.write("pfr")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -514,7 +514,7 @@ WHERE ${this.check_str}`);
     }
 
     async rfi_wai_ep() {
-        this.res.write("rfi_wai_ep")
+        if (this.res) this.res.write("rfi_wai_ep")
         let a = await this.DB.query(`
         SELECT COUNT(*) 
         FROM tourney_hand_player_statistics 
@@ -576,7 +576,7 @@ WHERE ${this.check_str}`);
     }
 
     async rfi_wai_mp() {
-        this.res.write("rfi_wai_mp")
+        if (this.res) this.res.write("rfi_wai_mp")
         let a = await this.DB.query(`
         SELECT COUNT(*) 
         FROM tourney_hand_player_statistics 
@@ -638,7 +638,7 @@ WHERE ${this.check_str}`);
     }
 
     async rfi_wai_mp1() {
-        this.res.write("rfi_wai_mp1")
+        if (this.res) this.res.write("rfi_wai_mp1")
         let a = await this.DB.query(`
         SELECT COUNT(*) 
         FROM tourney_hand_player_statistics 
@@ -700,7 +700,7 @@ WHERE ${this.check_str}`);
     }
 
     async rfi_wai_hj() {
-        this.res.write("rfi_wai_hj")
+        if (this.res) this.res.write("rfi_wai_hj")
         let a = await this.DB.query(`
         SELECT COUNT(*) 
         FROM tourney_hand_player_statistics 
@@ -762,7 +762,7 @@ WHERE ${this.check_str}`);
     }
 
     async rfi_wai_co() {
-        this.res.write("rfi_wai_co")
+        if (this.res) this.res.write("rfi_wai_co")
         let a = await this.DB.query(`
         SELECT COUNT(*) 
         FROM tourney_hand_player_statistics 
@@ -824,7 +824,7 @@ WHERE ${this.check_str}`);
     }
 
     async rfi_wai_bu() {
-        this.res.write("rfi_wai_bu")
+        if (this.res) this.res.write("rfi_wai_bu")
         let a = await this.DB.query(`
         SELECT COUNT(*) 
         FROM tourney_hand_player_statistics 
@@ -886,7 +886,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs3bet_wai_ep() {
-        this.res.write("foldvs3bet_wai_ep")
+        if (this.res) this.res.write("foldvs3bet_wai_ep")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary    
@@ -997,7 +997,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs3bet_wai_mp() {
-        this.res.write("foldvs3bet_wai_mp")
+        if (this.res) this.res.write("foldvs3bet_wai_mp")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary    
@@ -1077,7 +1077,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs3bet_wai_mp1() {
-        this.res.write("foldvs3bet_wai_mp1")
+        if (this.res) this.res.write("foldvs3bet_wai_mp1")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary    
@@ -1157,7 +1157,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs3bet_wai_hj() {
-        this.res.write("foldvs3bet_wai_hj")
+        if (this.res) this.res.write("foldvs3bet_wai_hj")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary    
@@ -1237,7 +1237,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs3bet_wai_co() {
-        this.res.write("foldvs3bet_wai_co")
+        if (this.res) this.res.write("foldvs3bet_wai_co")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary    
@@ -1317,7 +1317,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs3bet_wai_bu() {
-        this.res.write("foldvs3bet_wai_bu")
+        if (this.res) this.res.write("foldvs3bet_wai_bu")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary    
@@ -1397,7 +1397,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_cc_ep() {
-        this.res.write("vs1r_wai_cc_ep")
+        if (this.res) this.res.write("vs1r_wai_cc_ep")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -1502,7 +1502,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_cc_mp() {
-        this.res.write("vs1r_wai_cc_mp")
+        if (this.res) this.res.write("vs1r_wai_cc_mp")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -1613,7 +1613,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_cc_co() {
-        this.res.write("vs1r_wai_cc_co")
+        if (this.res) this.res.write("vs1r_wai_cc_co")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -1719,7 +1719,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_cc_bu() {
-        this.res.write("vs1r_wai_cc_bu")
+        if (this.res) this.res.write("vs1r_wai_cc_bu")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -1825,7 +1825,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_cc_sb() {
-        this.res.write("vs1r_wai_cc_sb")
+        if (this.res) this.res.write("vs1r_wai_cc_sb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -1931,7 +1931,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_cc_bb() {
-        this.res.write("vs1r_wai_cc_bb")
+        if (this.res) this.res.write("vs1r_wai_cc_bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -2037,7 +2037,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_3betwai_ep() {
-        this.res.write("vs1r_wai_3betwai_ep")
+        if (this.res) this.res.write("vs1r_wai_3betwai_ep")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -2144,7 +2144,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_3betwai_mp() {
-        this.res.write("vs1r_wai_3betwai_mp")
+        if (this.res) this.res.write("vs1r_wai_3betwai_mp")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -2258,7 +2258,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_3betwai_co() {
-        this.res.write("vs1r_wai_3betwai_co")
+        if (this.res) this.res.write("vs1r_wai_3betwai_co")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -2363,7 +2363,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_3betwai_bu() {
-        this.res.write("vs1r_wai_3betwai_bu")
+        if (this.res) this.res.write("vs1r_wai_3betwai_bu")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -2472,7 +2472,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_3betwai_sb() {
-        this.res.write("vs1r_wai_3betwai_sb")
+        if (this.res) this.res.write("vs1r_wai_3betwai_sb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -2581,7 +2581,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_3betwai_bb() {
-        this.res.write("vs1r_wai_3betwai_bb")
+        if (this.res) this.res.write("vs1r_wai_3betwai_bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -2690,7 +2690,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_3betai_greater8_ep() {
-        this.res.write("vs1r_wai_3betai_greater8_ep")
+        if (this.res) this.res.write("vs1r_wai_3betai_greater8_ep")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -2750,7 +2750,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_3betai_greater8_mp() {
-        this.res.write("vs1r_wai_3betai_greater8_mp")
+        if (this.res) this.res.write("vs1r_wai_3betai_greater8_mp")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -2797,7 +2797,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_3betai_greater8_co() {
-        this.res.write("vs1r_wai_3betai_greater8_co")
+        if (this.res) this.res.write("vs1r_wai_3betai_greater8_co")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -2858,7 +2858,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_3betai_greater8_bu() {
-        this.res.write("vs1r_wai_3betai_greater8_bu")
+        if (this.res) this.res.write("vs1r_wai_3betai_greater8_bu")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -2919,7 +2919,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_3betai_greater8_sb() {
-        this.res.write("vs1r_wai_3betai_greater8_sb")
+        if (this.res) this.res.write("vs1r_wai_3betai_greater8_sb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -2980,7 +2980,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_3betai_greater8_bb() {
-        this.res.write("vs1r_wai_3betai_greater8_bb")
+        if (this.res) this.res.write("vs1r_wai_3betai_greater8_bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_summary 
@@ -3042,7 +3042,7 @@ WHERE ${this.check_str}`);
 
     //squeze
     async vs1r_wai_squezze_cc_ep() {
-        this.res.write("vs1r_wai_squezze_cc_ep")
+        if (this.res) this.res.write("vs1r_wai_squezze_cc_ep")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3081,7 +3081,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_squezze_cc_mp() {
-        this.res.write("vs1r_wai_squezze_cc_mp")
+        if (this.res) this.res.write("vs1r_wai_squezze_cc_mp")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3120,7 +3120,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_squezze_cc_co() {
-        this.res.write("vs1r_wai_squezze_cc_co")
+        if (this.res) this.res.write("vs1r_wai_squezze_cc_co")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3159,7 +3159,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_squezze_cc_bu() {
-        this.res.write("vs1r_wai_squezze_cc_bu")
+        if (this.res) this.res.write("vs1r_wai_squezze_cc_bu")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3198,7 +3198,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_squezze_cc_sb() {
-        this.res.write("vs1r_wai_squezze_cc_sb")
+        if (this.res) this.res.write("vs1r_wai_squezze_cc_sb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3237,7 +3237,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_squezze_cc_bb() {
-        this.res.write("vs1r_wai_squezze_cc_bb")
+        if (this.res) this.res.write("vs1r_wai_squezze_cc_bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3276,7 +3276,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_squezze_wai_ep() {
-        this.res.write("vs1r_wai_squezze_wai_ep")
+        if (this.res) this.res.write("vs1r_wai_squezze_wai_ep")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3315,7 +3315,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_squezze_wai_mp() {
-        this.res.write("vs1r_wai_squezze_wai_mp")
+        if (this.res) this.res.write("vs1r_wai_squezze_wai_mp")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3354,7 +3354,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_squezze_wai_co() {
-        this.res.write("vs1r_wai_squezze_wai_co")
+        if (this.res) this.res.write("vs1r_wai_squezze_wai_co")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3393,7 +3393,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_squezze_wai_bu() {
-        this.res.write("vs1r_wai_squezze_wai_bu")
+        if (this.res) this.res.write("vs1r_wai_squezze_wai_bu")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3432,7 +3432,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_squezze_wai_sb() {
-        this.res.write("vs1r_wai_squezze_wai_sb")
+        if (this.res) this.res.write("vs1r_wai_squezze_wai_sb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3471,7 +3471,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_wai_squezze_wai_bb() {
-        this.res.write("vs1r_wai_squezze_wai_bb")
+        if (this.res) this.res.write("vs1r_wai_squezze_wai_bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3510,7 +3510,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_ai_squezze_greater8_ai_ep() {
-        this.res.write("vs1r_ai_squezze_greater8_ai_ep")
+        if (this.res) this.res.write("vs1r_ai_squezze_greater8_ai_ep")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3552,7 +3552,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_ai_squezze_greater8_ai_mp() {
-        this.res.write("vs1r_ai_squezze_greater8_ai_mp")
+        if (this.res) this.res.write("vs1r_ai_squezze_greater8_ai_mp")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3594,7 +3594,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_ai_squezze_greater8_ai_co() {
-        this.res.write("vs1r_ai_squezze_greater8_ai_co")
+        if (this.res) this.res.write("vs1r_ai_squezze_greater8_ai_co")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3636,7 +3636,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_ai_squezze_greater8_ai_bu() {
-        this.res.write("vs1r_ai_squezze_greater8_ai_bu")
+        if (this.res) this.res.write("vs1r_ai_squezze_greater8_ai_bu")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3678,7 +3678,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_ai_squezze_greater8_ai_sb() {
-        this.res.write("vs1r_ai_squezze_greater8_ai_sb")
+        if (this.res) this.res.write("vs1r_ai_squezze_greater8_ai_sb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3720,7 +3720,7 @@ WHERE ${this.check_str}`);
     }
 
     async vs1r_ai_squezze_greater8_ai_bb() {
-        this.res.write("vs1r_ai_squezze_greater8_ai_bb")
+        if (this.res) this.res.write("vs1r_ai_squezze_greater8_ai_bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3762,7 +3762,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_ep_vs_open_2_4_bb_less28bb() {
-        this.res.write("vpip_ep_vs_open_2_4_bb_less28bb")
+        if (this.res) this.res.write("vpip_ep_vs_open_2_4_bb_less28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3810,7 +3810,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_mp_vs_ep_2_4_bb_less28bb() {
-        this.res.write("vpip_mp_vs_ep_2_4_bb_less28bb")
+        if (this.res) this.res.write("vpip_mp_vs_ep_2_4_bb_less28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3858,7 +3858,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_mp_vs_mp_2_4_bb_less28bb() {
-        this.res.write("vpip_mp_vs_mp_2_4_bb_less28bb")
+        if (this.res) this.res.write("vpip_mp_vs_mp_2_4_bb_less28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3906,7 +3906,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_co_vs_ep_2_4_bb_less28bb() {
-        this.res.write("vpip_co_vs_ep_2_4_bb_less28bb")
+        if (this.res) this.res.write("vpip_co_vs_ep_2_4_bb_less28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -3954,7 +3954,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_co_vs_mp_2_4_bb_less28bb() {
-        this.res.write("vpip_co_vs_mp_2_4_bb_less28bb")
+        if (this.res) this.res.write("vpip_co_vs_mp_2_4_bb_less28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4002,7 +4002,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_bu_vs_ep_2_4_bb_less28bb() {
-        this.res.write("vpip_bu_vs_ep_2_4_bb_less28bb")
+        if (this.res) this.res.write("vpip_bu_vs_ep_2_4_bb_less28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4050,7 +4050,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_bu_vs_mp_2_4_bb_less28bb() {
-        this.res.write("vpip_bu_vs_mp_2_4_bb_less28bb")
+        if (this.res) this.res.write("vpip_bu_vs_mp_2_4_bb_less28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4098,7 +4098,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_bu_vs_co_2_4_bb_less28bb() {
-        this.res.write("vpip_bu_vs_co_2_4_bb_less28bb")
+        if (this.res) this.res.write("vpip_bu_vs_co_2_4_bb_less28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4146,7 +4146,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_ep_2_4_bb_less28bb() {
-        this.res.write("vpip_sb_vs_ep_2_4_bb_less28bb")
+        if (this.res) this.res.write("vpip_sb_vs_ep_2_4_bb_less28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4194,7 +4194,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_mp_2_4_bb_less28bb() {
-        this.res.write("vpip_sb_vs_mp_2_4_bb_less28bb")
+        if (this.res) this.res.write("vpip_sb_vs_mp_2_4_bb_less28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4242,7 +4242,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_co_2_4_bb_less28bb() {
-        this.res.write("vpip_sb_vs_co_2_4_bb_less28bb")
+        if (this.res) this.res.write("vpip_sb_vs_co_2_4_bb_less28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4290,7 +4290,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_bu_2_4_bb_less28bb() {
-        this.res.write("vpip_sb_vs_bu_2_4_bb_less28bb")
+        if (this.res) this.res.write("vpip_sb_vs_bu_2_4_bb_less28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4340,7 +4340,7 @@ WHERE ${this.check_str}`);
     //great28bb
 
     async vpip_ep_vs_open_2_4_bb_great28bb() {
-        this.res.write("vpip_ep_vs_open_2_4_bb_great28bb")
+        if (this.res) this.res.write("vpip_ep_vs_open_2_4_bb_great28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4388,7 +4388,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_mp_vs_ep_2_4_bb_great28bb() {
-        this.res.write("vpip_mp_vs_ep_2_4_bb_great28bb")
+        if (this.res) this.res.write("vpip_mp_vs_ep_2_4_bb_great28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4436,7 +4436,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_mp_vs_mp_2_4_bb_great28bb() {
-        this.res.write("vpip_mp_vs_mp_2_4_bb_great28bb")
+        if (this.res) this.res.write("vpip_mp_vs_mp_2_4_bb_great28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4484,7 +4484,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_co_vs_ep_2_4_bb_great28bb() {
-        this.res.write("vpip_co_vs_ep_2_4_bb_great28bb")
+        if (this.res) this.res.write("vpip_co_vs_ep_2_4_bb_great28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4532,7 +4532,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_co_vs_mp_2_4_bb_great28bb() {
-        this.res.write("vpip_co_vs_mp_2_4_bb_great28bb")
+        if (this.res) this.res.write("vpip_co_vs_mp_2_4_bb_great28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4580,7 +4580,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_bu_vs_ep_2_4_bb_great28bb() {
-        this.res.write("vpip_bu_vs_ep_2_4_bb_great28bb")
+        if (this.res) this.res.write("vpip_bu_vs_ep_2_4_bb_great28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4628,7 +4628,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_bu_vs_mp_2_4_bb_great28bb() {
-        this.res.write("vpip_bu_vs_mp_2_4_bb_great28bb")
+        if (this.res) this.res.write("vpip_bu_vs_mp_2_4_bb_great28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4676,7 +4676,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_bu_vs_co_2_4_bb_great28bb() {
-        this.res.write("vpip_bu_vs_co_2_4_bb_great28bb")
+        if (this.res) this.res.write("vpip_bu_vs_co_2_4_bb_great28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4724,7 +4724,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_ep_2_4_bb_great28bb() {
-        this.res.write("vpip_sb_vs_ep_2_4_bb_great28bb")
+        if (this.res) this.res.write("vpip_sb_vs_ep_2_4_bb_great28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4772,7 +4772,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_mp_2_4_bb_great28bb() {
-        this.res.write("vpip_sb_vs_mp_2_4_bb_great28bb")
+        if (this.res) this.res.write("vpip_sb_vs_mp_2_4_bb_great28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4820,7 +4820,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_co_2_4_bb_great28bb() {
-        this.res.write("vpip_sb_vs_co_2_4_bb_great28bb")
+        if (this.res) this.res.write("vpip_sb_vs_co_2_4_bb_great28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4868,7 +4868,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_bu_2_4_bb_great28bb() {
-        this.res.write("vpip_sb_vs_bu_2_4_bb_great28bb")
+        if (this.res) this.res.write("vpip_sb_vs_bu_2_4_bb_great28bb")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4916,7 +4916,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs1R_2_4_bb_vs_ep() {
-        this.res.write("foldvs1R_2_4_bb_vs_ep")
+        if (this.res) this.res.write("foldvs1R_2_4_bb_vs_ep")
         let a = await this.DB.query(`
         SELECT  COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -4999,7 +4999,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs1R_2_4_bb_vs_mp() {
-        this.res.write("foldvs1R_2_4_bb_vs_mp")
+        if (this.res) this.res.write("foldvs1R_2_4_bb_vs_mp")
         let a = await this.DB.query(`
         SELECT  COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5082,7 +5082,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs1R_2_4_bb_vs_co() {
-        this.res.write("foldvs1R_2_4_bb_vs_co")
+        if (this.res) this.res.write("foldvs1R_2_4_bb_vs_co")
         let a = await this.DB.query(`
         SELECT  COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5165,7 +5165,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs1R_2_4_bb_vs_bu() {
-        this.res.write("foldvs1R_2_4_bb_vs_bu")
+        if (this.res) this.res.write("foldvs1R_2_4_bb_vs_bu")
         let a = await this.DB.query(`
         SELECT  COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5249,7 +5249,7 @@ WHERE ${this.check_str}`);
 
     //bvb sb
     async bvb_sb_raise() {
-        this.res.write("bvb_sb_raise")
+        if (this.res) this.res.write("bvb_sb_raise")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5283,7 +5283,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_sb_limp() {
-        this.res.write("bvb_sb_limp")
+        if (this.res) this.res.write("bvb_sb_limp")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5317,7 +5317,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_sb_limp_fold() {
-        this.res.write("bvb_sb_limp_fold")
+        if (this.res) this.res.write("bvb_sb_limp_fold")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5352,7 +5352,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_sb_limp_raise() {
-        this.res.write("bvb_sb_limp_raise")
+        if (this.res) this.res.write("bvb_sb_limp_raise")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5388,7 +5388,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_bb_iso() {
-        this.res.write("bvb_bb_iso")
+        if (this.res) this.res.write("bvb_bb_iso")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5424,7 +5424,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_bb_fold_vs_raise_less2_4() {
-        this.res.write("bvb_bb_fold_vs_raise_less2_4")
+        if (this.res) this.res.write("bvb_bb_fold_vs_raise_less2_4")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5510,7 +5510,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_bb_fold_vs_raise_less2_8() {
-        this.res.write("bvb_bb_fold_vs_raise_less2_8")
+        if (this.res) this.res.write("bvb_bb_fold_vs_raise_less2_8")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5599,7 +5599,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_bb_fold_vs_raise_less3_7() {
-        this.res.write("bvb_bb_fold_vs_raise_less3_7")
+        if (this.res) this.res.write("bvb_bb_fold_vs_raise_less3_7")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5692,7 +5692,7 @@ WHERE ${this.check_str}`);
 
 
     async total_flop_cbet() {
-        this.res.write("total_flop_cbet")
+        if (this.res) this.res.write("total_flop_cbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5728,7 +5728,7 @@ WHERE ${this.check_str}`);
     }
 
     async total_turn_cbet() {
-        this.res.write("total_turn_cbet")
+        if (this.res) this.res.write("total_turn_cbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5762,7 +5762,7 @@ WHERE ${this.check_str}`);
     }
 
     async total_river_cbet() {
-        this.res.write("total_river_cbet")
+        if (this.res) this.res.write("total_river_cbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5794,7 +5794,7 @@ WHERE ${this.check_str}`);
     }
 
     async total_flop_fold_and_check_fold() {
-        this.res.write("total_flop_fold_and_check_fold")
+        if (this.res) this.res.write("total_flop_fold_and_check_fold")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5825,7 +5825,7 @@ WHERE ${this.check_str}`);
     }
 
     async total_turn_fold_and_check_fold() {
-        this.res.write("total_turn_fold_and_check_fold")
+        if (this.res) this.res.write("total_turn_fold_and_check_fold")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5873,7 +5873,7 @@ WHERE ${this.check_str}`);
     }
 
     async total_river_fold_and_check_fold() {
-        this.res.write("total_river_fold_and_check_fold")
+        if (this.res) this.res.write("total_river_fold_and_check_fold")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5921,7 +5921,7 @@ WHERE ${this.check_str}`);
     }
 
     async total_flop_bet_vs_misscbet() {
-        this.res.write("total_flop_bet_vs_misscbet")
+        if (this.res) this.res.write("total_flop_bet_vs_misscbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -5959,7 +5959,7 @@ WHERE ${this.check_str}`);
     }
 
     async total_turn_bet_vs_misscbet() {
-        this.res.write("total_turn_bet_vs_misscbet")
+        if (this.res) this.res.write("total_turn_bet_vs_misscbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6007,7 +6007,7 @@ WHERE ${this.check_str}`);
     }
 
     async total_river_bet_vs_misscbet() {
-        this.res.write("total_river_bet_vs_misscbet")
+        if (this.res) this.res.write("total_river_bet_vs_misscbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6045,7 +6045,7 @@ WHERE ${this.check_str}`);
     }
 
     async total_turn_probe() {
-        this.res.write("total_turn_probe")
+        if (this.res) this.res.write("total_turn_probe")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6094,7 +6094,7 @@ WHERE ${this.check_str}`);
     }
 
     async total_river_probe() {
-        this.res.write("total_river_probe")
+        if (this.res) this.res.write("total_river_probe")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6143,7 +6143,7 @@ WHERE ${this.check_str}`);
     }
 
     async total_turn_delay() {
-        this.res.write("total_turn_delay")
+        if (this.res) this.res.write("total_turn_delay")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6183,7 +6183,7 @@ WHERE ${this.check_str}`);
     }
 
     async total_river_delay() {
-        this.res.write("total_river_delay")
+        if (this.res) this.res.write("total_river_delay")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6222,7 +6222,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_flop_bet() {
-        this.res.write("raiser_oop_flop_bet")
+        if (this.res) this.res.write("raiser_oop_flop_bet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6258,7 +6258,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_turn_bet() {
-        this.res.write("raiser_oop_turn_bet")
+        if (this.res) this.res.write("raiser_oop_turn_bet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6294,7 +6294,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_river_bet() {
-        this.res.write("raiser_oop_river_bet")
+        if (this.res) this.res.write("raiser_oop_river_bet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6330,7 +6330,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_flop_check_raise() {
-        this.res.write("raiser_oop_flop_check_raise")
+        if (this.res) this.res.write("raiser_oop_flop_check_raise")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6368,7 +6368,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_turn_check_raise() {
-        this.res.write("raiser_oop_turn_check_raise")
+        if (this.res) this.res.write("raiser_oop_turn_check_raise")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6406,7 +6406,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_river_check_raise() {
-        this.res.write("raiser_oop_river_check_raise")
+        if (this.res) this.res.write("raiser_oop_river_check_raise")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6445,7 +6445,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_flop_check_fold() {
-        this.res.write("raiser_oop_flop_check_fold")
+        if (this.res) this.res.write("raiser_oop_flop_check_fold")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6484,7 +6484,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_turn_check_fold() {
-        this.res.write("raiser_oop_turn_check_fold")
+        if (this.res) this.res.write("raiser_oop_turn_check_fold")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6522,7 +6522,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_river_check_fold() {
-        this.res.write("raiser_oop_river_check_fold")
+        if (this.res) this.res.write("raiser_oop_river_check_fold")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6561,7 +6561,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_turn_cbet_aftercbet() {
-        this.res.write("raiser_oop_turn_cbet_aftercbet")
+        if (this.res) this.res.write("raiser_oop_turn_cbet_aftercbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6602,7 +6602,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_turn_bet_afterXXflop() {
-        this.res.write("raiser_oop_turn_bet_afterXXflop")
+        if (this.res) this.res.write("raiser_oop_turn_bet_afterXXflop")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6642,7 +6642,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_turn_XF_aftercbet() {
-        this.res.write("raiser_oop_turn_XF_aftercbet")
+        if (this.res) this.res.write("raiser_oop_turn_XF_aftercbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6683,7 +6683,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_turn_XF_afterXXflop() {
-        this.res.write("raiser_oop_turn_XF_afterXXflop")
+        if (this.res) this.res.write("raiser_oop_turn_XF_afterXXflop")
         let a = await this.DB.query(`
         SELECT COUNT(*)
  		FROM tourney_hand_player_statistics 
@@ -6726,7 +6726,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_river_cbet_after_cbflop_cbturn() {
-        this.res.write("raiser_oop_river_cbet_after_cbflop_cbturn")
+        if (this.res) this.res.write("raiser_oop_river_cbet_after_cbflop_cbturn")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6767,7 +6767,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_river_bet_after_cbetflop_XXturn() {
-        this.res.write("raiser_oop_river_bet_after_cbetflop_XXturn")
+        if (this.res) this.res.write("raiser_oop_river_bet_after_cbetflop_XXturn")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6809,7 +6809,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_river_bet_after_XXflop_betturn() {
-        this.res.write("raiser_oop_river_bet_after_XXflop_betturn")
+        if (this.res) this.res.write("raiser_oop_river_bet_after_XXflop_betturn")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6853,7 +6853,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_river_bet_after_XXflop_XXturn() {
-        this.res.write("raiser_oop_river_bet_after_XXflop_XXturn")
+        if (this.res) this.res.write("raiser_oop_river_bet_after_XXflop_XXturn")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6899,7 +6899,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_oop_river_XF_after_XCflop_XCturn() {
-        this.res.write("raiser_oop_river_XF_after_XCflop_XCturn")
+        if (this.res) this.res.write("raiser_oop_river_XF_after_XCflop_XCturn")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6946,7 +6946,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_flop_donk() {
-        this.res.write("caller_oop_flop_donk")
+        if (this.res) this.res.write("caller_oop_flop_donk")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -6981,7 +6981,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_turn_donk() {
-        this.res.write("caller_oop_turn_donk")
+        if (this.res) this.res.write("caller_oop_turn_donk")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7038,7 +7038,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_river_donk() {
-        this.res.write("caller_oop_river_donk")
+        if (this.res) this.res.write("caller_oop_river_donk")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7095,7 +7095,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_flop_XFvsBet() {
-        this.res.write("caller_oop_flop_XFvsBet")
+        if (this.res) this.res.write("caller_oop_flop_XFvsBet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7152,7 +7152,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_turn_XFvsBet() {
-        this.res.write("caller_oop_turn_XFvsBet")
+        if (this.res) this.res.write("caller_oop_turn_XFvsBet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7209,7 +7209,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_river_XFvsBet() {
-        this.res.write("caller_oop_river_XFvsBet")
+        if (this.res) this.res.write("caller_oop_river_XFvsBet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7266,7 +7266,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_flop_XRvsBet() {
-        this.res.write("caller_oop_flop_XRvsBet")
+        if (this.res) this.res.write("caller_oop_flop_XRvsBet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7323,7 +7323,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_turn_XRvsBet() {
-        this.res.write("caller_oop_turn_XRvsBet")
+        if (this.res) this.res.write("caller_oop_turn_XRvsBet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7380,7 +7380,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_river_XRvsBet() {
-        this.res.write("caller_oop_river_XRvsBet")
+        if (this.res) this.res.write("caller_oop_river_XRvsBet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7437,7 +7437,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_turn_cbet_after_XRflop() {
-        this.res.write("caller_oop_turn_cbet_after_XRflop")
+        if (this.res) this.res.write("caller_oop_turn_cbet_after_XRflop")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7498,7 +7498,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_turn_bet_after_XXflop() {
-        this.res.write("caller_oop_turn_bet_after_XXflop")
+        if (this.res) this.res.write("caller_oop_turn_bet_after_XXflop")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7559,7 +7559,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_turn_donk_after_XCflop() {
-        this.res.write("caller_oop_turn_donk_after_XCflop")
+        if (this.res) this.res.write("caller_oop_turn_donk_after_XCflop")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7620,7 +7620,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_turn_XR_after_XCflop() {
-        this.res.write("caller_oop_turn_XR_after_XCflop")
+        if (this.res) this.res.write("caller_oop_turn_XR_after_XCflop")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7681,7 +7681,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_turn_XF_after_XXflop() {
-        this.res.write("caller_oop_turn_XF_after_XXflop")
+        if (this.res) this.res.write("caller_oop_turn_XF_after_XXflop")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7742,7 +7742,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_turn_XF_after_XCflop() {
-        this.res.write("caller_oop_turn_XF_after_XCflop")
+        if (this.res) this.res.write("caller_oop_turn_XF_after_XCflop")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7803,7 +7803,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_river_cbet_after_XRflop_Bturn() {
-        this.res.write("caller_oop_river_cbet_after_XRflop_Bturn")
+        if (this.res) this.res.write("caller_oop_river_cbet_after_XRflop_Bturn")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7867,7 +7867,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_river_cbet_after_XXflop_Bturn() {
-        this.res.write("caller_oop_river_cbet_after_XXflop_Bturn")
+        if (this.res) this.res.write("caller_oop_river_cbet_after_XXflop_Bturn")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7931,7 +7931,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_river_cbet_after_XXflop_XXturn() {
-        this.res.write("caller_oop_river_cbet_after_XXflop_XXturn")
+        if (this.res) this.res.write("caller_oop_river_cbet_after_XXflop_XXturn")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -7995,7 +7995,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_river_cbet_after_XCflop_XXturn() {
-        this.res.write("caller_oop_river_cbet_after_XCflop_XXturn")
+        if (this.res) this.res.write("caller_oop_river_cbet_after_XCflop_XXturn")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8059,7 +8059,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_oop_river_cbet_after_XCflop_XCturn() {
-        this.res.write("caller_oop_river_cbet_after_XCflop_XCturn")
+        if (this.res) this.res.write("caller_oop_river_cbet_after_XCflop_XCturn")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8123,7 +8123,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_flop_bet() {
-        this.res.write("raiser_ip_flop_bet")
+        if (this.res) this.res.write("raiser_ip_flop_bet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8160,7 +8160,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_turn_bet() {
-        this.res.write("raiser_ip_turn_bet")
+        if (this.res) this.res.write("raiser_ip_turn_bet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8205,7 +8205,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_river_bet() {
-        this.res.write("raiser_ip_river_bet")
+        if (this.res) this.res.write("raiser_ip_river_bet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8249,7 +8249,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_flop_bet_foldvsXR() {
-        this.res.write("raiser_ip_flop_bet_foldvsXR")
+        if (this.res) this.res.write("raiser_ip_flop_bet_foldvsXR")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8290,7 +8290,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_flop_bet_turn_cbet() {
-        this.res.write("raiser_ip_flop_bet_turn_cbet")
+        if (this.res) this.res.write("raiser_ip_flop_bet_turn_cbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8330,7 +8330,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_flop_X_turn_bet() {
-        this.res.write("raiser_ip_flop_X_turn_bet")
+        if (this.res) this.res.write("raiser_ip_flop_X_turn_bet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8377,7 +8377,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_flop_callvsXR_turn_betvsmiss() {
-        this.res.write("raiser_ip_flop_callvsXR_turn_betvsmiss")
+        if (this.res) this.res.write("raiser_ip_flop_callvsXR_turn_betvsmiss")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8424,7 +8424,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_flop_X_turn_foldvsbet() {
-        this.res.write("raiser_ip_flop_X_turn_foldvsbet")
+        if (this.res) this.res.write("raiser_ip_flop_X_turn_foldvsbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8471,7 +8471,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_flop_callvsXR_turn_foldvsbet() {
-        this.res.write("raiser_ip_flop_callvsXR_turn_foldvsbet")
+        if (this.res) this.res.write("raiser_ip_flop_callvsXR_turn_foldvsbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8519,7 +8519,7 @@ WHERE ${this.check_str}`);
 
 
     async raiser_ip_flopbet_turnbet_rivercbet() {
-        this.res.write("raiser_ip_flopbet_turnbet_rivercbet")
+        if (this.res) this.res.write("raiser_ip_flopbet_turnbet_rivercbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8570,7 +8570,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_flopX_turnbet_rivercbet() {
-        this.res.write("raiser_ip_flopX_turnbet_rivercbet")
+        if (this.res) this.res.write("raiser_ip_flopX_turnbet_rivercbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8621,7 +8621,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_flopX_turnX_rivercbet() {
-        this.res.write("raiser_ip_flopX_turnX_rivercbet")
+        if (this.res) this.res.write("raiser_ip_flopX_turnX_rivercbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8672,7 +8672,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_flopX_turnX_riverfoldvsbet() {
-        this.res.write("raiser_ip_flopX_turnX_riverfoldvsbet")
+        if (this.res) this.res.write("raiser_ip_flopX_turnX_riverfoldvsbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8723,7 +8723,7 @@ WHERE ${this.check_str}`);
     }
 
     async raiser_ip_flopX_turncall_riverfoldvsbet() {
-        this.res.write("raiser_ip_flopX_turncall_riverfoldvsbet")
+        if (this.res) this.res.write("raiser_ip_flopX_turncall_riverfoldvsbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -8774,7 +8774,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flopbet() {
-        this.res.write("caller_ip_flopbet")
+        if (this.res) this.res.write("caller_ip_flopbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -8817,7 +8817,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_turnbet() {
-        this.res.write("caller_ip_turnbet")
+        if (this.res) this.res.write("caller_ip_turnbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -8860,7 +8860,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_riverbet() {
-        this.res.write("caller_ip_riverbet")
+        if (this.res) this.res.write("caller_ip_riverbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -8903,7 +8903,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flop_raisevsbet() {
-        this.res.write("caller_ip_flop_raisevsbet")
+        if (this.res) this.res.write("caller_ip_flop_raisevsbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -8946,7 +8946,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_turn_raisevsbet() {
-        this.res.write("caller_ip_turn_raisevsbet")
+        if (this.res) this.res.write("caller_ip_turn_raisevsbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -8989,7 +8989,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_river_raisevsbet() {
-        this.res.write("caller_ip_river_raisevsbet")
+        if (this.res) this.res.write("caller_ip_river_raisevsbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9033,7 +9033,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flop_foldvsbet() {
-        this.res.write("caller_ip_flop_foldvsbet")
+        if (this.res) this.res.write("caller_ip_flop_foldvsbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9076,7 +9076,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_turn_foldvsbet() {
-        this.res.write("caller_ip_turn_foldvsbet")
+        if (this.res) this.res.write("caller_ip_turn_foldvsbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9119,7 +9119,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_river_foldvsbet() {
-        this.res.write("caller_ip_river_foldvsbet")
+        if (this.res) this.res.write("caller_ip_river_foldvsbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9162,7 +9162,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flopbet_turncbet() {
-        this.res.write("caller_ip_flopbet_turncbet")
+        if (this.res) this.res.write("caller_ip_flopbet_turncbet")
         let a = await this.DB.query(`
         SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9209,7 +9209,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flopcall_turnbetvsmiss() {
-        this.res.write("caller_ip_flopcall_turnbetvsmiss")
+        if (this.res) this.res.write("caller_ip_flopcall_turnbetvsmiss")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9257,7 +9257,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flopX_turnbetvsmiss() {
-        this.res.write("caller_ip_flopX_turnbetvsmiss")
+        if (this.res) this.res.write("caller_ip_flopX_turnbetvsmiss")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9305,7 +9305,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flopcall_turnfoldvsbet() {
-        this.res.write("caller_ip_flopcall_turnfoldvsbet")
+        if (this.res) this.res.write("caller_ip_flopcall_turnfoldvsbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9352,7 +9352,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flopbet_turnbet_rivercbet() {
-        this.res.write("caller_ip_flopbet_turnbet_rivercbet")
+        if (this.res) this.res.write("caller_ip_flopbet_turnbet_rivercbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9403,7 +9403,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flopX_turnbet_rivercbet() {
-        this.res.write("caller_ip_flopX_turnbet_rivercbet")
+        if (this.res) this.res.write("caller_ip_flopX_turnbet_rivercbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9454,7 +9454,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flopcall_turnbet_rivercbet() {
-        this.res.write("caller_ip_flopcall_turnbet_rivercbet")
+        if (this.res) this.res.write("caller_ip_flopcall_turnbet_rivercbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9505,7 +9505,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flopX_turnX_riverbetvsmiss() {
-        this.res.write("caller_ip_flopX_turnX_riverbetvsmiss")
+        if (this.res) this.res.write("caller_ip_flopX_turnX_riverbetvsmiss")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9556,7 +9556,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flopcall_turncall_riverbetvsmiss() {
-        this.res.write("caller_ip_flopcall_turncall_riverbetvsmiss")
+        if (this.res) this.res.write("caller_ip_flopcall_turncall_riverbetvsmiss")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9607,7 +9607,7 @@ WHERE ${this.check_str}`);
     }
 
     async caller_ip_flopcall_turncall_riverfoldvsbet() {
-        this.res.write("caller_ip_flopcall_turncall_riverfoldvsbet")
+        if (this.res) this.res.write("caller_ip_flopcall_turncall_riverfoldvsbet")
         let a = await this.DB.query(`
 		SELECT COUNT(*)
 		FROM tourney_hand_player_statistics 
@@ -9677,7 +9677,7 @@ WHERE ${this.check_str}`);
 
 
     async _3betpot_raiseroop_cbetflop() {
-        this.res.write("_3betpot_raiseroop_cbetflop");
+        if (this.res) this.res.write("_3betpot_raiseroop_cbetflop");
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -9734,7 +9734,7 @@ WHERE ${this.check_str}`);
     }
 
     async _3betpot_raiseroop_delaycbet_turn() {
-        this.res.write("_3betpot_raiseroop_delaycbet_turn");
+        if (this.res) this.res.write("_3betpot_raiseroop_delaycbet_turn");
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -9799,7 +9799,7 @@ WHERE ${this.check_str}`);
     }
 
     async _3betpot_raiserip_cbet_flop() {
-        this.res.write("_3betpot_raiserip_cbet_flop");
+        if (this.res) this.res.write("_3betpot_raiserip_cbet_flop");
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -9856,7 +9856,7 @@ WHERE ${this.check_str}`);
     }
 
     async _3betpot_raiserip_delaycbet_turn() {
-        this.res.write("_3betpot_raiserip_delaycbet_turn");
+        if (this.res) this.res.write("_3betpot_raiserip_delaycbet_turn");
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -9924,7 +9924,7 @@ WHERE ${this.check_str}`);
     }
 
     async _3betpot_calleroop_foldvscbet_flop() {
-        this.res.write("_3betpot_calleroop_foldvscbet_flop");
+        if (this.res) this.res.write("_3betpot_calleroop_foldvscbet_flop");
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -9967,7 +9967,7 @@ WHERE ${this.check_str}`);
     }
 
     async _3betpot_calleroop_raisevscbet_flop() {
-        this.res.write("_3betpot_calleroop_raisevscbet_flop");
+        if (this.res) this.res.write("_3betpot_calleroop_raisevscbet_flop");
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10011,7 +10011,7 @@ WHERE ${this.check_str}`);
     }
 
     async _3betpot_calleroop_probe_river() {
-        this.res.write("_3betpot_calleroop_probe_river");
+        if (this.res) this.res.write("_3betpot_calleroop_probe_river");
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10062,7 +10062,7 @@ WHERE ${this.check_str}`);
     }
 
     async _3betpot_callerip_foldvscbet_flop() {
-        this.res.write("_3betpot_callerip_foldvscbet_flop");
+        if (this.res) this.res.write("_3betpot_callerip_foldvscbet_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10108,7 +10108,7 @@ WHERE ${this.check_str}`);
     }
 
     async _3betpot_callerip_raisevscbet_flop() {
-        this.res.write("_3betpot_callerip_raisevscbet_flop");
+        if (this.res) this.res.write("_3betpot_callerip_raisevscbet_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10154,7 +10154,7 @@ WHERE ${this.check_str}`);
     }
 
     async _3betpot_callerip_betvsmisscbet_flop() {
-        this.res.write("_3betpot_callerip_betvsmisscbet_flop");
+        if (this.res) this.res.write("_3betpot_callerip_betvsmisscbet_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10201,7 +10201,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_sbraiser_cbet_flop() {
-        this.res.write("_bvb_sbraiser_cbet_flop");
+        if (this.res) this.res.write("_bvb_sbraiser_cbet_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10238,7 +10238,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_sbraiser_XR_flop() {
-        this.res.write("_bvb_sbraiser_XR_flop");
+        if (this.res) this.res.write("_bvb_sbraiser_XR_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10275,7 +10275,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_sbraiser_cbet_turn() {
-        this.res.write("_bvb_sbraiser_cbet_turn");
+        if (this.res) this.res.write("_bvb_sbraiser_cbet_turn");
         let a = await this.DB.query(`
         SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10315,7 +10315,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_sbraiser_delay_cbet_turn() {
-        this.res.write("_bvb_sbraiser_delay_cbet_turn");
+        if (this.res) this.res.write("_bvb_sbraiser_delay_cbet_turn");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10356,7 +10356,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_sblimper_bet_flop() {
-        this.res.write("_bvb_sblimper_bet_flop");
+        if (this.res) this.res.write("_bvb_sblimper_bet_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10390,7 +10390,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_sblimper_XR_flop() {
-        this.res.write("_bvb_sblimper_XR_flop");
+        if (this.res) this.res.write("_bvb_sblimper_XR_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10428,7 +10428,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_sblimper_XF_flop() {
-        this.res.write("_bvb_sblimper_XF_flop");
+        if (this.res) this.res.write("_bvb_sblimper_XF_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10466,7 +10466,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_sblimper_cbet_turn() {
-        this.res.write("_bvb_sblimper_cbet_turn");
+        if (this.res) this.res.write("_bvb_sblimper_cbet_turn");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10506,7 +10506,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_bbcaller_raisevscbet_flop() {
-        this.res.write("_bvb_bbcaller_raisevscbet_flop");
+        if (this.res) this.res.write("_bvb_bbcaller_raisevscbet_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10544,7 +10544,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_bbcaller_foldvscbet_flop() {
-        this.res.write("_bvb_bbcaller_foldvscbet_flop");
+        if (this.res) this.res.write("_bvb_bbcaller_foldvscbet_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10582,7 +10582,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_bbcaller_foldvscbet_turn() {
-        this.res.write("_bvb_bbcaller_foldvscbet_turn");
+        if (this.res) this.res.write("_bvb_bbcaller_foldvscbet_turn");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10624,7 +10624,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_bbchecker_foldvscbet_flop() {
-        this.res.write("_bvb_bbchecker_foldvscbet_flop");
+        if (this.res) this.res.write("_bvb_bbchecker_foldvscbet_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10662,7 +10662,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_bbchecker_raisevscbet_flop() {
-        this.res.write("_bvb_bbchecker_raisevscbet_flop");
+        if (this.res) this.res.write("_bvb_bbchecker_raisevscbet_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10700,7 +10700,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_bbchecker_betvsmisscbet_flop() {
-        this.res.write("_bvb_bbchecker_betvsmisscbet_flop");
+        if (this.res) this.res.write("_bvb_bbchecker_betvsmisscbet_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10737,7 +10737,7 @@ WHERE ${this.check_str}`);
     }
 
     async _bvb_bbafteriso_cbet_flop() {
-        this.res.write("_bvb_bbafteriso_cbet_flop");
+        if (this.res) this.res.write("_bvb_bbafteriso_cbet_flop");
         let a = await this.DB.query(`
 		SELECT COUNT(*)
         FROM tourney_hand_player_statistics 
@@ -10777,7 +10777,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_ep_vs_open_2_4_bb_less28bb_EV() {
-        this.res.write("vpip_ep_vs_open_2_4_bb_less28bb_EV")
+        if (this.res) this.res.write("vpip_ep_vs_open_2_4_bb_less28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -10825,7 +10825,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_mp_vs_ep_2_4_bb_less28bb_EV() {
-        this.res.write("vpip_mp_vs_ep_2_4_bb_less28bb_EV")
+        if (this.res) this.res.write("vpip_mp_vs_ep_2_4_bb_less28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -10873,7 +10873,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_mp_vs_mp_2_4_bb_less28bb_EV() {
-        this.res.write("vpip_mp_vs_mp_2_4_bb_less28bb_EV")
+        if (this.res) this.res.write("vpip_mp_vs_mp_2_4_bb_less28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -10921,7 +10921,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_co_vs_ep_2_4_bb_less28bb_EV() {
-        this.res.write("vpip_co_vs_ep_2_4_bb_less28bb_EV")
+        if (this.res) this.res.write("vpip_co_vs_ep_2_4_bb_less28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -10969,7 +10969,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_co_vs_mp_2_4_bb_less28bb_EV() {
-        this.res.write("vpip_co_vs_mp_2_4_bb_less28bb_EV")
+        if (this.res) this.res.write("vpip_co_vs_mp_2_4_bb_less28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11017,7 +11017,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_bu_vs_ep_2_4_bb_less28bb_EV() {
-        this.res.write("vpip_bu_vs_ep_2_4_bb_less28bb_EV")
+        if (this.res) this.res.write("vpip_bu_vs_ep_2_4_bb_less28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11065,7 +11065,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_bu_vs_mp_2_4_bb_less28bb_EV() {
-        this.res.write("vpip_bu_vs_mp_2_4_bb_less28bb_EV")
+        if (this.res) this.res.write("vpip_bu_vs_mp_2_4_bb_less28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11113,7 +11113,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_bu_vs_co_2_4_bb_less28bb_EV() {
-        this.res.write("vpip_bu_vs_co_2_4_bb_less28bb_EV")
+        if (this.res) this.res.write("vpip_bu_vs_co_2_4_bb_less28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11161,7 +11161,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_ep_2_4_bb_less28bb_EV() {
-        this.res.write("vpip_sb_vs_ep_2_4_bb_less28bb_EV")
+        if (this.res) this.res.write("vpip_sb_vs_ep_2_4_bb_less28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11209,7 +11209,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_mp_2_4_bb_less28bb_EV() {
-        this.res.write("vpip_sb_vs_mp_2_4_bb_less28bb_EV")
+        if (this.res) this.res.write("vpip_sb_vs_mp_2_4_bb_less28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11257,7 +11257,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_co_2_4_bb_less28bb_EV() {
-        this.res.write("vpip_sb_vs_co_2_4_bb_less28bb_EV")
+        if (this.res) this.res.write("vpip_sb_vs_co_2_4_bb_less28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11305,7 +11305,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_bu_2_4_bb_less28bb_EV() {
-        this.res.write("vpip_sb_vs_bu_2_4_bb_less28bb_EV")
+        if (this.res) this.res.write("vpip_sb_vs_bu_2_4_bb_less28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11353,7 +11353,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_ep_vs_open_2_4_bb_great28bb_EV() {
-        this.res.write("vpip_ep_vs_open_2_4_bb_great28bb_EV")
+        if (this.res) this.res.write("vpip_ep_vs_open_2_4_bb_great28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11401,7 +11401,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_mp_vs_ep_2_4_bb_great28bb_EV() {
-        this.res.write("vpip_mp_vs_ep_2_4_bb_great28bb_EV")
+        if (this.res) this.res.write("vpip_mp_vs_ep_2_4_bb_great28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11449,7 +11449,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_mp_vs_mp_2_4_bb_great28bb_EV() {
-        this.res.write("vpip_mp_vs_mp_2_4_bb_great28bb_EV")
+        if (this.res) this.res.write("vpip_mp_vs_mp_2_4_bb_great28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11497,7 +11497,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_co_vs_ep_2_4_bb_great28bb_EV() {
-        this.res.write("vpip_co_vs_ep_2_4_bb_great28bb_EV")
+        if (this.res) this.res.write("vpip_co_vs_ep_2_4_bb_great28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11545,7 +11545,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_co_vs_mp_2_4_bb_great28bb_EV() {
-        this.res.write("vpip_co_vs_mp_2_4_bb_great28bb_EV")
+        if (this.res) this.res.write("vpip_co_vs_mp_2_4_bb_great28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11593,7 +11593,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_bu_vs_ep_2_4_bb_great28bb_EV() {
-        this.res.write("vpip_bu_vs_ep_2_4_bb_great28bb_EV")
+        if (this.res) this.res.write("vpip_bu_vs_ep_2_4_bb_great28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11641,7 +11641,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_bu_vs_mp_2_4_bb_great28bb_EV() {
-        this.res.write("vpip_bu_vs_mp_2_4_bb_great28bb_EV")
+        if (this.res) this.res.write("vpip_bu_vs_mp_2_4_bb_great28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11689,7 +11689,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_bu_vs_co_2_4_bb_great28bb_EV() {
-        this.res.write("vpip_bu_vs_co_2_4_bb_great28bb_EV")
+        if (this.res) this.res.write("vpip_bu_vs_co_2_4_bb_great28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11737,7 +11737,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_ep_2_4_bb_great28bb_EV() {
-        this.res.write("vpip_sb_vs_ep_2_4_bb_great28bb_EV")
+        if (this.res) this.res.write("vpip_sb_vs_ep_2_4_bb_great28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11785,7 +11785,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_mp_2_4_bb_great28bb_EV() {
-        this.res.write("vpip_sb_vs_mp_2_4_bb_great28bb_EV")
+        if (this.res) this.res.write("vpip_sb_vs_mp_2_4_bb_great28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11833,7 +11833,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_co_2_4_bb_great28bb_EV() {
-        this.res.write("vpip_sb_vs_co_2_4_bb_great28bb_EV")
+        if (this.res) this.res.write("vpip_sb_vs_co_2_4_bb_great28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11881,7 +11881,7 @@ WHERE ${this.check_str}`);
     }
 
     async vpip_sb_vs_bu_2_4_bb_great28bb_EV() {
-        this.res.write("vpip_sb_vs_bu_2_4_bb_great28bb_EV")
+        if (this.res) this.res.write("vpip_sb_vs_bu_2_4_bb_great28bb_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11929,7 +11929,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs1R_2_4_bb_vs_ep_EV() {
-        this.res.write("foldvs1R_2_4_bb_vs_ep_EV")
+        if (this.res) this.res.write("foldvs1R_2_4_bb_vs_ep_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -11973,7 +11973,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs1R_2_4_bb_vs_mp_EV() {
-        this.res.write("foldvs1R_2_4_bb_vs_mp_EV")
+        if (this.res) this.res.write("foldvs1R_2_4_bb_vs_mp_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -12017,7 +12017,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs1R_2_4_bb_vs_co_EV() {
-        this.res.write("foldvs1R_2_4_bb_vs_co_EV")
+        if (this.res) this.res.write("foldvs1R_2_4_bb_vs_co_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -12061,7 +12061,7 @@ WHERE ${this.check_str}`);
     }
 
     async foldvs1R_2_4_bb_vs_bu_EV() {
-        this.res.write("foldvs1R_2_4_bb_vs_bu_EV")
+        if (this.res) this.res.write("foldvs1R_2_4_bb_vs_bu_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -12105,7 +12105,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_sb_raise_EV() {
-        this.res.write("bvb_sb_raise_EV")
+        if (this.res) this.res.write("bvb_sb_raise_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -12141,7 +12141,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_sb_limp_EV() {
-        this.res.write("bvb_sb_limp_EV")
+        if (this.res) this.res.write("bvb_sb_limp_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -12177,7 +12177,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_sb_limp_fold_EV() {
-        this.res.write("bvb_sb_limp_fold_EV")
+        if (this.res) this.res.write("bvb_sb_limp_fold_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -12214,7 +12214,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_sb_limp_raise_EV() {
-        this.res.write("bvb_sb_limp_raise_EV")
+        if (this.res) this.res.write("bvb_sb_limp_raise_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -12252,7 +12252,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_bb_iso_EV() {
-        this.res.write("bvb_bb_iso_EV")
+        if (this.res) this.res.write("bvb_bb_iso_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -12290,7 +12290,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_bb_fold_vs_raise_less2_4_EV() {
-        this.res.write("bvb_bb_fold_vs_raise_less2_4_EV")
+        if (this.res) this.res.write("bvb_bb_fold_vs_raise_less2_4_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -12336,7 +12336,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_bb_fold_vs_raise_less2_8_EV() {
-        this.res.write("bvb_bb_fold_vs_raise_less2_8_EV")
+        if (this.res) this.res.write("bvb_bb_fold_vs_raise_less2_8_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
@@ -12384,7 +12384,7 @@ WHERE ${this.check_str}`);
     }
 
     async bvb_bb_fold_vs_raise_less3_7_EV() {
-        this.res.write("bvb_bb_fold_vs_raise_less3_7_EV")
+        if (this.res) this.res.write("bvb_bb_fold_vs_raise_less3_7_EV")
         let a = await this.DB.query(`
         SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100
         FROM tourney_hand_player_statistics 
