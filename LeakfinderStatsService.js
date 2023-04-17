@@ -928,9 +928,20 @@ WHERE ${this.check_str}`);
                                 ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
                                     AND tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
             WHERE ${this.check_str}
-              AND tourney_hand_player_statistics.flg_p_open_opp
               AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+              AND tourney_hand_player_statistics.flg_p_first_raise
+              AND tourney_hand_player_statistics.flg_p_3bet_def_opp
+              AND NOT ((tourney_hand_player_statistics.enum_face_allin = 'p') OR
+                       (tourney_hand_player_statistics.enum_face_allin = 'P'))
+              AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) =
+                   SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) OR
+                   SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '')
+              AND (tourney_hand_player_statistics.enum_p_3bet_action = 'C' OR
+                   tourney_hand_player_statistics.enum_p_3bet_action = 'R')
+              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) <= 3
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -980,9 +991,11 @@ WHERE ${this.check_str}`);
                                     AND tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN lookup_actions ON lookup_actions.id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
-              AND tourney_hand_player_statistics.flg_p_open_opp
-              AND lookup_actions.action = 'RR'
+              AND tourney_hand_player_statistics.flg_p_open
+              AND tourney_hand_player_statistics.flg_p_4bet
+              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3
               AND tourney_hand_player_statistics.position BETWEEN 5 and 7
             GROUP BY lookup_hole_cards.hole_cards
         `);
