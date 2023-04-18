@@ -44,6 +44,7 @@ class Stats {
         this.date_2 = date_2
         this.data = {}
         this.formulas = {}
+        this.ev = {}
         this.matrix_fold = {}
         this.matrix_open = {}
         this.matrix_vpip = {}
@@ -11054,7 +11055,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_ep_vs_open_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_ep_vs_open_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_ep_vs_open_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11102,7 +11103,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_mp_vs_ep_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_mp_vs_ep_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_mp_vs_ep_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11150,7 +11151,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_mp_vs_mp_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_mp_vs_mp_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_mp_vs_mp_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11198,7 +11199,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_co_vs_ep_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_co_vs_ep_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_co_vs_ep_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11246,7 +11247,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_co_vs_mp_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_co_vs_mp_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_co_vs_mp_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11294,7 +11295,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_bu_vs_ep_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_bu_vs_ep_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_bu_vs_ep_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11342,7 +11343,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_bu_vs_mp_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_bu_vs_mp_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_bu_vs_mp_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11390,7 +11391,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_bu_vs_co_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_bu_vs_co_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_bu_vs_co_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11438,7 +11439,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_sb_vs_ep_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_sb_vs_ep_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_sb_vs_ep_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11486,7 +11487,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_sb_vs_mp_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_sb_vs_mp_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_sb_vs_mp_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11534,7 +11535,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_sb_vs_co_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_sb_vs_co_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_sb_vs_co_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11582,7 +11583,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_sb_vs_bu_2_4_bb_less28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_sb_vs_bu_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_sb_vs_bu_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11630,7 +11631,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_ep_vs_open_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_ep_vs_open_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_ep_vs_open_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11678,7 +11679,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_mp_vs_ep_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_mp_vs_ep_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_mp_vs_ep_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11726,7 +11727,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_mp_vs_mp_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_mp_vs_mp_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_mp_vs_mp_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11774,7 +11775,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_co_vs_ep_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_co_vs_ep_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_co_vs_ep_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11822,7 +11823,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_co_vs_mp_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_co_vs_mp_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_co_vs_mp_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11870,7 +11871,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_bu_vs_ep_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_bu_vs_ep_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_bu_vs_ep_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11918,7 +11919,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_bu_vs_mp_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_bu_vs_mp_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_bu_vs_mp_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -11966,7 +11967,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_bu_vs_co_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_bu_vs_co_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_bu_vs_co_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12014,7 +12015,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_sb_vs_ep_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_sb_vs_ep_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_sb_vs_ep_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12062,7 +12063,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_sb_vs_mp_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_sb_vs_mp_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_sb_vs_mp_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12110,7 +12111,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_sb_vs_co_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_sb_vs_co_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_sb_vs_co_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12158,7 +12159,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['vpip_sb_vs_bu_2_4_bb_great28bb_EV'] = isNaN(result) ? 0 : result;
+        this.ev['vpip_sb_vs_bu_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
         this.formulas['vpip_sb_vs_bu_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12202,7 +12203,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['foldvs1R_2_4_bb_vs_ep_EV'] = isNaN(result) ? 0 : result;
+        this.ev['foldvs1R_2_4_bb_vs_ep'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs1R_2_4_bb_vs_ep_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12246,7 +12247,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['foldvs1R_2_4_bb_vs_mp_EV'] = isNaN(result) ? 0 : result;
+        this.ev['foldvs1R_2_4_bb_vs_mp'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs1R_2_4_bb_vs_mp_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12290,7 +12291,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['foldvs1R_2_4_bb_vs_co_EV'] = isNaN(result) ? 0 : result;
+        this.ev['foldvs1R_2_4_bb_vs_co'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs1R_2_4_bb_vs_co_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12334,7 +12335,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['foldvs1R_2_4_bb_vs_bu_EV'] = isNaN(result) ? 0 : result;
+        this.ev['foldvs1R_2_4_bb_vs_bu'] = isNaN(result) ? 0 : result;
         this.formulas['foldvs1R_2_4_bb_vs_bu_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12370,7 +12371,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['bvb_sb_raise_EV'] = isNaN(result) ? 0 : result;
+        this.ev['bvb_sb_raise'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_sb_raise_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12406,7 +12407,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['bvb_sb_limp_EV'] = isNaN(result) ? 0 : result;
+        this.ev['bvb_sb_limp'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_sb_limp_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12443,7 +12444,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['bvb_sb_limp_fold_EV'] = isNaN(result) ? 0 : result;
+        this.ev['bvb_sb_limp_fold'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_sb_limp_fold_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12481,7 +12482,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['bvb_sb_limp_raise_EV'] = isNaN(result) ? 0 : result;
+        this.ev['bvb_sb_limp_raise'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_sb_limp_raise_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12519,7 +12520,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['bvb_bb_iso_EV'] = isNaN(result) ? 0 : result;
+        this.ev['bvb_bb_iso'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_bb_iso_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12565,7 +12566,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['bvb_bb_fold_vs_raise_less2_4_EV'] = isNaN(result) ? 0 : result;
+        this.ev['bvb_bb_fold_vs_raise_less2_4'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_bb_fold_vs_raise_less2_4_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12613,7 +12614,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['bvb_bb_fold_vs_raise_less2_8_EV'] = isNaN(result) ? 0 : result;
+        this.ev['bvb_bb_fold_vs_raise_less2_8'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_bb_fold_vs_raise_less2_8_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
@@ -12661,7 +12662,7 @@ WHERE ${this.check_str}`);
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['bvb_bb_fold_vs_raise_less3_7_EV'] = isNaN(result) ? 0 : result;
+        this.ev['bvb_bb_fold_vs_raise_less3_7'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_bb_fold_vs_raise_less3_7_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
