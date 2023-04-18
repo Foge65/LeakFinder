@@ -11054,9 +11054,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position BETWEEN 5 and 7
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_ep_vs_open_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_ep_vs_open_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_mp_vs_ep_2_4_bb_less28bb_EV() {
@@ -11102,9 +11101,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_mp_vs_ep_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_mp_vs_ep_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_mp_vs_mp_2_4_bb_less28bb_EV() {
@@ -11150,9 +11148,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_mp_vs_mp_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_mp_vs_mp_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_co_vs_ep_2_4_bb_less28bb_EV() {
@@ -11198,9 +11195,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 1
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_co_vs_ep_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_co_vs_ep_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_co_vs_mp_2_4_bb_less28bb_EV() {
@@ -11246,9 +11242,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 1
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_co_vs_mp_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_co_vs_mp_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_bu_vs_ep_2_4_bb_less28bb_EV() {
@@ -11294,9 +11289,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 0
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_bu_vs_ep_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_bu_vs_ep_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_bu_vs_mp_2_4_bb_less28bb_EV() {
@@ -11342,9 +11336,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 0
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_bu_vs_mp_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_bu_vs_mp_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_bu_vs_co_2_4_bb_less28bb_EV() {
@@ -11390,9 +11383,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 0
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_bu_vs_co_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_bu_vs_co_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_sb_vs_ep_2_4_bb_less28bb_EV() {
@@ -11438,9 +11430,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 9
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_sb_vs_ep_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_sb_vs_ep_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_sb_vs_mp_2_4_bb_less28bb_EV() {
@@ -11486,9 +11477,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 9
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_sb_vs_mp_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_sb_vs_mp_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_sb_vs_co_2_4_bb_less28bb_EV() {
@@ -11534,9 +11524,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 9
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_sb_vs_co_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_sb_vs_co_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_sb_vs_bu_2_4_bb_less28bb_EV() {
@@ -11582,9 +11571,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 9
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_sb_vs_bu_2_4_bb_less28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_sb_vs_bu_2_4_bb_less28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_ep_vs_open_2_4_bb_great28bb_EV() {
@@ -11630,9 +11618,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position BETWEEN 5 and 7
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_ep_vs_open_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_ep_vs_open_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_mp_vs_ep_2_4_bb_great28bb_EV() {
@@ -11678,9 +11665,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_mp_vs_ep_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_mp_vs_ep_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_mp_vs_mp_2_4_bb_great28bb_EV() {
@@ -11726,9 +11712,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_mp_vs_mp_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_mp_vs_mp_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_co_vs_ep_2_4_bb_great28bb_EV() {
@@ -11774,9 +11759,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 1
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_co_vs_ep_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_co_vs_ep_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_co_vs_mp_2_4_bb_great28bb_EV() {
@@ -11822,9 +11806,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 1
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_co_vs_mp_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_co_vs_mp_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_bu_vs_ep_2_4_bb_great28bb_EV() {
@@ -11870,9 +11853,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 0
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_bu_vs_ep_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_bu_vs_ep_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_bu_vs_mp_2_4_bb_great28bb_EV() {
@@ -11918,9 +11900,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 0
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_bu_vs_mp_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_bu_vs_mp_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_bu_vs_co_2_4_bb_great28bb_EV() {
@@ -11966,9 +11947,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 0
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_bu_vs_co_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_bu_vs_co_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_sb_vs_ep_2_4_bb_great28bb_EV() {
@@ -12014,9 +11994,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 9
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_sb_vs_ep_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_sb_vs_ep_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_sb_vs_mp_2_4_bb_great28bb_EV() {
@@ -12062,9 +12041,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 9
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_sb_vs_mp_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_sb_vs_mp_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_sb_vs_co_2_4_bb_great28bb_EV() {
@@ -12110,9 +12088,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 9
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_sb_vs_co_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_sb_vs_co_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async vpip_sb_vs_bu_2_4_bb_great28bb_EV() {
@@ -12158,9 +12135,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 9
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['vpip_sb_vs_bu_2_4_bb_great28bb'] = isNaN(result) ? 0 : result;
-        this.formulas['vpip_sb_vs_bu_2_4_bb_great28bb_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async foldvs1R_2_4_bb_vs_ep_EV() {
@@ -12202,9 +12178,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 8
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['foldvs1R_2_4_bb_vs_ep'] = isNaN(result) ? 0 : result;
-        this.formulas['foldvs1R_2_4_bb_vs_ep_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async foldvs1R_2_4_bb_vs_mp_EV() {
@@ -12246,9 +12221,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 8
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['foldvs1R_2_4_bb_vs_mp'] = isNaN(result) ? 0 : result;
-        this.formulas['foldvs1R_2_4_bb_vs_mp_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async foldvs1R_2_4_bb_vs_co_EV() {
@@ -12290,9 +12264,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 8
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['foldvs1R_2_4_bb_vs_co'] = isNaN(result) ? 0 : result;
-        this.formulas['foldvs1R_2_4_bb_vs_co_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async foldvs1R_2_4_bb_vs_bu_EV() {
@@ -12334,9 +12307,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_player_statistics.position = 8
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['foldvs1R_2_4_bb_vs_bu'] = isNaN(result) ? 0 : result;
-        this.formulas['foldvs1R_2_4_bb_vs_bu_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async bvb_sb_raise_EV() {
@@ -12370,9 +12342,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['bvb_sb_raise'] = isNaN(result) ? 0 : result;
-        this.formulas['bvb_sb_raise_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async bvb_sb_limp_EV() {
@@ -12406,9 +12377,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['bvb_sb_limp'] = isNaN(result) ? 0 : result;
-        this.formulas['bvb_sb_limp_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async bvb_sb_limp_fold_EV() {
@@ -12443,9 +12413,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['bvb_sb_limp_fold'] = isNaN(result) ? 0 : result;
-        this.formulas['bvb_sb_limp_fold_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async bvb_sb_limp_raise_EV() {
@@ -12481,9 +12450,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['bvb_sb_limp_raise'] = isNaN(result) ? 0 : result;
-        this.formulas['bvb_sb_limp_raise_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async bvb_bb_iso_EV() {
@@ -12519,9 +12487,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['bvb_bb_iso'] = isNaN(result) ? 0 : result;
-        this.formulas['bvb_bb_iso_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async bvb_bb_fold_vs_raise_less2_4_EV() {
@@ -12565,9 +12532,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['bvb_bb_fold_vs_raise_less2_4'] = isNaN(result) ? 0 : result;
-        this.formulas['bvb_bb_fold_vs_raise_less2_4_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async bvb_bb_fold_vs_raise_less2_8_EV() {
@@ -12613,9 +12579,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['bvb_bb_fold_vs_raise_less2_8'] = isNaN(result) ? 0 : result;
-        this.formulas['bvb_bb_fold_vs_raise_less2_8_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async bvb_bb_fold_vs_raise_less3_7_EV() {
@@ -12661,9 +12626,8 @@ WHERE ${this.check_str}`);
 		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
         `);
 
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["?column?"] / b.rows[0]["?column?"];
         this.ev['bvb_bb_fold_vs_raise_less3_7'] = isNaN(result) ? 0 : result;
-        this.formulas['bvb_bb_fold_vs_raise_less3_7_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
 }
