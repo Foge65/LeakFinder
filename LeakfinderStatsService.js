@@ -1692,21 +1692,6 @@ WHERE ${this.check_str}`);
         AND tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
         INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
         INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        WHERE
-        ${this.check_str}
-        AND tourney_hand_player_statistics.flg_p_open_opp
-        AND lookup_actions.action = 'F'
-        AND tourney_hand_player_statistics.position BETWEEN 5 and 7
-        GROUP BY lookup_hole_cards.hole_cards
-        `);
-
-        let d = await this.DB.query(`
-        SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
-        FROM tourney_hand_player_statistics
-        INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
-        AND tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
         INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
         INNER JOIN tourney_hand_summary ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
         WHERE
@@ -1729,11 +1714,26 @@ WHERE ${this.check_str}`);
         GROUP BY lookup_hole_cards.hole_cards
         `);
 
+        let d = await this.DB.query(`
+        SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
+        FROM tourney_hand_player_statistics
+        INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
+        AND tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
+        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+        WHERE
+        ${this.check_str}
+        AND tourney_hand_player_statistics.flg_p_open_opp
+        AND lookup_actions.action = 'F'
+        AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+        GROUP BY lookup_hole_cards.hole_cards
+        `);
+
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['vs1r_wai_cc_ep'] = isNaN(result) ? 0 : result;
         this.formulas['vs1r_wai_cc_ep'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['vs1r_wai_cc_ep'] = c.rows;
-        this.matrix_open['vs1r_wai_cc_ep'] = d.rows;
+        this.matrix_open['vs1r_wai_cc_ep'] = c.rows;
+        this.matrix_fold['vs1r_wai_cc_ep'] = d.rows;
     }
 
     async vs1r_wai_cc_mp() {
