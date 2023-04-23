@@ -5433,7 +5433,6 @@ WHERE ${this.check_str}`);
                      INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
             WHERE
                 ${this.check_str}
-              AND tourney_hand_player_statistics.flg_p_open_opp
               AND lookup_actions.action = 'F'
               AND tourney_hand_player_statistics.position = 8
             GROUP BY lookup_hole_cards.hole_cards
@@ -5670,21 +5669,6 @@ WHERE ${this.check_str}`);
         and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
         INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
         INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        WHERE
-        ${this.check_str}
-        AND tourney_hand_player_statistics.flg_p_open_opp
-        AND lookup_actions.action = 'F'
-        AND tourney_hand_player_statistics.position = 8
-        GROUP BY lookup_hole_cards.hole_cards
-        `);
-
-        let d = await this.DB.query(`
-        SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
-        FROM tourney_hand_player_statistics
-        INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
-        and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
         INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
         INNER JOIN tourney_hand_summary ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
         WHERE
@@ -5701,11 +5685,25 @@ WHERE ${this.check_str}`);
         GROUP BY lookup_hole_cards.hole_cards
         `);
 
+        let d = await this.DB.query(`
+            SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
+                and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+            WHERE
+                ${this.check_str}
+              AND lookup_actions.action = 'F'
+              AND tourney_hand_player_statistics.position = 8
+            GROUP BY lookup_hole_cards.hole_cards
+        `);
+
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['bvb_bb_fold_vs_raise_less2_4'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_bb_fold_vs_raise_less2_4'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['bvb_bb_fold_vs_raise_less2_4'] = c.rows;
-        this.matrix_open['bvb_bb_fold_vs_raise_less2_4'] = d.rows;
+        this.matrix_open['bvb_bb_fold_vs_raise_less2_4'] = c.rows;
+        this.matrix_fold['bvb_bb_fold_vs_raise_less2_4'] = d.rows;
     }
 
     async bvb_bb_fold_vs_raise_less2_8() {
@@ -5758,21 +5756,6 @@ WHERE ${this.check_str}`);
         and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
         INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
         INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        WHERE
-        ${this.check_str}
-        AND tourney_hand_player_statistics.flg_p_open_opp
-        AND lookup_actions.action = 'F'
-        AND tourney_hand_player_statistics.position = 8
-        GROUP BY lookup_hole_cards.hole_cards
-        `);
-
-        let d = await this.DB.query(`
-        SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
-        FROM tourney_hand_player_statistics
-        INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
-        and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
         INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
         INNER JOIN tourney_hand_summary ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
         WHERE
@@ -5790,11 +5773,25 @@ WHERE ${this.check_str}`);
         GROUP BY lookup_hole_cards.hole_cards
         `);
 
+        let d = await this.DB.query(`
+            SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
+                and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+            WHERE
+                ${this.check_str}
+              AND lookup_actions.action = 'F'
+              AND tourney_hand_player_statistics.position = 8
+            GROUP BY lookup_hole_cards.hole_cards
+        `);
+
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['bvb_bb_fold_vs_raise_less2_8'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_bb_fold_vs_raise_less2_8'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['bvb_bb_fold_vs_raise_less2_8'] = c.rows;
-        this.matrix_open['bvb_bb_fold_vs_raise_less2_8'] = d.rows;
+        this.matrix_open['bvb_bb_fold_vs_raise_less2_8'] = c.rows;
+        this.matrix_fold['bvb_bb_fold_vs_raise_less2_8'] = d.rows;
     }
 
     async bvb_bb_fold_vs_raise_less3_7() {
@@ -5843,21 +5840,6 @@ WHERE ${this.check_str}`);
         let c = await this.DB.query(`
         SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
         FROM tourney_hand_player_statistics
-        INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
-        and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        WHERE
-        ${this.check_str}
-        AND tourney_hand_player_statistics.flg_p_open_opp
-        AND lookup_actions.action = 'F'
-        AND tourney_hand_player_statistics.position = 8
-        GROUP BY lookup_hole_cards.hole_cards
-        `);
-
-        let d = await this.DB.query(`
-        SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
-        FROM tourney_hand_player_statistics
         INNER JOIN lookup_hole_cards
         ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
         and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
@@ -5882,11 +5864,25 @@ WHERE ${this.check_str}`);
         GROUP BY lookup_hole_cards.hole_cards
         `);
 
+        let d = await this.DB.query(`
+            SELECT lookup_hole_cards.hole_cards, COUNT(lookup_hole_cards.hole_cards)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard
+                and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+            WHERE
+                ${this.check_str}
+              AND lookup_actions.action = 'F'
+              AND tourney_hand_player_statistics.position = 8
+            GROUP BY lookup_hole_cards.hole_cards
+        `);
+
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['bvb_bb_fold_vs_raise_less3_7'] = isNaN(result) ? 0 : result;
         this.formulas['bvb_bb_fold_vs_raise_less3_7'] = `${a.rows[0].count} / ${b.rows[0].count}`;
-        this.matrix_fold['bvb_bb_fold_vs_raise_less3_7'] = c.rows;
-        this.matrix_open['bvb_bb_fold_vs_raise_less3_7'] = d.rows;
+        this.matrix_open['bvb_bb_fold_vs_raise_less3_7'] = c.rows;
+        this.matrix_fold['bvb_bb_fold_vs_raise_less3_7'] = d.rows;
     }
 
 
