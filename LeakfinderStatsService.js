@@ -998,7 +998,7 @@ WHERE ${this.check_str}`);
               AND tourney_hand_player_statistics.flg_p_open
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.flg_p_4bet
-              AND LENGTH(tourney_hand_summary.str_actors_p) >= 3
+              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) >= 3
               AND tourney_hand_player_statistics.position BETWEEN 5 and 7
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -1124,7 +1124,7 @@ WHERE ${this.check_str}`);
               AND tourney_hand_player_statistics.flg_p_open
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.flg_p_4bet
-              AND LENGTH(tourney_hand_summary.str_actors_p) >= 3
+              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) >= 3
               AND tourney_hand_player_statistics.position = 4
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -1250,7 +1250,7 @@ WHERE ${this.check_str}`);
               AND tourney_hand_player_statistics.flg_p_open
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.flg_p_4bet
-              AND LENGTH(tourney_hand_summary.str_actors_p) >= 3
+              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) >= 3
               AND tourney_hand_player_statistics.position = 3
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -1376,7 +1376,7 @@ WHERE ${this.check_str}`);
               AND tourney_hand_player_statistics.flg_p_open
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.flg_p_4bet
-              AND LENGTH(tourney_hand_summary.str_actors_p) >= 3
+              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) >= 3
               AND tourney_hand_player_statistics.position = 2
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -1502,7 +1502,7 @@ WHERE ${this.check_str}`);
               AND tourney_hand_player_statistics.flg_p_open
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.flg_p_4bet
-              AND LENGTH(tourney_hand_summary.str_actors_p) >= 3
+              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) >= 3
               AND tourney_hand_player_statistics.position = 1
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -1628,7 +1628,7 @@ WHERE ${this.check_str}`);
               AND tourney_hand_player_statistics.flg_p_open
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.flg_p_4bet
-              AND LENGTH(tourney_hand_summary.str_actors_p) >= 3
+              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) >= 3
               AND tourney_hand_player_statistics.position = 0
             GROUP BY lookup_hole_cards.hole_cards
         `);
