@@ -52,6 +52,81 @@ class Stats {
         this.DB = db
     }
 
+    async total_hands() {
+        if (this.res) this.res.write("total_hands")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(id_hand)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+            WHERE ${this.check_str}
+        `);
+
+        let result = a.rows[0].count;
+        this.data['total_hands'] = isNaN(result) ? 0 : result;
+        this.formulas['total_hands'] = `${a.rows[0].count}`;
+    }
+
+    async total_tournaments() {
+        if (this.res) this.res.write("total_tournaments")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(DISTINCT(id_tourney))
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+            WHERE ${this.check_str}
+        `);
+
+        let result = a.rows[0].count;
+        this.data['total_tournaments'] = isNaN(result) ? 0 : result;
+        this.formulas['total_tournaments'] = `${a.rows[0].count}`;
+    }
+
+    async total_chips_ev() {
+        if (this.res) this.res.write("total_chips_ev")
+
+        let a = await this.DB.query(`
+            SELECT SUM(tourney_hand_player_statistics.amt_expected_won)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+            WHERE ${this.check_str}
+        `);
+
+        let result = a.rows[0].count;
+        this.data['total_chips_ev'] = isNaN(result) ? 0 : result;
+        this.formulas['total_chips_ev'] = `${a.rows[0].count}`;
+    }
+
+    async total_chips_ev_from_tourney() {
+        if (this.res) this.res.write("total_chips_ev_from_tourney")
+
+        let a = await this.DB.query(`
+            SELECT SUM(tourney_hand_player_statistics.amt_expected_won) / COUNT(DISTINCT(tourney_hand_player_statistics.id_tourney))
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+            WHERE ${this.check_str}
+        `);
+
+        let result = a.rows[0].count;
+        this.data['total_chips_ev_from_tourney'] = isNaN(result) ? 0 : result;
+        this.formulas['total_chips_ev_from_tourney'] = `${a.rows[0].count}`;
+    }
+
+    async total_chips_ev_from_one_hundred_hands() {
+        if (this.res) this.res.write("total_chips_ev_from_one_hundred_hands")
+
+        let a = await this.DB.query(`
+            SELECT SUM(tourney_hand_player_statistics.amt_expected_won) / (COUNT(tourney_hand_player_statistics.id_hand) / 100)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+            WHERE ${this.check_str}
+        `);
+
+        let result = a.rows[0].count;
+        this.data['total_chips_ev_from_one_hundred_hands'] = isNaN(result) ? 0 : result;
+        this.formulas['total_chips_ev_from_one_hundred_hands'] = `${a.rows[0].count}`;
+    }
+
     async HU_SB_Preflop_Hands_total() {
         if (this.res) this.res.write("HU_SB_Preflop_Hands_total")
 
