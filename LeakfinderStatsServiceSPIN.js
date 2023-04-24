@@ -37,8 +37,9 @@ let case_str = (room_names, date_1, date_2, inner = '') => {
 }
 
 class Stats {
-    constructor(room_names, date_1, date_2, db = null) {
+    constructor(room_names, date_1, date_2, db = null, res) {
         this.room_names = JSON.parse(JSON.stringify(room_names))
+        this.res = res
         this.date_1 = date_1
         this.date_2 = date_2
         this.data = {}
@@ -52,6 +53,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Hands_total() {
+        if (this.res) this.res.write("HU_SB_Preflop_Hands_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -68,6 +71,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Hands_35_plus_bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Hands_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -86,6 +91,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Hands_20_35bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Hands_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -104,6 +111,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Hands_16_20bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Hands_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -122,6 +131,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Hands_13_16bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Hands_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -140,6 +151,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Hands_10_13bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Hands_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -158,6 +171,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Hands_8_10bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Hands_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -176,6 +191,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Hands_0_8bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Hands_0_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -194,6 +211,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_VPIP_total() {
+        if (this.res) this.res.write("HU_SB_Preflop_VPIP_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -231,6 +250,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_VPIP_35_plus_bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_VPIP_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -274,6 +295,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_VPIP_20_35bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_VPIP_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -317,6 +340,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_VPIP_16_20bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_VPIP_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -360,6 +385,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_VPIP_13_16bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_VPIP_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -403,6 +430,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_VPIP_10_13bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_VPIP_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -446,6 +475,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_VPIP_8_10bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_VPIP_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -489,6 +520,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_VPIP_0_8bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_VPIP_0_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -532,6 +565,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_PFR_total() {
+        if (this.res) this.res.write("HU_SB_Preflop_PFR_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -559,6 +594,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_PFR_35_plus_bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_PFR_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -590,6 +627,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_PFR_20_35bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_PFR_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -621,6 +660,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_PFR_16_20bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_PFR_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -652,6 +693,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_PFR_13_16bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_PFR_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -683,6 +726,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_PFR_10_13bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_PFR_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -714,6 +759,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_PFR_8_10bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_PFR_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -745,6 +792,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_PFR_0_8bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_PFR_0_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -776,6 +825,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_MR_total() {
+        if (this.res) this.res.write("HU_SB_Preflop_MR_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -804,6 +855,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_MR_35_plus_bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_MR_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -835,6 +888,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_MR_20_35bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_MR_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -866,6 +921,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_MR_16_20bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_MR_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -897,6 +954,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_MR_13_16bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_MR_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -928,6 +987,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_MR_10_13bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_MR_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -959,6 +1020,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_MR_8_10bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_MR_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -990,6 +1053,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_MR_0_8bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_MR_0_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1021,6 +1086,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_OS_35_plus_bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_OS_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1052,6 +1119,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_OS_20_35bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_OS_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1083,6 +1152,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_OS_16_20bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_OS_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1114,6 +1185,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_OS_13_16bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_OS_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1145,6 +1218,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_OS_10_13bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_OS_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1176,6 +1251,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_OS_8_10bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_OS_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1207,6 +1284,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_total() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1236,6 +1315,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_35_plus_bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1266,6 +1347,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_20_35bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1296,6 +1379,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_16_20bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1326,6 +1411,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_13_16bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1356,6 +1443,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_10_13bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1386,6 +1475,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_8_10bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1416,6 +1507,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_0_8bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_0_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1446,6 +1539,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_total() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1475,6 +1570,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_NAI_35_plus_bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_NAI_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1512,6 +1609,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_NAI_20_35bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_NAI_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1549,6 +1648,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_NAI_16_20bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_NAI_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1586,6 +1687,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_NAI_13_16bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_NAI_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1623,6 +1726,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_NAI_10_13bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_NAI_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1660,6 +1765,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_NAI_8_10bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_NAI_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1697,6 +1804,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_0_8bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_0_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1732,6 +1841,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_vs_AI_35_plus_bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_vs_AI_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1768,6 +1879,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_vs_AI_20_35bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_vs_AI_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1804,6 +1917,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_vs_AI_16_20bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_vs_AI_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1840,6 +1955,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_vs_AI_13_16bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_vs_AI_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1876,6 +1993,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_vs_AI_10_13bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_vs_AI_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1912,6 +2031,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Fold_vs_AI_8_10bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Fold_vs_AI_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1948,6 +2069,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Raise_total() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Raise_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -1981,6 +2104,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Raise_35_plus_bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Raise_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2017,6 +2142,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Raise_20_35bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Raise_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2053,6 +2180,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Raise_16_20bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Raise_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2089,6 +2218,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Raise_13_16bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Raise_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2125,6 +2256,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Raise_10_13bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Raise_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2161,6 +2294,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Raise_8_10bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Raise_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2197,6 +2332,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Limp_Raise_4_8bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Limp_Raise_4_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2233,6 +2370,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_NAI_total() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_NAI_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2263,6 +2402,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_NAI_35_plus_bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_NAI_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2295,6 +2436,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_NAI_20_35bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_NAI_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2327,6 +2470,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_NAI_16_20bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_NAI_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2359,6 +2504,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_NAI_13_16bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_NAI_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2391,6 +2538,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_10_13bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2421,6 +2570,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_8_10bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2451,6 +2602,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_4_8bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_4_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2481,6 +2634,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_AI_Total() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_AI_Total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2511,6 +2666,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_AI_35_plus_bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_AI_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2543,6 +2700,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_AI_20_35bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_AI_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2575,6 +2734,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_AI_16_20bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_AI_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2607,6 +2768,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_Fold_vs_3bet_AI_13_16bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_Fold_vs_3bet_AI_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2639,6 +2802,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_4bet_total() {
+        if (this.res) this.res.write("HU_SB_Preflop_4bet_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2667,6 +2832,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_4bet_35_plus_bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_4bet_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2700,6 +2867,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_4bet_20_35bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_4bet_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2733,6 +2902,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_4bet_16_20bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_4bet_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2766,6 +2937,8 @@ class Stats {
     }
 
     async HU_SB_Preflop_4bet_13_16bb() {
+        if (this.res) this.res.write("HU_SB_Preflop_4bet_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2799,6 +2972,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_total() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2816,6 +2991,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_35_plus_bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2835,6 +3012,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_20_35bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2854,6 +3033,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_16_20bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2873,6 +3054,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_13_16bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2892,6 +3075,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_10_13bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2911,6 +3096,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_8_10bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2929,6 +3116,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_4_8bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_4_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2948,6 +3137,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_VPIP_total() {
+        if (this.res) this.res.write("HU_BB_Preflop_VPIP_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -2979,6 +3170,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_VPIP_35_plus_bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_VPIP_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3013,6 +3206,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_VPIP_20_35bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_VPIP_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3047,6 +3242,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_VPIP_16_20bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_VPIP_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3081,6 +3278,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_VPIP_13_16bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_VPIP_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3115,6 +3314,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_VPIP_10_13bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_VPIP_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3149,6 +3350,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_VPIP_8_10bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_VPIP_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3182,6 +3385,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_VPIP_4_8bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_VPIP_4_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3216,6 +3421,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Flat_total() {
+        if (this.res) this.res.write("HU_BB_Preflop_Flat_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3247,6 +3454,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Flat_35_plus_bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Flat_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3280,6 +3489,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Flat_20_35bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Flat_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3313,6 +3524,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Flat_16_20bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Flat_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3346,6 +3559,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Flat_13_16bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Flat_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3379,6 +3594,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Flat_10_13bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Flat_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3412,6 +3629,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Flat_8_10bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Flat_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3444,6 +3663,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_COS_35_plus_bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_COS_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3476,6 +3697,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_COS_20_35bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_COS_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3508,6 +3731,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_COS_16_20bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_COS_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3540,6 +3765,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_COS_13_16bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_COS_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3572,6 +3799,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_COS_10_13bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_COS_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3604,6 +3833,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_COS_8_10bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_COS_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3636,6 +3867,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_COS_0_8bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_COS_0_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3669,6 +3902,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_total() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3695,6 +3930,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_NAI_35_plus_bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_NAI_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3726,6 +3963,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_NAI_20_35bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_NAI_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3757,6 +3996,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_NAI_16_20bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_NAI_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3788,6 +4029,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_NAI_13_16bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_NAI_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3819,6 +4062,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_NAI_10_13bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_NAI_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3850,6 +4095,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_8_10bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3880,6 +4127,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_4_8bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_4_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3910,6 +4159,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_AI_35_plus_bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_AI_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3941,6 +4192,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_AI_20_35bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_AI_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -3972,6 +4225,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_AI_16_20bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_AI_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4003,6 +4258,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_AI_13_16bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_AI_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4034,6 +4291,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_3bet_AI_10_13bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_3bet_AI_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4065,6 +4324,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Fold_vs_4bet_total() {
+        if (this.res) this.res.write("HU_BB_Preflop_Fold_vs_4bet_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4093,6 +4354,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Fold_vs_4bet_35_plus_bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Fold_vs_4bet_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4125,6 +4388,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Fold_vs_4bet_20_35bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Fold_vs_4bet_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4157,6 +4422,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Fold_vs_4bet_16_20bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Fold_vs_4bet_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4189,6 +4456,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Fold_vs_4bet_13_16bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Fold_vs_4bet_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4221,6 +4490,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Fold_vs_4bet_10_13bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Fold_vs_4bet_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4253,6 +4524,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_vs_Limp_total() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_vs_Limp_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4269,6 +4542,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_vs_Limp_35_plus_bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_vs_Limp_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4287,6 +4562,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_vs_Limp_20_35bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_vs_Limp_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4305,6 +4582,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_vs_Limp_16_20bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_vs_Limp_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4323,6 +4602,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_vs_Limp_13_16bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_vs_Limp_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4341,6 +4622,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_vs_Limp_10_13bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_vs_Limp_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4359,6 +4642,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_vs_Limp_8_10bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_vs_Limp_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4377,6 +4662,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_Hands_vs_Limp_4_8bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_Hands_vs_Limp_4_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4395,6 +4682,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_total() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4422,6 +4711,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_NAI_35_plus_bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_NAI_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4454,6 +4745,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_NAI_20_35bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_NAI_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4486,6 +4779,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_NAI_16_20bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_NAI_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4518,6 +4813,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_NAI_13_16bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_NAI_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4550,6 +4847,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_NAI_10_13bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_NAI_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4582,6 +4881,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_NAI_8_10bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_NAI_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4614,6 +4915,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_0_8bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_0_8bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4645,6 +4948,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_AI_35_plus_bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_AI_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4677,6 +4982,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_AI_20_35bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_AI_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4709,6 +5016,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_AI_16_20bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_AI_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4741,6 +5050,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_AI_13_16bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_AI_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4773,6 +5084,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_AI_10_13bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_AI_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4805,6 +5118,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_AI_8_10bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_AI_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4837,6 +5152,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_Fold_total() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_Fold_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4876,6 +5193,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_Fold_35_plus_bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_Fold_35_plus_bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4921,6 +5240,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_Fold_20_35bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_Fold_20_35bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -4966,6 +5287,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_Fold_16_20bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_Fold_16_20bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5011,6 +5334,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_Fold_13_16bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_Fold_13_16bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5056,6 +5381,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_Fold_10_13bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_Fold_10_13bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5101,6 +5428,8 @@ class Stats {
     }
 
     async HU_BB_Preflop_ISO_Fold_8_10bb() {
+        if (this.res) this.res.write("HU_BB_Preflop_ISO_Fold_8_10bb")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5146,6 +5475,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_LCB_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_LCB_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5176,6 +5507,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_LCB_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_LCB_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5210,6 +5543,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_LCB_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_LCB_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5248,6 +5583,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_FLCBvR_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_FLCBvR_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5282,6 +5619,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_FLCBvR_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_FLCBvR_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5321,6 +5660,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_FLCBvR_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_FLCBvR_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5364,6 +5705,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_CLCBvR_and_Fold_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_CLCBvR_and_Fold_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5399,6 +5742,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_CLCBvR_and_Fold_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_CLCBvR_and_Fold_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5439,6 +5784,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_Delay_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_Delay_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5474,6 +5821,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_Delay_Turn_and_Bet_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_Delay_Turn_and_Bet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5514,6 +5863,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_Fold_vs_Donk_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_Fold_vs_Donk_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5545,6 +5896,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_Fold_vs_Donk_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_Fold_vs_Donk_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5584,6 +5937,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_Call_vs_Donk_Flop_and_Fold_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_Call_vs_Donk_Flop_and_Fold_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5619,6 +5974,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_Call_vs_Donk_Flop_and_Turn_and_Fold_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_Call_vs_Donk_Flop_and_Turn_and_Fold_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5658,6 +6015,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_Raise_vs_Donk_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_Raise_vs_Donk_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5689,6 +6048,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_Raise_vs_Donk_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_Raise_vs_Donk_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5720,10 +6081,12 @@ class Stats {
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['HU_SB_Postflop_LP_Raise_vs_Donk_Turn'] = isNaN(result) ? 0 : result;
-        this.formulas['HU_SB_Postflop_LP_Raise_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.formulas['HU_SB_Postflop_LP_Raise_vs_Donk_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async HU_SB_Postflop_LP_Raise_vs_Donk_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_Raise_vs_Donk_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5763,6 +6126,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_Fold_vs_Probe_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_Fold_vs_Probe_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5798,6 +6163,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_Fold_vs_Probe_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_Fold_vs_Probe_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5834,6 +6201,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_LP_Call_vs_Probe_Turn_and_Folv_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_LP_Call_vs_Probe_Turn_and_Folv_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5873,6 +6242,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_ISO_Fold_vs_Cbet_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_ISO_Fold_vs_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5904,6 +6275,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_ISO_Fold_vs_Cbet_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_ISO_Fold_vs_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5939,6 +6312,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_ISO_Fold_vs_Cbet_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_ISO_Fold_vs_Cbet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -5978,6 +6353,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_ISO_Raise_vs_Cbet_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_ISO_Raise_vs_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6008,6 +6385,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_ISO_Raise_vs_Cbet_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_ISO_Raise_vs_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6042,6 +6421,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_ISO_Raise_vs_Cbet_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_ISO_Raise_vs_Cbet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6080,6 +6461,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Cbet_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6130,6 +6513,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Cbet_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6180,6 +6565,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Cbet_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Cbet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6230,6 +6617,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_FCBvR_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_FCBvR_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6284,6 +6673,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_FCBvR_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_FCBvR_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6346,6 +6737,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_FCBvR_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_FCBvR_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6414,6 +6807,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Cbet_Call_Flop_and_Fold_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Cbet_Call_Flop_and_Fold_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6447,6 +6842,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Cbet_Flop_and_Cbet_Call_Turn_and_Fold_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Cbet_Flop_and_Cbet_Call_Turn_and_Fold_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6484,6 +6881,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_3bet_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_3bet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6514,6 +6913,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_3bet_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_3bet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6548,6 +6949,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Delay_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Delay_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6580,6 +6983,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Delay_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Delay_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6616,6 +7021,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Delay_Turn_and_Bet_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Delay_Turn_and_Bet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6654,6 +7061,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Fold_vs_Donk_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Fold_vs_Donk_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6685,6 +7094,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Fold_vs_Donk_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Fold_vs_Donk_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6720,6 +7131,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Fold_vs_Donk_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Fold_vs_Donk_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6759,6 +7172,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Call_vs_Donk_Flop_and_Fold_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Call_vs_Donk_Flop_and_Fold_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6801,6 +7216,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Call_vs_Donk_Turn_and_Fold_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Call_vs_Donk_Turn_and_Fold_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6851,6 +7268,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Raise_vs_Donk_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Raise_vs_Donk_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6883,6 +7302,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Raise_vs_Donk_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Raise_vs_Donk_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6918,6 +7339,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Raise_vs_Donk_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Raise_vs_Donk_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6957,6 +7380,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Fold_vs_Probe_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Fold_vs_Probe_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -6991,6 +7416,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Fold_vs_Probe_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Fold_vs_Probe_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7025,6 +7452,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_RP_Call_vs_Probe_Turn_and_Fold_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_RP_Call_vs_Probe_Turn_and_Fold_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7065,6 +7494,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_3Bet_Fold_vs_Cbet_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_3Bet_Fold_vs_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7094,6 +7525,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_3Bet_Fold_vs_Cbet_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_3Bet_Fold_vs_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7123,6 +7556,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_3Bet_Fold_vs_Cbet_River() {
+        if (this.res) this.res.write("HU_SB_Postflop_3Bet_Fold_vs_Cbet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7154,6 +7589,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_3Bet_Raise_vs_Cbet_Flop() {
+        if (this.res) this.res.write("HU_SB_Postflop_3Bet_Raise_vs_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7183,6 +7620,8 @@ class Stats {
     }
 
     async HU_SB_Postflop_3Bet_Raise_vs_Cbet_Turn() {
+        if (this.res) this.res.write("HU_SB_Postflop_3Bet_Raise_vs_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7212,6 +7651,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_FvLCB_Flop() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_FvLCB_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7243,6 +7684,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_FvLCB_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_FvLCB_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7278,6 +7721,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_FvLCB_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_FvLCB_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7317,6 +7762,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Raise_vs_LCB_Flop() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Raise_vs_LCB_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7347,6 +7794,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Raise_vs_LCB_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Raise_vs_LCB_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7381,6 +7830,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Raise_vs_LCB_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Raise_vs_LCB_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7419,6 +7870,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Raise_vs_LCB_Flop_and_Bet_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Raise_vs_LCB_Flop_and_Bet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7451,6 +7904,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Raise_vs_LCB_Flop_and_Bet_Turn_and_Bet_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Raise_vs_LCB_Flop_and_Bet_Turn_and_Bet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7485,6 +7940,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Fold_vs_Delay_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Fold_vs_Delay_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7520,6 +7977,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Fold_vs_Delay_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Fold_vs_Delay_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7559,6 +8018,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Donk_Flop() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Donk_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7589,6 +8050,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Donk_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Donk_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7623,6 +8086,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Donk_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Donk_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7661,6 +8126,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Donk_Flop_and_Bet_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Donk_Flop_and_Bet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7695,6 +8162,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Donk_Flop_and_Bet_Turn_and_Bet_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Donk_Flop_and_Bet_Turn_and_Bet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7733,6 +8202,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Donk_Fold_Flop() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Donk_Fold_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7766,6 +8237,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Donk_Fold_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Donk_Fold_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7803,6 +8276,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Donk_Fold_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Donk_Fold_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7844,6 +8319,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Probe_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Probe_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7877,6 +8354,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Probe_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Probe_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7914,6 +8393,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_LP_Probe_Turn_and_Bet_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_LP_Probe_Turn_and_Bet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7952,6 +8433,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_ISO_Cbet_Flop() {
+        if (this.res) this.res.write("HU_BB_Postflop_ISO_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -7980,6 +8463,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_ISO_Cbet_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_ISO_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8012,6 +8497,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_ISO_Cbet_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_ISO_Cbet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8048,6 +8535,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Fold_vs_Cbet_Flop() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Fold_vs_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8098,6 +8587,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Fold_vs_Cbet_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Fold_vs_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8148,6 +8639,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Fold_vs_Cbet_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Fold_vs_Cbet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8198,6 +8691,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Raise_vs_Cbet_Flop() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Raise_vs_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8248,6 +8743,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Raise_vs_Cbet_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Raise_vs_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8298,6 +8795,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Raise_vs_Cbet_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Raise_vs_Cbet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8348,6 +8847,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Raise_vs_Cbet_Flop_and_Bet_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Raise_vs_Cbet_Flop_and_Bet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8384,6 +8885,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Raise_vs_Cbet_Flop_and_Bet_Turn_and_Bet_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Raise_vs_Cbet_Flop_and_Bet_Turn_and_Bet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8424,6 +8927,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Fold_vs_3bet_Flop() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Fold_vs_3bet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8454,6 +8959,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Fold_vs_3bet_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Fold_vs_3bet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8488,6 +8995,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Fold_vs_Delay_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Fold_vs_Delay_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8523,6 +9032,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Fold_vs_Delay_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Fold_vs_Delay_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8562,6 +9073,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Call_vs_Delay_Turn_and_Fold_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Call_vs_Delay_Turn_and_Fold_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8601,6 +9114,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Donk_Flop() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Donk_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8631,6 +9146,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Donk_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Donk_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8665,6 +9182,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Donk_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Donk_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8703,6 +9222,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Donk_Flop_and_Bet_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Donk_Flop_and_Bet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8737,6 +9258,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Donk_Flop_and_Turn_and_Bet_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Donk_Flop_and_Turn_and_Bet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8775,6 +9298,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Donk_Fold_Flop() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Donk_Fold_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8807,6 +9332,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Donk_Fold_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Donk_Fold_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8843,6 +9370,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Donk_Fold_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Donk_Fold_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8883,6 +9412,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Probe_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Probe_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -8953,6 +9484,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Probe_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Probe_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9027,6 +9560,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_RP_Probe_Turn_and_Bet_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_RP_Probe_Turn_and_Bet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9065,6 +9600,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_3bet_Cbet_Flop() {
+        if (this.res) this.res.write("HU_BB_Postflop_3bet_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9093,6 +9630,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_3bet_Cbet_Turn() {
+        if (this.res) this.res.write("HU_BB_Postflop_3bet_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9121,6 +9660,8 @@ class Stats {
     }
 
     async HU_BB_Postflop_3bet_Cbet_River() {
+        if (this.res) this.res.write("HU_BB_Postflop_3bet_Cbet_River")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9151,6 +9692,8 @@ class Stats {
     }
 
     async BTN_3Max_Preflop_VPIP() {
+        if (this.res) this.res.write("BTN_3Max_Preflop_VPIP")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9176,6 +9719,8 @@ class Stats {
     }
 
     async BTN_3Max_Preflop_Limp() {
+        if (this.res) this.res.write("BTN_3Max_Preflop_Limp")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9203,6 +9748,8 @@ class Stats {
     }
 
     async BTN_3Max_Preflop_RFI_total() {
+        if (this.res) this.res.write("BTN_3Max_Preflop_RFI_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9231,6 +9778,8 @@ class Stats {
     }
 
     async BTN_3Max_Preflop_RFI_NAI_less_2dot3x() {
+        if (this.res) this.res.write("BTN_3Max_Preflop_RFI_NAI_less_2dot3x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9261,6 +9810,8 @@ class Stats {
     }
 
     async BTN_3Max_Preflop_RFI_NAI_more_2dot3x() {
+        if (this.res) this.res.write("BTN_3Max_Preflop_RFI_NAI_more_2dot3x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9291,6 +9842,8 @@ class Stats {
     }
 
     async BTN_3Max_Preflop_OS() {
+        if (this.res) this.res.write("BTN_3Max_Preflop_OS")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9319,6 +9872,8 @@ class Stats {
     }
 
     async BTN_3Max_Preflop_Fold_vs_3bet_total() {
+        if (this.res) this.res.write("BTN_3Max_Preflop_Fold_vs_3bet_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9348,6 +9903,8 @@ class Stats {
     }
 
     async BTN_3Max_Preflop_Fold_vs_3bet_more_2dot5x() {
+        if (this.res) this.res.write("BTN_3Max_Preflop_Fold_vs_3bet_more_2dot5x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9379,6 +9936,8 @@ class Stats {
     }
 
     async BTN_3Max_Postflop_Cbet_Flop() {
+        if (this.res) this.res.write("BTN_3Max_Postflop_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9409,6 +9968,8 @@ class Stats {
     }
 
     async BTN_3Max_Postflop_Cbet_Turn() {
+        if (this.res) this.res.write("BTN_3Max_Postflop_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9439,6 +10000,8 @@ class Stats {
     }
 
     async BTN_3Max_Postflop_Delay_Turn() {
+        if (this.res) this.res.write("BTN_3Max_Postflop_Delay_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9471,6 +10034,8 @@ class Stats {
     }
 
     async BTN_3Max_Postflop_Fold_vs_Probe_Turn() {
+        if (this.res) this.res.write("BTN_3Max_Postflop_Fold_vs_Probe_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9505,6 +10070,8 @@ class Stats {
     }
 
     async BTN_3Max_Postflop_Fold_vs_Donk_Flop() {
+        if (this.res) this.res.write("BTN_3Max_Postflop_Fold_vs_Donk_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9536,6 +10103,8 @@ class Stats {
     }
 
     async BTN_3Max_Postflop_Fold_vs_CheckRaise() {
+        if (this.res) this.res.write("BTN_3Max_Postflop_Fold_vs_CheckRaise")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9570,6 +10139,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Preflop_VPIP_vs_Limp() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Preflop_VPIP_vs_Limp")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9600,6 +10171,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Preflop_OverLimp() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Preflop_OverLimp")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9627,6 +10200,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Preflop_ISO_NAI_total() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Preflop_ISO_NAI_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9655,6 +10230,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Preflop_ISO_NAI_less_2dot5x() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Preflop_ISO_NAI_less_2dot5x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9684,6 +10261,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Preflop_ISO_AI() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Preflop_ISO_AI")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9712,6 +10291,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Preflop_CC_vs_MR_total() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Preflop_CC_vs_MR_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9744,6 +10325,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Preflop_CC_vs_MR_less_2dot3x() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Preflop_CC_vs_MR_less_2dot3x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9778,6 +10361,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Preflop_3bet_OS() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Preflop_3bet_OS")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9812,6 +10397,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Preflop_3bet_NAI_less_2dot5x() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Preflop_3bet_NAI_less_2dot5x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9850,6 +10437,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Preflop_3bet_NAI_more_2dot4x() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Preflop_3bet_NAI_more_2dot4x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9887,6 +10476,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Postflop_Fold_vs_Cbet_Flop() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Postflop_Fold_vs_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9920,6 +10511,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Postflop_Fold_vs_Cbet_Turn() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Postflop_Fold_vs_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9960,6 +10553,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Postflop_CheckRaise_Flop() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Postflop_CheckRaise_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -9993,6 +10588,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Postflop_Probe_Turn() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Postflop_Probe_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10028,6 +10625,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Postflop_Fold_vs_Delay_Turn() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Postflop_Fold_vs_Delay_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10065,6 +10664,8 @@ class Stats {
     }
 
     async SB_vs_BTN_3Max_Postflop_Donk_Flop() {
+        if (this.res) this.res.write("SB_vs_BTN_3Max_Postflop_Donk_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10097,6 +10698,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Preflop_VPIP() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Preflop_VPIP")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10148,6 +10751,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Preflop_OpenLimp() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Preflop_OpenLimp")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10175,6 +10780,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Preflop_OpenLimp_Fold() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Preflop_OpenLimp_Fold")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10206,6 +10813,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Preflop_RFI_less_2dot3x() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Preflop_RFI_less_2dot3x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10235,6 +10844,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Preflop_RFI_between_2dot2_and_2dot6() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Preflop_RFI_between_2dot2_and_2dot6")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10265,6 +10876,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Preflop_RFI_between_2dot5_and_3dot1() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Preflop_RFI_between_2dot5_and_3dot1")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10295,6 +10908,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Preflop_Fold_vs_3bet_more_2dot5x() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Preflop_Fold_vs_3bet_more_2dot5x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10327,6 +10942,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Preflop_OS() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Preflop_OS")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10355,6 +10972,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Postflop_RP_Cbet_Flop() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Postflop_RP_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10387,6 +11006,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Postflop_RP_Cbet_Turn() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Postflop_RP_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10423,6 +11044,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Postflop_RP_CheckRaise_Flop() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Postflop_RP_CheckRaise_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10460,6 +11083,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Postflop_RP_Delay_Turn() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Postflop_RP_Delay_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10496,6 +11121,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Postflop_RP_CheckFold_Flop() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Postflop_RP_CheckFold_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10532,6 +11159,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Postflop_RP_Fold_vs_Probe_Turn() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Postflop_RP_Fold_vs_Probe_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10572,6 +11201,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Postflop_LP_Cbet_Flop() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Postflop_LP_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10604,6 +11235,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Postflop_LP_Cbet_Turn() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Postflop_LP_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10640,6 +11273,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Postflop_LP_CheckRaise_Flop() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Postflop_LP_CheckRaise_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10675,6 +11310,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Postflop_LP_Delay_Turn() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Postflop_LP_Delay_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10709,6 +11346,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Postflop_LP_CheckFold_Flop() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Postflop_LP_CheckFold_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10743,6 +11382,8 @@ class Stats {
     }
 
     async SB_vs_BB_3Max_Postflop_LP_Fold_vs_Probe_Turn() {
+        if (this.res) this.res.write("SB_vs_BB_3Max_Postflop_LP_Fold_vs_Probe_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10781,6 +11422,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Preflop_ISO_NAI_vs_Limp() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Preflop_ISO_NAI_vs_Limp")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10815,6 +11458,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Preflop_ISO_NAI_less_2dot5x() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Preflop_ISO_NAI_less_2dot5x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10851,6 +11496,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Preflop_ISO_AI() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Preflop_ISO_AI")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10885,6 +11532,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Preflop_Call_vs_MR_less_2dot3x() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Preflop_Call_vs_MR_less_2dot3x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10931,6 +11580,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Preflop_3bet_NAI_less_2dot5x() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Preflop_3bet_NAI_less_2dot5x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -10976,6 +11627,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Preflop_3bet_NAI_more_2dot4x() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Preflop_3bet_NAI_more_2dot4x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11021,6 +11674,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Preflop_3bet_AI() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Preflop_3bet_AI")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11066,6 +11721,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Postflop_RP_Fold_vs_Cbet_Flop() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Postflop_RP_Fold_vs_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11111,6 +11768,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Postflop_RP_Fold_vs_Cbet_Turn() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Postflop_RP_Fold_vs_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11160,6 +11819,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Postflop_RP_CheckRaise_Flop() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Postflop_RP_CheckRaise_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11205,6 +11866,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Postflop_RP_Probe_Turn() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Postflop_RP_Probe_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11253,6 +11916,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Postflop_RP_Fold_vs_Delay_Turn() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Postflop_RP_Fold_vs_Delay_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11302,6 +11967,8 @@ class Stats {
     }
 
     async BB_vs_BTN_3Max_Postflop_RP_Donk_Flop() {
+        if (this.res) this.res.write("BB_vs_BTN_3Max_Postflop_RP_Donk_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11346,6 +12013,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Preflop_ISO_NAI_total() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Preflop_ISO_NAI_total")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11382,6 +12051,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Preflop_ISO_NAI_less_2dot5x() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Preflop_ISO_NAI_less_2dot5x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11420,6 +12091,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Preflop_ISO_AI() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Preflop_ISO_AI")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11458,6 +12131,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Preflop_Call_vs_MR_less_2dot3x() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Preflop_Call_vs_MR_less_2dot3x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11502,6 +12177,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Preflop_Call_vs_RFI_between_2dot2x_and_2dot6x() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Preflop_Call_vs_RFI_between_2dot2x_and_2dot6x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11548,6 +12225,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Preflop_Call_vs_RFI_between_2dot5x_and_3dot1x() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Preflop_Call_vs_RFI_between_2dot5x_and_3dot1x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11594,6 +12273,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Preflop_3bet_NAI_less_2dot5x() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Preflop_3bet_NAI_less_2dot5x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11636,6 +12317,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Preflop_3bet_NAI_more_2dot4x() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Preflop_3bet_NAI_more_2dot4x")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11678,6 +12361,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Preflop_3bet_AI() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Preflop_3bet_AI")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11720,6 +12405,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Postflop_RP_Fold_vs_Cbet_Flop() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Postflop_RP_Fold_vs_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11763,6 +12450,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Postflop_RP_Fold_vs_Cbet_Turn() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Postflop_RP_Fold_vs_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11810,6 +12499,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Postflop_RP_Raise_Flop() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Postflop_RP_Raise_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11855,6 +12546,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Postflop_RP_Float_Flop() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Postflop_RP_Float_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11898,6 +12591,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Postflop_RP_Fold_vs_Delay_Turn() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Postflop_RP_Fold_vs_Delay_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11944,6 +12639,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Postflop_LP_Fold_vs_Cbet_Flop() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Postflop_LP_Fold_vs_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -11981,6 +12678,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Postflop_LP_Fold_vs_Cbet_Turn() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Postflop_LP_Fold_vs_Cbet_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -12025,6 +12724,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Postflop_LP_Raise_Flop() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Postflop_LP_Raise_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -12066,6 +12767,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Postflop_LP_Float_Flop() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Postflop_LP_Float_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -12105,6 +12808,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Postflop_LP_Fold_vs_Delay_Turn() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Postflop_LP_Fold_vs_Delay_Turn")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
@@ -12149,6 +12854,8 @@ class Stats {
     }
 
     async BB_vs_SB_3Max_Postflop_ISO_Cbet_Flop() {
+        if (this.res) this.res.write("BB_vs_SB_3Max_Postflop_ISO_Cbet_Flop")
+
         let a = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
