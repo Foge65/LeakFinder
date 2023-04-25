@@ -299,9 +299,9 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
             WHERE ${this.check_str}
-              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+              AND tourney_hand_player_statistics.flg_p_open_opp
               AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) /
-                  tourney_blinds.amt_bb < 50
+                  tourney_blinds.amt_bb <= 50
         `);
 
         let b = await this.DB.query(`
@@ -312,9 +312,9 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
             WHERE ${this.check_str}
-              AND char_length(tourney_hand_summary.str_aggressors_p) = 1
+              AND tourney_hand_player_statistics.flg_p_open_opp
               AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) /
-                  tourney_blinds.amt_bb < 50
+                  tourney_blinds.amt_bb <= 50
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -331,41 +331,27 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
-                     INNER JOIN lookup_actions ON tourney_hand_player_statistics.id_action_p = lookup_actions.id_action
             WHERE ${this.check_str}
-              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) =
-                  SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1)
-              AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) =
-                   CAST(tourney_hand_player_statistics.position AS VARCHAR(9)) OR
-                   lookup_actions.action = 'F')
+              AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND tourney_hand_player_statistics.amt_p_3bet_facing = 0
-              AND tourney_hand_player_statistics.amt_p_4bet_facing = 0
-              AND tourney_hand_player_statistics.amt_p_5bet_facing = 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) /
-                  tourney_blinds.amt_bb < 50
+                  tourney_blinds.amt_bb <= 50
         `);
 
         let b = await this.DB.query(`
-            SELECT COUNT(*)
+            SELECT COUNT(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
-                     INNER JOIN lookup_actions ON tourney_hand_player_statistics.id_action_p = lookup_actions.id_action
             WHERE ${this.check_str}
-              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) =
-                  SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1)
-              AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) =
-                   CAST(tourney_hand_player_statistics.position AS VARCHAR(9)) OR
-                   lookup_actions.action = 'F')
+              AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND tourney_hand_player_statistics.amt_p_3bet_facing = 0
-              AND tourney_hand_player_statistics.amt_p_4bet_facing = 0
-              AND tourney_hand_player_statistics.amt_p_5bet_facing = 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) /
-                  tourney_blinds.amt_bb < 50
+                  tourney_blinds.amt_bb <= 50
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
