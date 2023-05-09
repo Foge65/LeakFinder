@@ -184,8 +184,8 @@ class Stats {
 
         let a = await this.DB.query(`SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)::float/(COUNT(*))*100 
         FROM tourney_hand_player_statistics INNER JOIN player 
-ON tourney_hand_player_statistics.id_player = player.id_player
-INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+        ON tourney_hand_player_statistics.id_player = player.id_player
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
         WHERE ${this.check_str}`);
 
         this.data['ev_total'] = a.rows[0]["?column?"];
@@ -291,70 +291,42 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
 
     async __ev_bb_unopend_total_50bb() {
         if (this.res) this.res.write("__ev_bb_unopend_total_50bb")
-        let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
-            FROM tourney_hand_player_statistics
-                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
-                     INNER JOIN tourney_hand_summary
-                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
-            WHERE ${this.check_str}
-              AND tourney_hand_player_statistics.flg_p_open_opp
-              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) /
-                  tourney_blinds.amt_bb <= 50
-        `);
+        let a = await this.DB.query(`SELECT (CASE WHEN ActionOpportunities = 0 THEN 0 ELSE (CAST(ActionCount AS REAL)/(ActionOpportunities)*100) END) AS result
+        FROM(
+        SELECT (SUM(CASE WHEN(
+            (THPS.amt_before - THPS.amt_ante) / TB.amt_bb <= 50
+            AND thps.flg_p_open_opp) 
+                THEN THPS.amt_expected_won / TB.amt_bb ELSE 0 END)) AS ActionCount,
+                (SUM(CASE WHEN(
+                    (THPS.amt_before - THPS.amt_ante) / TB.amt_bb <= 50
+                AND thps.flg_p_open_opp)
+                     THEN 1 ELSE 0 END)) AS ActionOpportunities        
+         ${this.check2_str}`);
 
-        let b = await this.DB.query(`
-            SELECT COUNT(*)
-            FROM tourney_hand_player_statistics
-                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
-                     INNER JOIN tourney_hand_summary
-                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
-            WHERE ${this.check_str}
-              AND tourney_hand_player_statistics.flg_p_open_opp
-              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) /
-                  tourney_blinds.amt_bb <= 50
-        `);
-
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["result"];
         this.data['__ev_bb_unopend_total_50bb'] = isNaN(result) ? 0 : result;
         this.formulas['__ev_bb_unopend_total_50bb'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async __ev_bb_vs_1r_total_50bb() {
         if (this.res) this.res.write("__ev_bb_vs_1r_total_50bb")
-        let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
-            FROM tourney_hand_player_statistics
-                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
-                     INNER JOIN tourney_hand_summary
-                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
-            WHERE ${this.check_str}
-              AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
-              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) /
-                  tourney_blinds.amt_bb <= 50
-        `);
+        let a = await this.DB.query(`SELECT (CASE WHEN ActionOpportunities = 0 THEN 0 ELSE (CAST(ActionCount AS REAL)/(ActionOpportunities)*100) END) AS result
+        FROM(
+        SELECT (SUM(CASE WHEN(
+            (THPS.amt_before - THPS.amt_ante) / TB.amt_bb <= 50
+            AND THPS.cnt_p_face_limpers = 0
+            AND THPS.amt_p_2bet_facing > 0
+            AND NOT(THPS.flg_p_squeeze_opp)) 
+                THEN THPS.amt_expected_won / TB.amt_bb ELSE 0 END)) AS ActionCount,
+                (SUM(CASE WHEN(
+                (THPS.amt_before - THPS.amt_ante) / TB.amt_bb <= 50
+                AND THPS.cnt_p_face_limpers = 0
+                AND THPS.amt_p_2bet_facing > 0
+                AND NOT(THPS.flg_p_squeeze_opp)) 
+                     THEN 1 ELSE 0 END)) AS ActionOpportunities      
+         ${this.check2_str}`);
 
-        let b = await this.DB.query(`
-            SELECT COUNT(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
-            FROM tourney_hand_player_statistics
-                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
-                     INNER JOIN tourney_hand_summary
-                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
-            WHERE ${this.check_str}
-              AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
-              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) /
-                  tourney_blinds.amt_bb <= 50
-        `);
-
-        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        let result = a.rows[0]["result"];
         this.data['__ev_bb_vs_1r_total_50bb'] = isNaN(result) ? 0 : result;
         this.formulas['__ev_bb_vs_1r_total_50bb'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
@@ -362,10 +334,10 @@ INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_stat
     async count_torney() {
         if (this.res) this.res.write("count_torney")
         let a = await this.DB.query(`SELECT COUNT(distinct tourney_hand_player_statistics.id_tourney) 
-FROM tourney_hand_player_statistics INNER JOIN player 
-ON tourney_hand_player_statistics.id_player = player.id_player
-INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-WHERE ${this.check_str}`);
+        FROM tourney_hand_player_statistics INNER JOIN player 
+        ON tourney_hand_player_statistics.id_player = player.id_player
+        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+        WHERE ${this.check_str}`);
         let result = a.rows[0].count;
         this.data['count_torney'] = isNaN(result) ? 0 : result;
         this.formulas['count_torney'] = `${a.rows[0].count}`;
@@ -696,6 +668,7 @@ WHERE ${this.check_str}`);
         ${this.check_str}
         AND tourney_hand_player_statistics.flg_p_open_opp 
         AND tourney_hand_player_statistics.position = 2
+        AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) != 0
         AND (tourney_hand_player_statistics.amt_p_raise_made / (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante)) < 0.5
         AND tourney_hand_player_statistics.flg_p_first_raise 
         `);
@@ -708,6 +681,7 @@ WHERE ${this.check_str}`);
         ${this.check_str}
         AND tourney_hand_player_statistics.flg_p_open_opp 
         AND tourney_hand_player_statistics.position = 2
+        AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) != 0
         AND (tourney_hand_player_statistics.amt_p_raise_made / (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante)) < 0.5
         `);
 
@@ -721,6 +695,7 @@ WHERE ${this.check_str}`);
                 ${this.check_str}
               AND tourney_hand_player_statistics.flg_p_open_opp
               AND tourney_hand_player_statistics.position = 2
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) != 0
               AND (tourney_hand_player_statistics.amt_p_raise_made / (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante)) < 0.5
               AND tourney_hand_player_statistics.flg_p_first_raise
             GROUP BY lookup_hole_cards.hole_cards
@@ -820,6 +795,7 @@ WHERE ${this.check_str}`);
         ${this.check_str}
         AND tourney_hand_player_statistics.flg_p_open_opp 
         AND tourney_hand_player_statistics.position = 0
+        AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) != 0
         AND (tourney_hand_player_statistics.amt_p_raise_made / (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante)) < 0.5
         AND tourney_hand_player_statistics.flg_p_first_raise 
         `);
@@ -832,6 +808,7 @@ WHERE ${this.check_str}`);
         ${this.check_str}
         AND tourney_hand_player_statistics.flg_p_open_opp 
         AND tourney_hand_player_statistics.position = 0
+        AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) != 0
         AND (tourney_hand_player_statistics.amt_p_raise_made / (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante)) < 0.5
         `);
 
@@ -845,6 +822,7 @@ WHERE ${this.check_str}`);
                 ${this.check_str}
               AND tourney_hand_player_statistics.flg_p_open_opp
               AND tourney_hand_player_statistics.position = 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante) != 0
               AND (tourney_hand_player_statistics.amt_p_raise_made / (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante)) < 0.5
               AND tourney_hand_player_statistics.flg_p_first_raise
             GROUP BY lookup_hole_cards.hole_cards
@@ -2977,19 +2955,20 @@ WHERE ${this.check_str}`);
         if (this.res) this.res.write("vs1r_wai_3betai_greater8_mp")
         let a = await this.DB.query(`
         SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
+        FROM tourney_hand_summary 
+		INNER JOIN tourney_hand_player_statistics ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
         INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
+        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
         INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
+		INNER JOIN lookup_hole_cards ON lookup_hole_cards.id_holecard = tourney_hand_player_statistics.id_holecard and tourney_hand_player_statistics.id_gametype = lookup_hole_cards.id_gametype
+        WHERE  
         ${this.check_str}
-        AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
+		AND tourney_hand_player_statistics.cnt_p_face_limpers = 0		
 		AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-		AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_blinds.amt_bb ) < tourney_hand_player_statistics.amt_before
         AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-		AND (tourney_hand_player_statistics.amt_before / tourney_blinds.amt_bb) > 8
-		AND tourney_hand_player_statistics.flg_p_3bet_opp
+        AND tourney_hand_player_statistics.flg_p_3bet
 		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
+		AND (tourney_hand_player_statistics.amt_before/tourney_blinds.amt_bb) > 8
 		AND (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
 			    OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
 				OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2'
@@ -2998,7 +2977,12 @@ WHERE ${this.check_str}`);
 				OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' 
 				OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' 
 			 	OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
+		AND (((substring(tourney_hand_summary.str_actors_p from 2 for 1) = '2') AND tourney_hand_player_statistics.position = 2)
+		or ((substring(tourney_hand_summary.str_actors_p from 2 for 1) = '3') AND tourney_hand_player_statistics.position = 3)
+		or ((substring(tourney_hand_summary.str_actors_p from 2 for 1) = '4') AND tourney_hand_player_statistics.position = 4))
 		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+		AND (tourney_hand_player_statistics.enum_allin='p' or tourney_hand_player_statistics.enum_allin='P')
+		AND tourney_hand_player_statistics.enum_face_allin = 'N'
         `);
 
         let b = await this.DB.query(`
