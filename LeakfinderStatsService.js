@@ -12512,6 +12512,54 @@ class Stats {
         this.formulas['raiser_ip_flopX_turncall_riverfoldvsbet'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
+    async raiser_ip_flopbet_turn_x_river_bet() {
+        if (this.res) this.res.write("raiser_ip_flopbet_turn_x_river_bet")
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+              AND tourney_hand_player_statistics.position BETWEEN 0 and 7
+              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 2
+              AND NOT (tourney_hand_player_statistics.flg_p_3bet)
+              AND tourney_hand_summary.cnt_players_f = 2
+              AND tourney_hand_player_statistics.flg_f_has_position
+              AND tourney_hand_player_statistics.flg_f_cbet_opp
+              AND tourney_hand_player_statistics.flg_f_cbet
+              AND NOT (tourney_hand_player_statistics.flg_t_donk_def_opp)
+              AND tourney_hand_player_statistics.flg_t_check
+              AND tourney_hand_player_statistics.amt_r_bet_facing = 0
+              AND tourney_hand_player_statistics.flg_r_bet
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+              AND tourney_hand_player_statistics.position BETWEEN 0 and 7
+              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 2
+              AND NOT (tourney_hand_player_statistics.flg_p_3bet)
+              AND tourney_hand_summary.cnt_players_f = 2
+              AND tourney_hand_player_statistics.flg_f_has_position
+              AND tourney_hand_player_statistics.flg_f_cbet_opp
+              AND tourney_hand_player_statistics.flg_f_cbet
+              AND NOT (tourney_hand_player_statistics.flg_t_donk_def_opp)
+              AND tourney_hand_player_statistics.flg_t_check
+              AND tourney_hand_player_statistics.amt_r_bet_facing = 0
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['raiser_ip_flopbet_turn_x_river_bet'] = isNaN(result) ? 0 : result;
+        this.formulas['raiser_ip_flopbet_turn_x_river_bet'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
     async caller_ip_flopbet() {
         if (this.res) this.res.write("caller_ip_flopbet")
         let a = await this.DB.query(`
@@ -15490,8 +15538,8 @@ class Stats {
         INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
         WHERE
         ${this.check_str}
-        AND tourney_hand_player_statistics.flg_p_limp 
-		AND lookup_actions.action = 'CF'
+        AND tourney_hand_player_statistics.flg_p_limp
+        AND NOT (lookup_actions.action = 'CF')
 		AND tourney_hand_player_statistics.flg_p_open_opp
 		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
         `);
@@ -15556,7 +15604,7 @@ class Stats {
 		${this.check_str}
 		AND NOT(tourney_hand_player_statistics.flg_p_limp)
         AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-		AND lookup_actions.action LIKE 'F%'
+        AND tourney_hand_player_statistics.flg_vpip
 		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
         AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
 		and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 1.4
@@ -15582,7 +15630,7 @@ class Stats {
 		${this.check_str}
 		AND NOT(tourney_hand_player_statistics.flg_p_limp)
         AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-		AND lookup_actions.action LIKE 'F%'
+        AND tourney_hand_player_statistics.flg_vpip
 		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
         AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
         and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb >= 1.4
@@ -15609,7 +15657,7 @@ class Stats {
 		${this.check_str}
 		AND NOT(tourney_hand_player_statistics.flg_p_limp)
         AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-		AND lookup_actions.action LIKE 'F%'
+        AND tourney_hand_player_statistics.flg_vpip
 		AND NOT(tourney_hand_player_statistics.flg_p_squeeze_opp)
         AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
         and tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb >= 1.8
