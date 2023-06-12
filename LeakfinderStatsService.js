@@ -8975,33 +8975,37 @@ class Stats {
     async bvb_sb_limp_raise() {
         if (this.res) this.res.write("bvb_sb_limp_raise")
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-		INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND tourney_hand_player_statistics.flg_p_limp
-        AND lookup_actions.action LIKE 'CR%'
-		AND tourney_hand_player_statistics.flg_p_open
-		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.flg_p_open_opp
+              AND tourney_hand_player_statistics.flg_p_limp
+              AND tourney_hand_player_statistics.flg_p_face_raise
+              AND lookup_actions.action LIKE 'CR%'
+              AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+              AND tourney_hand_player_statistics.position = 9
+              AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-		INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND tourney_hand_player_statistics.flg_p_limp 
-		AND tourney_hand_player_statistics.flg_p_open_opp
-		AND tourney_hand_player_statistics.flg_p_face_raise
-        AND lookup_actions.action LIKE 'CR%'
-		AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.flg_p_open_opp
+              AND tourney_hand_player_statistics.flg_p_limp
+              AND tourney_hand_player_statistics.flg_p_face_raise
+              AND tourney_hand_player_statistics.amt_p_2bet_facing <
+                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+              AND tourney_hand_player_statistics.position = 9
+              AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
         `);
 
         let c = await this.DB.query(`
