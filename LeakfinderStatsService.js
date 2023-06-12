@@ -9438,33 +9438,37 @@ class Stats {
     async total_flop_cbet() {
         if (this.res) this.res.write("total_flop_cbet")
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND char_length(tourney_hand_summary.str_aggressors_p) = 2 
-		AND tourney_hand_summary.cnt_players_f = 2 
-		AND tourney_hand_player_statistics.flg_f_cbet 
-        AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
-		AND tourney_hand_player_statistics.position BETWEEN 0 and 7`);
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 2
+              AND tourney_hand_summary.cnt_players_f = 2
+              AND tourney_hand_player_statistics.flg_f_cbet
+              AND NOT (tourney_hand_player_statistics.flg_p_3bet)
+              AND NOT (tourney_hand_player_statistics.flg_p_4bet)
+              AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+              AND tourney_hand_player_statistics.position BETWEEN 0 and 7
+        `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-		AND char_length(tourney_hand_summary.str_aggressors_p) = 2 
-		AND tourney_hand_summary.cnt_players_f = 2 
-		AND tourney_hand_player_statistics.flg_f_cbet_opp
-		AND NOT(tourney_hand_player_statistics.flg_p_3bet)
-		AND NOT(tourney_hand_player_statistics.flg_p_4bet)
-		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
-		AND tourney_hand_player_statistics.position BETWEEN 0 and 7
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 2
+              AND tourney_hand_summary.cnt_players_f = 2
+              AND tourney_hand_player_statistics.flg_f_cbet_opp
+              AND NOT (tourney_hand_player_statistics.flg_p_3bet)
+              AND NOT (tourney_hand_player_statistics.flg_p_4bet)
+              AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
+              AND tourney_hand_player_statistics.position BETWEEN 0 and 7
         `);
+
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['total_flop_cbet'] = isNaN(result) ? 0 : result;
         this.formulas['total_flop_cbet'] = `${a.rows[0].count} / ${b.rows[0].count}`;
@@ -9666,36 +9670,55 @@ class Stats {
     async total_flop_bet_vs_misscbet() {
         if (this.res) this.res.write("total_flop_bet_vs_misscbet")
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-		INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        WHERE
-		${this.check_str}
-		AND (lookup_actions.action = 'C' OR lookup_actions.action = 'CC')
-		AND tourney_hand_player_statistics.flg_p_face_raise 
-		AND tourney_hand_player_statistics.flg_f_bet
-		AND tourney_hand_summary.cnt_players_f = 2
-		AND ((substring(tourney_hand_summary.str_aggressors_p from 2 for 1)::int > tourney_hand_player_statistics.position) OR (tourney_hand_summary.cnt_players = 2 AND tourney_hand_player_statistics.flg_f_has_position))
-		AND tourney_hand_player_statistics.position BETWEEN 0 and 7
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
+              AND (lookup_actions.action = 'C'
+                       OR lookup_actions.action = 'c')
+              AND tourney_hand_player_statistics.flg_p_face_raise
+              AND tourney_hand_player_statistics.flg_f_has_position
+              AND tourney_hand_player_statistics.flg_f_bet
+              AND tourney_hand_summary.cnt_players_f = 2
+              AND (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-		INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        WHERE
-		${this.check_str}
-		AND (lookup_actions.action = 'C' OR lookup_actions.action = 'CC')
-		AND tourney_hand_player_statistics.flg_p_face_raise 
-		AND tourney_hand_player_statistics.flg_f_open_opp 
-		AND tourney_hand_summary.cnt_players_f = 2
-		AND ((tourney_hand_summary.cnt_players > 2 AND substring(tourney_hand_summary.str_aggressors_p from 2 for 1)::int > tourney_hand_player_statistics.position) OR (tourney_hand_summary.cnt_players = 2 AND tourney_hand_player_statistics.flg_f_has_position))
-		AND tourney_hand_player_statistics.position BETWEEN 0 and 7
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
+              AND (lookup_actions.action = 'C'
+                OR lookup_actions.action = 'c')
+              AND tourney_hand_player_statistics.flg_p_face_raise
+              AND tourney_hand_player_statistics.flg_f_has_position
+              AND tourney_hand_player_statistics.flg_f_open_opp
+              AND tourney_hand_summary.cnt_players_f = 2
+              AND (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6'
+                OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
         `);
+
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['total_flop_bet_vs_misscbet'] = isNaN(result) ? 0 : result;
         this.formulas['total_flop_bet_vs_misscbet'] = `${a.rows[0].count} / ${b.rows[0].count}`;
