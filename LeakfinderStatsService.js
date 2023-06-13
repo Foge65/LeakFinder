@@ -5697,45 +5697,49 @@ class Stats {
 
     async vpip_ep_vs_open_2_4_bb_less28bb() {
         if (this.res) this.res.write("vpip_ep_vs_open_2_4_bb_less28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND tourney_hand_player_statistics.position BETWEEN 5 AND 7
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND tourney_hand_player_statistics.position BETWEEN 5 AND 7
         `);
 
         let c = await this.DB.query(`
@@ -5751,20 +5755,17 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
-              AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+              AND tourney_hand_player_statistics.position BETWEEN 5 AND 7
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -5781,20 +5782,16 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
-              AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+              AND tourney_hand_player_statistics.position BETWEEN 5 AND 7
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -5807,45 +5804,55 @@ class Stats {
 
     async vpip_mp_vs_ep_2_4_bb_less28bb() {
         if (this.res) this.res.write("vpip_mp_vs_ep_2_4_bb_less28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
         `);
 
         let c = await this.DB.query(`
@@ -5861,20 +5868,20 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
-              AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -5891,20 +5898,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
-              AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -5917,45 +5923,55 @@ class Stats {
 
     async vpip_mp_vs_mp_2_4_bb_less28bb() {
         if (this.res) this.res.write("vpip_mp_vs_mp_2_4_bb_less28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
         `);
 
         let c = await this.DB.query(`
@@ -5971,20 +5987,20 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
-              AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -6001,20 +6017,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
-              AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -6027,45 +6042,55 @@ class Stats {
 
     async vpip_co_vs_ep_2_4_bb_less28bb() {
         if (this.res) this.res.write("vpip_co_vs_ep_2_4_bb_less28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position = 1
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position = 1
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position = 1
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position = 1
         `);
 
         let c = await this.DB.query(`
@@ -6081,19 +6106,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
               AND tourney_hand_player_statistics.position = 1
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -6111,19 +6136,18 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
               AND tourney_hand_player_statistics.position = 1
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -6137,45 +6161,55 @@ class Stats {
 
     async vpip_co_vs_mp_2_4_bb_less28bb() {
         if (this.res) this.res.write("vpip_co_vs_mp_2_4_bb_less28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position = 1
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position = 1
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position = 1
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position = 1
         `);
 
         let c = await this.DB.query(`
@@ -6191,19 +6225,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
               AND tourney_hand_player_statistics.position = 1
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -6221,19 +6255,18 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
               AND tourney_hand_player_statistics.position = 1
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -6247,45 +6280,55 @@ class Stats {
 
     async vpip_bu_vs_ep_2_4_bb_less28bb() {
         if (this.res) this.res.write("vpip_bu_vs_ep_2_4_bb_less28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position = 0
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position = 0
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position = 0
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position = 0
         `);
 
         let c = await this.DB.query(`
@@ -6301,19 +6344,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
               AND tourney_hand_player_statistics.position = 0
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -6331,19 +6374,18 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
               AND tourney_hand_player_statistics.position = 0
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -6357,45 +6399,55 @@ class Stats {
 
     async vpip_bu_vs_mp_2_4_bb_less28bb() {
         if (this.res) this.res.write("vpip_bu_vs_mp_2_4_bb_less28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position = 0
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position = 0
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-		and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position = 0
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position = 0
         `);
 
         let c = await this.DB.query(`
@@ -6411,19 +6463,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
               AND tourney_hand_player_statistics.position = 0
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -6441,19 +6493,18 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
               AND tourney_hand_player_statistics.position = 0
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -6467,45 +6518,51 @@ class Stats {
 
     async vpip_bu_vs_co_2_4_bb_less28bb() {
         if (this.res) this.res.write("vpip_bu_vs_co_2_4_bb_less28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'	
-		AND tourney_hand_player_statistics.position = 0
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '1'
+              AND tourney_hand_player_statistics.position = 0
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-		and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
-		AND tourney_hand_player_statistics.position = 0
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '1'
+              AND tourney_hand_player_statistics.position = 0
         `);
 
         let c = await this.DB.query(`
@@ -6521,12 +6578,12 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
@@ -6549,12 +6606,11 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
@@ -6573,45 +6629,55 @@ class Stats {
 
     async vpip_sb_vs_ep_2_4_bb_less28bb() {
         if (this.res) this.res.write("vpip_sb_vs_ep_2_4_bb_less28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-        and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-		and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let c = await this.DB.query(`
@@ -6627,19 +6693,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
               AND tourney_hand_player_statistics.position = 9
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -6657,19 +6723,18 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
               AND tourney_hand_player_statistics.position = 9
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -6683,45 +6748,55 @@ class Stats {
 
     async vpip_sb_vs_mp_2_4_bb_less28bb() {
         if (this.res) this.res.write("vpip_sb_vs_mp_2_4_bb_less28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-        and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-		and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let c = await this.DB.query(`
@@ -6737,19 +6812,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
               AND tourney_hand_player_statistics.position = 9
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -6767,19 +6842,18 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
               AND tourney_hand_player_statistics.position = 9
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -6793,45 +6867,51 @@ class Stats {
 
     async vpip_sb_vs_co_2_4_bb_less28bb() {
         if (this.res) this.res.write("vpip_sb_vs_co_2_4_bb_less28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '1'
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-		and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '1'
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let c = await this.DB.query(`
@@ -6847,12 +6927,12 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
@@ -6875,12 +6955,11 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
@@ -6899,45 +6978,51 @@ class Stats {
 
     async vpip_sb_vs_bu_2_4_bb_less28bb() {
         if (this.res) this.res.write("vpip_sb_vs_bu_2_4_bb_less28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-		and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let c = await this.DB.query(`
@@ -6953,12 +7038,12 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
@@ -6981,12 +7066,11 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb <= 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb < 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
@@ -7007,45 +7091,49 @@ class Stats {
 
     async vpip_ep_vs_open_2_4_bb_great28bb() {
         if (this.res) this.res.write("vpip_ep_vs_open_2_4_bb_great28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND tourney_hand_player_statistics.position BETWEEN 5 AND 7
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND tourney_hand_player_statistics.position BETWEEN 5 AND 7
         `);
 
         let c = await this.DB.query(`
@@ -7061,20 +7149,17 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
-              AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+              AND tourney_hand_player_statistics.position BETWEEN 5 AND 7
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -7091,20 +7176,16 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
-              AND tourney_hand_player_statistics.position BETWEEN 5 and 7
+              AND tourney_hand_player_statistics.position BETWEEN 5 AND 7
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -7117,45 +7198,55 @@ class Stats {
 
     async vpip_mp_vs_ep_2_4_bb_great28bb() {
         if (this.res) this.res.write("vpip_mp_vs_ep_2_4_bb_great28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
         `);
 
         let c = await this.DB.query(`
@@ -7171,20 +7262,20 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
-              AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -7201,20 +7292,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
-              AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -7227,45 +7317,55 @@ class Stats {
 
     async vpip_mp_vs_mp_2_4_bb_great28bb() {
         if (this.res) this.res.write("vpip_mp_vs_mp_2_4_bb_great28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
         `);
 
         let c = await this.DB.query(`
@@ -7281,20 +7381,20 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
-              AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -7311,20 +7411,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
-              AND tourney_hand_player_statistics.position BETWEEN 2 and 4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position BETWEEN 2 AND 4
             GROUP BY lookup_hole_cards.hole_cards
         `);
 
@@ -7337,45 +7436,55 @@ class Stats {
 
     async vpip_co_vs_ep_2_4_bb_great28bb() {
         if (this.res) this.res.write("vpip_co_vs_ep_2_4_bb_great28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position = 1
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position = 1
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position = 1
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position = 1
         `);
 
         let c = await this.DB.query(`
@@ -7391,19 +7500,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
               AND tourney_hand_player_statistics.position = 1
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -7421,19 +7530,18 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
               AND tourney_hand_player_statistics.position = 1
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -7447,45 +7555,55 @@ class Stats {
 
     async vpip_co_vs_mp_2_4_bb_great28bb() {
         if (this.res) this.res.write("vpip_co_vs_mp_2_4_bb_great28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position = 1
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position = 1
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position = 1
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position = 1
         `);
 
         let c = await this.DB.query(`
@@ -7501,19 +7619,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
               AND tourney_hand_player_statistics.position = 1
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -7531,19 +7649,18 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
               AND tourney_hand_player_statistics.position = 1
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -7557,45 +7674,55 @@ class Stats {
 
     async vpip_bu_vs_ep_2_4_bb_great28bb() {
         if (this.res) this.res.write("vpip_bu_vs_ep_2_4_bb_great28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position = 0
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position = 0
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position = 0
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position = 0
         `);
 
         let c = await this.DB.query(`
@@ -7611,19 +7738,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
               AND tourney_hand_player_statistics.position = 0
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -7641,19 +7768,18 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
               AND tourney_hand_player_statistics.position = 0
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -7667,45 +7793,55 @@ class Stats {
 
     async vpip_bu_vs_mp_2_4_bb_great28bb() {
         if (this.res) this.res.write("vpip_bu_vs_mp_2_4_bb_great28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-				and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position = 0
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position = 0
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-		and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position = 0
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position = 0
         `);
 
         let c = await this.DB.query(`
@@ -7721,19 +7857,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
               AND tourney_hand_player_statistics.position = 0
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -7751,19 +7887,18 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
               AND tourney_hand_player_statistics.position = 0
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -7777,45 +7912,51 @@ class Stats {
 
     async vpip_bu_vs_co_2_4_bb_great28bb() {
         if (this.res) this.res.write("vpip_bu_vs_co_2_4_bb_great28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'	
-		AND tourney_hand_player_statistics.position = 0
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '1'
+              AND tourney_hand_player_statistics.position = 0
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-		and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
-		AND tourney_hand_player_statistics.position = 0
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '1'
+              AND tourney_hand_player_statistics.position = 0
         `);
 
         let c = await this.DB.query(`
@@ -7831,12 +7972,12 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
@@ -7859,12 +8000,11 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
@@ -7883,45 +8023,55 @@ class Stats {
 
     async vpip_sb_vs_ep_2_4_bb_great28bb() {
         if (this.res) this.res.write("vpip_sb_vs_ep_2_4_bb_great28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-        and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-		and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '5' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '6' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '7')
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let c = await this.DB.query(`
@@ -7937,19 +8087,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
               AND tourney_hand_player_statistics.position = 9
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -7967,19 +8117,18 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '5'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '6'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '7')
               AND tourney_hand_player_statistics.position = 9
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -7993,45 +8142,55 @@ class Stats {
 
     async vpip_sb_vs_mp_2_4_bb_great28bb() {
         if (this.res) this.res.write("vpip_sb_vs_mp_2_4_bb_great28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-        and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-		and (substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '2' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '3' OR substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '4')
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let c = await this.DB.query(`
@@ -8047,19 +8206,19 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
               AND tourney_hand_player_statistics.position = 9
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -8077,19 +8236,18 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb <= 2.4
-              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3' OR
-                   SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
+              AND (SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '2'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '3'
+                OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '4')
               AND tourney_hand_player_statistics.position = 9
             GROUP BY lookup_hole_cards.hole_cards
         `);
@@ -8103,45 +8261,51 @@ class Stats {
 
     async vpip_sb_vs_co_2_4_bb_great28bb() {
         if (this.res) this.res.write("vpip_sb_vs_co_2_4_bb_great28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '1'
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-		and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '1'
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '1'
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let c = await this.DB.query(`
@@ -8157,12 +8321,12 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
@@ -8185,12 +8349,11 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
@@ -8209,45 +8372,51 @@ class Stats {
 
     async vpip_sb_vs_bu_2_4_bb_great28bb() {
         if (this.res) this.res.write("vpip_sb_vs_bu_2_4_bb_great28bb")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND (lookup_actions.action LIKE 'C%' or lookup_actions.action LIKE 'R%')
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-        and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-        INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
-        INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        WHERE
-        ${this.check_str}
-        AND NOT(tourney_hand_player_statistics.flg_p_limp)
-        AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-        AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-        AND tourney_hand_player_statistics.amt_p_2bet_facing < tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-		and tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb >= 2 
-		and (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb <= 2.4
-		and substring(tourney_hand_summary.str_aggressors_p from 2 for 1) = '0'
-		AND tourney_hand_player_statistics.position = 9
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions ON id_action = tourney_hand_player_statistics.id_action_p
+                     INNER JOIN tourney_blinds ON tourney_blinds.id_blinds = tourney_hand_player_statistics.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+            WHERE ${this.check_str}
+              AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb >= 2
+              AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
+                  tourney_blinds.amt_bb <= 2.4
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
+              AND tourney_hand_player_statistics.position = 9
         `);
 
         let c = await this.DB.query(`
@@ -8263,12 +8432,12 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
-              AND (lookup_actions.action LIKE 'C%' OR lookup_actions.action LIKE 'R%')
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND (lookup_actions.action LIKE 'C%'
+                OR lookup_actions.action LIKE 'R%')
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
@@ -8291,12 +8460,11 @@ class Stats {
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
             WHERE ${this.check_str}
               AND NOT (tourney_hand_player_statistics.flg_p_limp)
-              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.flg_p_squeeze_opp)
               AND lookup_actions.action LIKE 'F%'
-              AND tourney_hand_player_statistics.amt_p_2bet_facing / tourney_blinds.amt_bb <= 4
-              AND tourney_hand_player_statistics.amt_p_2bet_facing <
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 28
+              AND tourney_hand_player_statistics.amt_p_2bet_facing > 0
+              AND (tourney_hand_player_statistics.amt_before - tourney_hand_player_statistics.amt_ante -
+                   tourney_hand_player_statistics.amt_blind) / tourney_blinds.amt_bb > 28
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
                   tourney_blinds.amt_bb >= 2
               AND (tourney_hand_player_statistics.amt_p_2bet_facing + tourney_hand_player_statistics.amt_blind) /
@@ -10143,37 +10311,47 @@ class Stats {
 
     async raiser_oop_turn_check_raise() {
         if (this.res) this.res.write("raiser_oop_turn_check_raise")
+
         let a = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        INNER JOIN lookup_actions AS LA1 ON LA1.id_action = tourney_hand_player_statistics.id_action_t
-        WHERE
-		${this.check_str}
-		AND char_length(tourney_hand_summary.str_aggressors_p) = 2 
-		AND tourney_hand_summary.cnt_players_f = 2 
-		and LA1.action Like 'XR%' and tourney_hand_player_statistics.amt_t_bet_facing > 0 
-		AND NOT(tourney_hand_player_statistics.flg_f_has_position)
-		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
-		AND tourney_hand_player_statistics.position BETWEEN 0 and 7
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+                     INNER JOIN lookup_actions AS LA_T ON LA_T.id_action = tourney_hand_player_statistics.id_action_t
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
+              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 2
+              AND tourney_hand_summary.cnt_players_f = 2
+              AND NOT (tourney_hand_player_statistics.flg_f_has_position)
+              AND tourney_hand_player_statistics.amt_t_bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.enum_face_allin = 'R'
+                OR tourney_hand_player_statistics.enum_face_allin = 'r')
+              AND LA_T.action LIKE 'XR%'
+              AND tourney_hand_summary.cnt_players BETWEEN 3 AND 10
+              AND tourney_hand_player_statistics.position BETWEEN 0 AND 7
         `);
 
         let b = await this.DB.query(`
-        SELECT COUNT(*)
-        FROM tourney_hand_player_statistics 
-        INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player 
-		INNER JOIN tourney_hand_summary ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-        INNER JOIN lookup_actions AS LA1 ON LA1.id_action = tourney_hand_player_statistics.id_action_t
-        WHERE
-		${this.check_str}
-		AND char_length(tourney_hand_summary.str_aggressors_p) = 2 
-		AND tourney_hand_summary.cnt_players_f = 2 
-		and LA1.action Like 'X%' and tourney_hand_player_statistics.amt_t_bet_facing > 0 
-		AND NOT(tourney_hand_player_statistics.flg_f_has_position)
-		AND tourney_hand_summary.cnt_players BETWEEN 3 and 10
-		AND tourney_hand_player_statistics.position BETWEEN 0 and 7
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
+                     INNER JOIN lookup_actions AS LA_T ON LA_T.id_action = tourney_hand_player_statistics.id_action_t
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
+              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 2
+              AND tourney_hand_summary.cnt_players_f = 2
+              AND NOT (tourney_hand_player_statistics.flg_f_has_position)
+              AND tourney_hand_player_statistics.amt_t_bet_facing > 0
+              AND NOT (tourney_hand_player_statistics.enum_face_allin = 'R'
+                OR tourney_hand_player_statistics.enum_face_allin = 'r')
+              AND LA_T.action LIKE 'X%'
+              AND tourney_hand_summary.cnt_players BETWEEN 3 AND 10
+              AND tourney_hand_player_statistics.position BETWEEN 0 AND 7
         `);
+
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['raiser_oop_turn_check_raise'] = isNaN(result) ? 0 : result;
         this.formulas['raiser_oop_turn_check_raise'] = `${a.rows[0].count} / ${b.rows[0].count}`;
