@@ -10348,8 +10348,8 @@ class Stats {
               AND tourney_hand_summary.cnt_players_f = 2
               AND NOT (tourney_hand_player_statistics.flg_f_has_position)
               AND tourney_hand_player_statistics.amt_t_bet_facing > 0
-              AND NOT (tourney_hand_player_statistics.enum_face_allin = 'R'
-                OR tourney_hand_player_statistics.enum_face_allin = 'r')
+              AND NOT (tourney_hand_player_statistics.enum_face_allin = 'T'
+                OR tourney_hand_player_statistics.enum_face_allin = 't')
               AND LA_T.action LIKE 'X%'
               AND tourney_hand_summary.cnt_players BETWEEN 3 AND 10
               AND tourney_hand_player_statistics.position BETWEEN 0 AND 7
@@ -10368,7 +10368,7 @@ class Stats {
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-                     INNER JOIN lookup_actions AS LA1 ON LA1.id_action = tourney_hand_player_statistics.id_action_r
+                     INNER JOIN lookup_actions AS LA_R ON LA_R.id_action = tourney_hand_player_statistics.id_action_r
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
               AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 2
@@ -10377,7 +10377,7 @@ class Stats {
               AND tourney_hand_player_statistics.amt_r_bet_facing > 0
               AND NOT (tourney_hand_player_statistics.enum_face_allin = 'R'
                 OR tourney_hand_player_statistics.enum_face_allin = 'r')
-              AND LA1.action LIKE 'XR%'
+              AND LA_R.action LIKE 'XR%'
               AND tourney_hand_summary.cnt_players BETWEEN 3 AND 10
               AND tourney_hand_player_statistics.position BETWEEN 0 AND 7
         `);
@@ -10388,7 +10388,7 @@ class Stats {
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_summary.id_hand = tourney_hand_player_statistics.id_hand
-                     INNER JOIN lookup_actions AS LA1 ON LA1.id_action = tourney_hand_player_statistics.id_action_r
+                     INNER JOIN lookup_actions AS LA_R ON LA_R.id_action = tourney_hand_player_statistics.id_action_r
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
               AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 2
@@ -10397,7 +10397,7 @@ class Stats {
               AND tourney_hand_player_statistics.amt_r_bet_facing > 0
               AND NOT (tourney_hand_player_statistics.enum_face_allin = 'R'
                 OR tourney_hand_player_statistics.enum_face_allin = 'r')
-              AND LA1.action LIKE 'X%'
+              AND LA_R.action LIKE 'X%'
               AND tourney_hand_summary.cnt_players BETWEEN 3 AND 10
               AND tourney_hand_player_statistics.position BETWEEN 0 AND 7
         `);
