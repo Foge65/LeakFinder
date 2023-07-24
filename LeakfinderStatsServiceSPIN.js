@@ -10080,7 +10080,8 @@ class Stats {
               AND tourney_hand_player_statistics.position = 0
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.flg_p_first_raise
-              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb > 2.1
+              AND (tourney_hand_player_statistics.enum_allin = 'P'
+                OR tourney_hand_player_statistics.enum_allin = 'p')
         `);
 
         let b = await this.DB.query(`
@@ -10090,7 +10091,7 @@ class Stats {
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.position = 0
               AND tourney_hand_player_statistics.cnt_players = 3
-              AND tourney_hand_player_statistics.id_hand > 0
+              AND tourney_hand_player_statistics.flg_p_open_opp
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
