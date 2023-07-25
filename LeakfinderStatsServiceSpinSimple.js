@@ -3932,28 +3932,68 @@ class Stats {
         this.formulas['Postflop_EV'] = `${a.rows[0].count}`;
     }
 
-    async Postflop_Attack_EV() {
-        if (this.res) this.res.write("Postflop_Attack_EV")
+    async Postflop_Attack_IP_EV() {
+        if (this.res) this.res.write("Postflop_Attack_IP_EV")
 
         let a = await this.DB.query(`
             SELECT SUM(tourney_hand_player_statistics.amt_expected_won)
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players BETWEEN 2 AND 3
-              AND (LA_P.action = 'C'
-                OR LA_P.action = 'R')
               AND tourney_hand_player_statistics.flg_f_has_position
+              AND (tourney_hand_player_statistics.flg_f_saw
+                AND LA_F.id_action != 0)
         `);
 
         let result = a.rows[0].count / 100;
-        this.data['Postflop_Attack_EV'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_EV'] = `${a.rows[0].count}`;
+        this.data['Postflop_Attack_IP_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_EV'] = `${a.rows[0].count}`;
     }
 
-    async Postflop_Attack_Bet_Flop() {
-        if (this.res) this.res.write("Postflop_Attack_Bet_Flop")
+    async Postflop_Attack_IP_3Max_EV() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_EV")
+
+        let a = await this.DB.query(`
+            SELECT SUM(tourney_hand_player_statistics.amt_expected_won)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 3
+              AND tourney_hand_player_statistics.flg_f_has_position
+              AND (tourney_hand_player_statistics.flg_f_saw
+                AND LA_F.id_action != 0)
+        `);
+
+        let result = a.rows[0].count / 100;
+        this.data['Postflop_Attack_IP_3Max_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_EV'] = `${a.rows[0].count}`;
+    }
+
+    async Postflop_Attack_IP_HU_EV() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_EV")
+
+        let a = await this.DB.query(`
+            SELECT SUM(tourney_hand_player_statistics.amt_expected_won)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.flg_f_has_position
+              AND (tourney_hand_player_statistics.flg_f_saw
+                AND LA_F.id_action != 0)
+        `);
+
+        let result = a.rows[0].count / 100;
+        this.data['Postflop_Attack_IP_HU_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_EV'] = `${a.rows[0].count}`;
+    }
+
+    async Postflop_Attack_IP_Bet_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_IP_Bet_Flop")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4016,12 +4056,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_Bet_Flop'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_Bet_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_Bet_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_Bet_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_3Max_Bet_Flop() {
-        if (this.res) this.res.write("Postflop_Attack_3Max_Bet_Flop")
+    async Postflop_Attack_IP_3Max_Bet_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_Bet_Flop")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4072,12 +4112,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_3Max_Bet_Flop'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_3Max_Bet_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_3Max_Bet_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_Bet_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_HU_Bet_Flop() {
-        if (this.res) this.res.write("Postflop_Attack_HU_Bet_Flop")
+    async Postflop_Attack_IP_HU_Bet_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_Bet_Flop")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4108,12 +4148,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_HU_Bet_Flop'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_HU_Bet_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_HU_Bet_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_Bet_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_Bet_Turn() {
-        if (this.res) this.res.write("Postflop_Attack_Bet_Turn")
+    async Postflop_Attack_IP_Bet_Turn() {
+        if (this.res) this.res.write("Postflop_Attack_IP_Bet_Turn")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4178,12 +4218,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_Bet_Turn'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_Bet_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_Bet_Turn'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_Bet_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_3Max_Bet_Turn() {
-        if (this.res) this.res.write("Postflop_Attack_3Max_Bet_Turn")
+    async Postflop_Attack_IP_3Max_Bet_Turn() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_Bet_Turn")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4236,12 +4276,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_3Max_Bet_Turn'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_3Max_Bet_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_3Max_Bet_Turn'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_Bet_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_HU_Bet_Turn() {
-        if (this.res) this.res.write("Postflop_Attack_HU_Bet_Turn")
+    async Postflop_Attack_IP_HU_Bet_Turn() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_Bet_Turn")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4274,12 +4314,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_HU_Bet_Turn'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_HU_Bet_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_HU_Bet_Turn'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_Bet_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_Bet_River() {
-        if (this.res) this.res.write("Postflop_Attack_Bet_River")
+    async Postflop_Attack_IP_Bet_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_Bet_River")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4347,12 +4387,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_Bet_River'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_Bet_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_3Max_Bet_River() {
-        if (this.res) this.res.write("Postflop_Attack_3Max_Bet_River")
+    async Postflop_Attack_IP_3Max_Bet_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_Bet_River")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4407,12 +4447,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_3Max_Bet_River'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_3Max_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_3Max_Bet_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_HU_Bet_River() {
-        if (this.res) this.res.write("Postflop_Attack_HU_Bet_River")
+    async Postflop_Attack_IP_HU_Bet_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_Bet_River")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4447,12 +4487,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_HU_Bet_River'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_HU_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_HU_Bet_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_Delay() {
-        if (this.res) this.res.write("Postflop_Attack_Delay")
+    async Postflop_Attack_IP_Delay() {
+        if (this.res) this.res.write("Postflop_Attack_IP_Delay")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4519,12 +4559,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_Delay'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_Delay'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_Delay'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_Delay'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_3Max_Delay() {
-        if (this.res) this.res.write("Postflop_Attack_3Max_Delay")
+    async Postflop_Attack_IP_3Max_Delay() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_Delay")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4580,12 +4620,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_3Max_Delay'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_3Max_Delay'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_3Max_Delay'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_Delay'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_HU_Delay() {
-        if (this.res) this.res.write("Postflop_Attack_HU_Delay")
+    async Postflop_Attack_IP_HU_Delay() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_Delay")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4620,12 +4660,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_HU_Delay'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_HU_Delay'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_HU_Delay'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_Delay'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_Delay_and_Bet_River() {
-        if (this.res) this.res.write("Postflop_Attack_Delay_and_Bet_River")
+    async Postflop_Attack_IP_Delay_and_Bet_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_Delay_and_Bet_River")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4691,12 +4731,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_Delay_and_Bet_River'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_Delay_and_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_Delay_and_Bet_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_Delay_and_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_3Max_Delay_and_Bet_River() {
-        if (this.res) this.res.write("Postflop_Attack_3Max_Delay_and_Bet_River")
+    async Postflop_Attack_IP_3Max_Delay_and_Bet_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_Delay_and_Bet_River")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4751,12 +4791,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_3Max_Delay_and_Bet_River'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_3Max_Delay_and_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_3Max_Delay_and_Bet_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_Delay_and_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_HU_Delay_and_Bet_River() {
-        if (this.res) this.res.write("Postflop_Attack_HU_Delay_and_Bet_River")
+    async Postflop_Attack_IP_HU_Delay_and_Bet_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_Delay_and_Bet_River")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4792,12 +4832,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_HU_Delay_and_Bet_River'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_HU_Delay_and_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_HU_Delay_and_Bet_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_Delay_and_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_Delay_River() {
-        if (this.res) this.res.write("Postflop_Attack_Delay_River")
+    async Postflop_Attack_IP_Delay_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_Delay_River")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4861,12 +4901,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_Delay_River'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_Delay_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_Delay_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_Delay_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_3Max_Delay_River() {
-        if (this.res) this.res.write("Postflop_Attack_3Max_Delay_River")
+    async Postflop_Attack_IP_3Max_Delay_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_Delay_River")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4918,12 +4958,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_3Max_Delay_River'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_3Max_Delay_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_3Max_Delay_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_Delay_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_HU_Delay_River() {
-        if (this.res) this.res.write("Postflop_Attack_HU_Delay_River")
+    async Postflop_Attack_IP_HU_Delay_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_Delay_River")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -4957,12 +4997,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_HU_Delay_River'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_HU_Delay_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_HU_Delay_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_Delay_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_B_X_B() {
-        if (this.res) this.res.write("Postflop_Attack_B_X_B")
+    async Postflop_Attack_IP_B_X_B() {
+        if (this.res) this.res.write("Postflop_Attack_IP_B_X_B")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5024,12 +5064,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_B_X_B'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_B_X_B'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_B_X_B'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_B_X_B'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_3Max_B_X_B() {
-        if (this.res) this.res.write("Postflop_Attack_3Max_B_X_B")
+    async Postflop_Attack_IP_3Max_B_X_B() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_B_X_B")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5082,12 +5122,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_3Max_B_X_B'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_3Max_B_X_B'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_3Max_B_X_B'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_B_X_B'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_HU_B_X_B() {
-        if (this.res) this.res.write("Postflop_Attack_HU_B_X_B")
+    async Postflop_Attack_IP_HU_B_X_B() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_B_X_B")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5121,12 +5161,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_HU_B_X_B'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_HU_B_X_B'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_HU_B_X_B'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_B_X_B'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_Fold_vs_Donk_Flop() {
-        if (this.res) this.res.write("Postflop_Attack_Fold_vs_Donk_Flop")
+    async Postflop_Attack_IP_Fold_vs_Donk_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_IP_Fold_vs_Donk_Flop")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5185,12 +5225,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_Fold_vs_Donk_Flop'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_Fold_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_Fold_vs_Donk_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_Fold_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_3Max_Fold_vs_Donk_Flop() {
-        if (this.res) this.res.write("Postflop_Attack_3Max_Fold_vs_Donk_Flop")
+    async Postflop_Attack_IP_3Max_Fold_vs_Donk_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_Fold_vs_Donk_Flop")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5239,12 +5279,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_3Max_Fold_vs_Donk_Flop'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_3Max_Fold_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_3Max_Fold_vs_Donk_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_Fold_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_HU_Fold_vs_Donk_Flop() {
-        if (this.res) this.res.write("Postflop_Attack_HU_Fold_vs_Donk_Flop")
+    async Postflop_Attack_IP_HU_Fold_vs_Donk_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_Fold_vs_Donk_Flop")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5275,12 +5315,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_HU_Fold_vs_Donk_Flop'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_HU_Fold_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_HU_Fold_vs_Donk_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_Fold_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_Raise_vs_Donk_Flop() {
-        if (this.res) this.res.write("Postflop_Attack_Raise_vs_Donk_Flop")
+    async Postflop_Attack_IP_Raise_vs_Donk_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_IP_Raise_vs_Donk_Flop")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5340,12 +5380,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_Raise_vs_Donk_Flop'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_Raise_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_Raise_vs_Donk_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_Raise_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_3Max_Raise_vs_Donk_Flop() {
-        if (this.res) this.res.write("Postflop_Attack_3Max_Raise_vs_Donk_Flop")
+    async Postflop_Attack_IP_3Max_Raise_vs_Donk_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_Raise_vs_Donk_Flop")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5395,12 +5435,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_3Max_Raise_vs_Donk_Flop'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_3Max_Raise_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_3Max_Raise_vs_Donk_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_Raise_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_HU_Raise_vs_Donk_Flop() {
-        if (this.res) this.res.write("Postflop_Attack_HU_Raise_vs_Donk_Flop")
+    async Postflop_Attack_IP_HU_Raise_vs_Donk_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_Raise_vs_Donk_Flop")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5432,12 +5472,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_HU_Raise_vs_Donk_Flop'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_HU_Raise_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_HU_Raise_vs_Donk_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_Raise_vs_Donk_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_Fold_vs_Probe_Turn() {
-        if (this.res) this.res.write("Postflop_Attack_Fold_vs_Probe_Turn")
+    async Postflop_Attack_IP_Fold_vs_Probe_Turn() {
+        if (this.res) this.res.write("Postflop_Attack_IP_Fold_vs_Probe_Turn")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5496,12 +5536,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_Fold_vs_Probe_Turn'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_Fold_vs_Probe_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_Fold_vs_Probe_Turn'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_Fold_vs_Probe_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_3Max_Fold_vs_Probe_Turn() {
-        if (this.res) this.res.write("Postflop_Attack_3Max_Fold_vs_Probe_Turn")
+    async Postflop_Attack_IP_3Max_Fold_vs_Probe_Turn() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_Fold_vs_Probe_Turn")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5552,12 +5592,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_3Max_Fold_vs_Probe_Turn'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_3Max_Fold_vs_Probe_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_3Max_Fold_vs_Probe_Turn'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_Fold_vs_Probe_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_HU_Fold_vs_Probe_Turn() {
-        if (this.res) this.res.write("Postflop_Attack_HU_Fold_vs_Probe_Turn")
+    async Postflop_Attack_IP_HU_Fold_vs_Probe_Turn() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_Fold_vs_Probe_Turn")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5588,12 +5628,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_HU_Fold_vs_Probe_Turn'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_HU_Fold_vs_Probe_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_HU_Fold_vs_Probe_Turn'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_Fold_vs_Probe_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_Call_vs_Probe_Turn_and_Fold_River() {
-        if (this.res) this.res.write("Postflop_Attack_Call_vs_Probe_Turn_and_Fold_River")
+    async Postflop_Attack_IP_Call_vs_Probe_Turn_and_Fold_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_Call_vs_Probe_Turn_and_Fold_River")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5656,12 +5696,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_Call_vs_Probe_Turn_and_Fold_River'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_Call_vs_Probe_Turn_and_Fold_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_Call_vs_Probe_Turn_and_Fold_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_Call_vs_Probe_Turn_and_Fold_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_3Max_Call_vs_Probe_Turn_and_Fold_River() {
-        if (this.res) this.res.write("Postflop_Attack_3Max_Call_vs_Probe_Turn_and_Fold_River")
+    async Postflop_Attack_IP_3Max_Call_vs_Probe_Turn_and_Fold_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_Call_vs_Probe_Turn_and_Fold_River")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5716,12 +5756,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_3Max_Call_vs_Probe_Turn_and_Fold_River'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_3Max_Call_vs_Probe_Turn_and_Fold_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_3Max_Call_vs_Probe_Turn_and_Fold_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_Call_vs_Probe_Turn_and_Fold_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Attack_HU_Call_vs_Probe_Turn_and_Fold_River() {
-        if (this.res) this.res.write("Postflop_Attack_HU_Call_vs_Probe_Turn_and_Fold_River")
+    async Postflop_Attack_IP_HU_Call_vs_Probe_Turn_and_Fold_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_Call_vs_Probe_Turn_and_Fold_River")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -5756,7 +5796,1436 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Attack_HU_Call_vs_Probe_Turn_and_Fold_River'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Attack_HU_Call_vs_Probe_Turn_and_Fold_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Attack_IP_HU_Call_vs_Probe_Turn_and_Fold_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_Call_vs_Probe_Turn_and_Fold_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_IP_B_X_F() {
+        if (this.res) this.res.write("Postflop_Attack_IP_B_X_F")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND tourney_hand_player_statistics.flg_t_check
+              AND LA_R.action = 'F'
+              AND (tourney_hand_player_statistics.cnt_players = 3
+                       AND LA_P.action = 'R'
+                       AND (
+                           (tourney_hand_player_statistics.position = 0
+                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 2
+                               AND NOT tourney_hand_player_statistics.flg_p_3bet_def_opp
+                               AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
+                           OR
+                           (tourney_hand_player_statistics.position = 8
+                               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+                OR
+                   (tourney_hand_player_statistics.cnt_players = 2
+                       AND (LA_P.action SIMILAR TO 'C|R'))
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND tourney_hand_player_statistics.flg_t_check
+              AND LA_R.action SIMILAR TO 'F|C|R%'
+              AND (tourney_hand_player_statistics.cnt_players = 3
+                       AND LA_P.action = 'R'
+                       AND (
+                           (tourney_hand_player_statistics.position = 0
+                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 2
+                               AND NOT tourney_hand_player_statistics.flg_p_3bet_def_opp
+                               AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
+                           OR
+                           (tourney_hand_player_statistics.position = 8
+                               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+                OR
+                   (tourney_hand_player_statistics.cnt_players = 2
+                       AND (LA_P.action SIMILAR TO 'C|R'))
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_IP_B_X_F'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_B_X_F'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_IP_3Max_B_X_F() {
+        if (this.res) this.res.write("Postflop_Attack_IP_3Max_B_X_F")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 3
+              AND LA_P.action = 'R'
+              AND tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND tourney_hand_player_statistics.flg_t_check
+              AND LA_R.action = 'F'
+              AND (
+                    (tourney_hand_player_statistics.position = 0
+                        AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 2
+                        AND NOT tourney_hand_player_statistics.flg_p_3bet_def_opp
+                        AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
+                    OR
+                    (tourney_hand_player_statistics.position = 8
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 3
+              AND LA_P.action = 'R'
+              AND tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND tourney_hand_player_statistics.flg_t_check
+              AND LA_R.action SIMILAR TO 'F|C|R%'
+              AND (
+                    (tourney_hand_player_statistics.position = 0
+                        AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 2
+                        AND NOT tourney_hand_player_statistics.flg_p_3bet_def_opp
+                        AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
+                    OR
+                    (tourney_hand_player_statistics.position = 8
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_IP_3Max_B_X_F'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_3Max_B_X_F'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_IP_HU_B_X_F() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_B_X_F")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND LA_P.action SIMILAR TO 'C|R'
+              AND tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND tourney_hand_player_statistics.flg_t_check
+              AND LA_R.action = 'F'
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND LA_P.action SIMILAR TO 'C|R'
+              AND tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND tourney_hand_player_statistics.flg_t_check
+              AND LA_R.action SIMILAR TO 'F|C|R%'
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_IP_HU_B_X_F'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_B_X_F'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_EV() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_EV")
+
+        let a = await this.DB.query(`
+            SELECT SUM(tourney_hand_player_statistics.amt_expected_won)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+              AND (tourney_hand_player_statistics.flg_f_saw
+                AND LA_F.id_action != 0)
+        `);
+
+        let result = a.rows[0].count / 100;
+        this.data['Postflop_Attack_OOP_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_EV'] = `${a.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_3Max_EV() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_3Max_EV")
+
+        let a = await this.DB.query(`
+            SELECT SUM(tourney_hand_player_statistics.amt_expected_won)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+              AND (tourney_hand_player_statistics.flg_f_saw
+                AND LA_F.id_action != 0)
+        `);
+
+        let result = a.rows[0].count / 100;
+        this.data['Postflop_Attack_OOP_3Max_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_3Max_EV'] = `${a.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_HU_EV() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_HU_EV")
+
+        let a = await this.DB.query(`
+            SELECT SUM(tourney_hand_player_statistics.amt_expected_won)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND (tourney_hand_player_statistics.flg_f_saw
+                AND LA_F.id_action != 0)
+        `);
+
+        let result = a.rows[0].count / 100;
+        this.data['Postflop_Attack_OOP_HU_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_HU_EV'] = `${a.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_Bet_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_Bet_Flop")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND tourney_hand_player_statistics.flg_f_bet
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action SIMILAR TO 'X%|B%'
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_Bet_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_Bet_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_3Max_Bet_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_3Max_Bet_Flop")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND tourney_hand_player_statistics.flg_f_bet
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action SIMILAR TO 'X%|B%'
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_3Max_Bet_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_3Max_Bet_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_HU_Bet_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_HU_Bet_Flop")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND tourney_hand_player_statistics.flg_f_bet
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action SIMILAR TO 'X%|B%'
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_HU_Bet_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_HU_Bet_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_Bet_Turn() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_Bet_Turn")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND tourney_hand_player_statistics.flg_t_bet
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND LA_T.action SIMILAR TO 'X%|B%'
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_Bet_Turn'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_Bet_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_3Max_Bet_Turn() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_3Max_Bet_Turn")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND tourney_hand_player_statistics.flg_t_bet
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND LA_T.action SIMILAR TO 'X%|B%'
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_3Max_Bet_Turn'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_3Max_Bet_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_HU_Bet_Turn() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_HU_Bet_Turn")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND tourney_hand_player_statistics.flg_t_bet
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND LA_T.action SIMILAR TO 'X%|B%'
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_HU_Bet_Turn'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_HU_Bet_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_Bet_River() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_Bet_River")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND LA_T.action = 'B'
+              AND tourney_hand_player_statistics.flg_r_bet
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND LA_T.action = 'B'
+              AND LA_R.action SIMILAR TO 'X%|B%'
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_Bet_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_3Max_Bet_River() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_3Max_Bet_River")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND LA_T.action = 'B'
+              AND tourney_hand_player_statistics.flg_r_bet
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND LA_T.action = 'B'
+              AND LA_R.action SIMILAR TO 'X%|B%'
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_3Max_Bet_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_3Max_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_HU_Bet_River() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_HU_Bet_River")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND LA_T.action = 'B'
+              AND tourney_hand_player_statistics.flg_r_bet
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'B'
+              AND LA_T.action = 'B'
+              AND LA_R.action SIMILAR TO 'X%|B%'
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_HU_Bet_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_HU_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_Delay() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_Delay")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND tourney_hand_player_statistics.flg_t_bet
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_Delay'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_Delay'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_3Max_Delay() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_3Max_Delay")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND tourney_hand_player_statistics.flg_t_bet
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_3Max_Delay'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_3Max_Delay'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_HU_Delay() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_HU_Delay")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND tourney_hand_player_statistics.flg_t_bet
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_HU_Delay'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_HU_Delay'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_Delay_and_Bet_River() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_Delay_and_Bet_River")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND LA_T.action = 'B'
+              AND tourney_hand_player_statistics.flg_r_bet
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND LA_T.action = 'B'
+              AND LA_R.action SIMILAR TO 'B%|X%'
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_Delay_and_Bet_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_Delay_and_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_3Max_Delay_and_Bet_River() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_3Max_Delay_and_Bet_River")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND LA_T.action = 'B'
+              AND tourney_hand_player_statistics.flg_r_bet
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND LA_T.action = 'B'
+              AND LA_R.action SIMILAR TO 'B%|X%'
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_3Max_Delay_and_Bet_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_3Max_Delay_and_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_HU_Delay_and_Bet_River() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_HU_Delay_and_Bet_River")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND LA_T.action = 'B'
+              AND tourney_hand_player_statistics.flg_r_bet
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND LA_T.action = 'B'
+              AND LA_R.action SIMILAR TO 'B%|X%'
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_HU_Delay_and_Bet_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_HU_Delay_and_Bet_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_Delay_River() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_Delay_River")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND LA_T.action = 'X'
+              AND tourney_hand_player_statistics.flg_r_bet
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND LA_T.action = 'X'
+              AND LA_R.action SIMILAR TO 'B%|X%'
+              AND (
+                    (tourney_hand_player_statistics.cnt_players = 3
+                         AND (tourney_hand_player_statistics.position = 9
+                                  AND
+                              (LA_P.action = 'C'
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                                  AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                            OR
+                              (LA_P.action = 'R'
+                                  AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                        OR (tourney_hand_player_statistics.position = 8
+                            AND LA_P.action = 'R'
+                            AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                    OR
+                    tourney_hand_player_statistics.cnt_players = 2
+                        AND tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_Delay_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_Delay_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_3Max_Delay_River() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_3Max_Delay_River")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND LA_T.action = 'X'
+              AND tourney_hand_player_statistics.flg_r_bet
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND LA_T.action = 'X'
+              AND LA_R.action SIMILAR TO 'B%|X%'
+              AND (
+                (tourney_hand_player_statistics.cnt_players = 3
+                     AND (tourney_hand_player_statistics.position = 9
+                              AND
+                          (LA_P.action = 'C'
+                              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) = 1
+                              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 1)
+                        OR
+                          (LA_P.action = 'R'
+                              AND tourney_hand_summary.str_actors_p NOT LIKE '098%'))
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action = 'R'
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'))
+                )
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_3Max_Delay_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_3Max_Delay_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_HU_Delay_River() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_HU_Delay_River")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND LA_T.action = 'X'
+              AND tourney_hand_player_statistics.flg_r_bet
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action = 'R'
+              AND NOT tourney_hand_player_statistics.flg_f_has_position
+              AND LA_F.action = 'X'
+              AND LA_T.action = 'X'
+              AND LA_R.action SIMILAR TO 'B%|X%'
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_HU_Delay_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_HU_Delay_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_B_X_B() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_B_X_B")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_B_X_B'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_B_X_B'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_3Max_B_X_B() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_3Max_B_X_B")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+            WHERE ${this.check_str}
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_3Max_B_X_B'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_3Max_B_X_B'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_OOP_HU_B_X_B() {
+        if (this.res) this.res.write("Postflop_Attack_OOP_HU_B_X_B")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+            WHERE ${this.check_str}
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+            WHERE ${this.check_str}
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_OOP_HU_B_X_B'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_OOP_HU_B_X_B'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 }
