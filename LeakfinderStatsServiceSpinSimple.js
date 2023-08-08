@@ -56,7 +56,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -76,7 +76,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -96,7 +96,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BTN_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -340,7 +340,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_SB_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -390,7 +390,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -449,7 +449,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_Limp_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -569,7 +569,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_OR_less_2_2bb_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -722,7 +722,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -879,7 +879,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_SB_vs_BB_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -1128,7 +1128,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -1178,7 +1178,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -1204,7 +1204,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_Limp_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -1395,7 +1395,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OR_less_2_2bb_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -1616,7 +1616,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -1833,7 +1833,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OS_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -1903,7 +1903,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_vs_SB_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -1927,7 +1927,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_vs_SB_Limp_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -1953,7 +1953,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_vs_SB_Limp_Check_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -2132,7 +2132,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_vs_SB_OR_NAI_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -2352,7 +2352,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_vs_SB_OS_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -2425,7 +2425,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_3Way_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -2446,7 +2446,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_3Way_2_Limps_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -2580,7 +2580,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_3Way_OR_NAI_and_SB_Call_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -2757,7 +2757,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_3Max_BB_3Way_OS_and_SB_Call_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -2854,7 +2854,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_HU_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -2874,7 +2874,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_HU_SB_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -3331,7 +3331,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_HU_BB_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -3381,7 +3381,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_HU_BB_vs_SB_Limp_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -3536,7 +3536,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_HU_BB_vs_SB_OR_2bb_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -3727,7 +3727,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_HU_BB_vs_SB_OR_more_2bb_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -3912,7 +3912,7 @@ class Stats {
         if (this.res) this.res.write("Preflop_HU_BB_vs_SB_OS_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -3974,7 +3974,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -3994,7 +3994,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_Attack_IP_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -4015,7 +4015,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_Attack_IP_3Max_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -4036,7 +4036,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_Attack_IP_HU_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -6033,7 +6033,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_Attack_OOP_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -6074,7 +6074,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_Attack_OOP_3Max_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -6111,7 +6111,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_Attack_OOP_HU_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -8114,7 +8114,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_Attack_IP_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -8135,7 +8135,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_Defence_IP_3Max_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -8156,7 +8156,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_Defence_IP_HU_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -10604,7 +10604,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_Defence_OOP_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -10644,7 +10644,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_Defence_OOP_3Max_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
@@ -10681,7 +10681,7 @@ class Stats {
         if (this.res) this.res.write("Postflop_Defence_OOP_HU_EV")
 
         let a = await this.DB.query(`
-            SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb)
+            SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
