@@ -423,7 +423,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_vpip
-              AND tourney_hand_summary.str_actors_p = '09'
+              AND substring(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '0'
         `);
 
         let b = await this.DB.query(`
@@ -432,11 +432,12 @@ class Stats {
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
-              AND tourney_hand_player_statistics.flg_vpip
-              AND tourney_hand_summary.str_actors_p LIKE '0%'
+              AND substring(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '0'
+              AND LA_P.id_action != 0
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
