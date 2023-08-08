@@ -278,22 +278,29 @@ class Stats {
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
+              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.flg_p_4bet
-              AND (tourney_hand_player_statistics.enum_allin = 'P'
-                OR tourney_hand_player_statistics.enum_allin = 'p')
+              AND substring(tourney_hand_summary.str_actors_p FROM 1 FOR 3) SIMILAR TO '090|080'
         `);
 
         let b = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
-              AND tourney_hand_player_statistics.flg_p_4bet_opp
+              AND (tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb <= 2.2
+                AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P')
+              AND (tourney_hand_player_statistics.flg_p_3bet_def_opp
+                AND NOT tourney_hand_player_statistics.enum_face_allin ILIKE 'P')
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
