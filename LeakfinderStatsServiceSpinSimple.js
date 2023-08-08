@@ -315,13 +315,11 @@ class Stats {
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
-              AND tourney_hand_player_statistics.flg_p_first_raise
-              AND (tourney_hand_player_statistics.enum_allin = 'P'
-                OR tourney_hand_player_statistics.enum_allin = 'p')
+              AND tourney_hand_player_statistics.amt_p_raise_made /
+                  tourney_hand_player_statistics.amt_p_effective_stack > 0.3
         `);
 
         let b = await this.DB.query(`
@@ -331,7 +329,6 @@ class Stats {
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
-              AND tourney_hand_player_statistics.flg_p_open_opp
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
