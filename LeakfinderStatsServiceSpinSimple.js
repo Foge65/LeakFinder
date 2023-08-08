@@ -208,10 +208,10 @@ class Stats {
               AND tourney_hand_player_statistics.amt_p_raise_facing /
                   tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
               AND tourney_hand_player_statistics.flg_p_4bet_opp
-              AND (LA_P.action SIMILAR TO 'RF'
+              AND (LA_P.action = 'RF'
                        AND char_length(tourney_hand_summary.str_actors_p) = 2
                        AND LA_F.id_action = 0
-                OR LA_P.action SIMILAR TO 'RC'
+                OR LA_P.action = 'RC'
                        AND LA_F.id_action != 0
                        AND char_length(tourney_hand_summary.str_actors_p) = 3
                 OR LA_P.action = 'RR'
@@ -233,13 +233,15 @@ class Stats {
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
                      INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
               AND LA_P.action = 'RC'
               AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb <= 2.2
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+              AND char_length(tourney_hand_summary.str_actors_p) = 3
               AND LA_F.id_action = 0
         `);
 
@@ -248,13 +250,19 @@ class Stats {
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN tourney_hand_summary ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
-              AND tourney_hand_player_statistics.flg_p_first_raise
+              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb <= 2.2
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
-              AND (tourney_hand_player_statistics.enum_face_allin = 'P' OR
-                   tourney_hand_player_statistics.enum_face_allin = 'p')
+              AND tourney_hand_player_statistics.enum_face_allin ILIKE 'P'
+              AND NOT tourney_hand_player_statistics.flg_p_4bet_opp
+              AND (LA_P.action = 'RF'
+                       AND char_length(tourney_hand_summary.str_actors_p) = 2
+                OR LA_P.action = 'RC'
+                       AND char_length(tourney_hand_summary.str_actors_p) = 3)
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
