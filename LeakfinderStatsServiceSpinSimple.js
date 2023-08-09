@@ -550,8 +550,8 @@ class Stats {
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
               AND tourney_hand_player_statistics.flg_p_first_raise
-              AND (tourney_hand_player_statistics.enum_allin = 'P'
-                OR tourney_hand_player_statistics.enum_allin = 'p')
+              AND tourney_hand_player_statistics.amt_p_raise_made /
+                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
         `);
 
         let b = await this.DB.query(`
