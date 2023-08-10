@@ -699,6 +699,7 @@ class Stats {
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
             WHERE ${this.check_str}
@@ -706,11 +707,10 @@ class Stats {
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
-              AND tourney_hand_player_statistics.flg_p_3bet
-              AND (tourney_hand_player_statistics.enum_allin = 'P'
-                OR tourney_hand_player_statistics.enum_allin = 'p')
-              AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '0'
-                OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '')
+              AND substring(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
+              AND LA_P.action = 'R'
+              AND tourney_hand_player_statistics.amt_p_raise_made /
+                  tourney_hand_player_statistics.amt_p_effective_stack >= 0.4
         `);
 
         let b = await this.DB.query(`
@@ -725,11 +725,8 @@ class Stats {
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND substring(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
               AND tourney_hand_player_statistics.flg_p_3bet_opp
-              AND (tourney_hand_player_statistics.enum_allin = 'P'
-                OR tourney_hand_player_statistics.enum_allin = 'p')
-              AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '0'
-                OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '')
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
