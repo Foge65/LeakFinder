@@ -67,7 +67,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_EV'] = `${a.rows[0].count}`;
     }
@@ -87,7 +87,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_EV'] = `${a.rows[0].count}`;
     }
@@ -108,7 +108,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BTN_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BTN_EV'] = `${a.rows[0].count}`;
     }
@@ -352,7 +352,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_SB_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_SB_EV'] = `${a.rows[0].count}`;
     }
@@ -405,7 +405,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_SB_vs_BTN_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_SB_vs_BTN_EV'] = `${a.rows[0].count}`;
     }
@@ -465,7 +465,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_SB_vs_BTN_Limp_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_SB_vs_BTN_Limp_EV'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
@@ -590,7 +590,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_SB_vs_BTN_OR_less_2_2bb_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_SB_vs_BTN_OR_less_2_2bb_EV'] = `${a.rows[0].count}`;
     }
@@ -753,7 +753,7 @@ class Stats {
               OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_EV'] = `${a.rows[0].count}`;
     }
@@ -911,7 +911,7 @@ class Stats {
                 OR SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '')
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_SB_vs_BB_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_SB_vs_BB_EV'] = `${a.rows[0].count}`;
     }
@@ -1159,7 +1159,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_EV'] = `${a.rows[0].count}`;
     }
@@ -1214,7 +1214,7 @@ class Stats {
                     OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = ''))
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_vs_BTN_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_vs_BTN_EV'] = `${a.rows[0].count}`;
     }
@@ -1238,7 +1238,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_vs_BTN_Limp_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_vs_BTN_Limp_EV'] = `${a.rows[0].count}`;
     }
@@ -1433,7 +1433,7 @@ class Stats {
                     OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = ''))
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_vs_BTN_OR_less_2_2bb_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_vs_BTN_OR_less_2_2bb_EV'] = `${a.rows[0].count}`;
     }
@@ -1654,7 +1654,7 @@ class Stats {
                     OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = ''))
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_EV'] = `${a.rows[0].count}`;
     }
@@ -1870,7 +1870,7 @@ class Stats {
                 OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = '')
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_vs_BTN_OS_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_vs_BTN_OS_EV'] = `${a.rows[0].count}`;
     }
@@ -1937,7 +1937,7 @@ class Stats {
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_vs_SB_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_vs_SB_EV'] = `${a.rows[0].count}`;
     }
@@ -1963,7 +1963,7 @@ class Stats {
                 OR LA_P.action = 'R')
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_vs_SB_Limp_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_vs_SB_Limp_EV'] = `${a.rows[0].count}`;
     }
@@ -1986,7 +1986,7 @@ class Stats {
               AND LA_P.action = 'X'
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_vs_SB_Limp_Check_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_vs_SB_Limp_Check_EV'] = `${a.rows[0].count}`;
     }
@@ -2171,7 +2171,7 @@ class Stats {
                 OR LA_P.action = 'R')
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_vs_SB_OR_NAI_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_vs_SB_OR_NAI_EV'] = `${a.rows[0].count}`;
     }
@@ -2391,7 +2391,7 @@ class Stats {
               AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) <= 3
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_vs_SB_OS_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_vs_SB_OS_EV'] = `${a.rows[0].count}`;
     }
@@ -2456,7 +2456,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_3Way_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_3Way_EV'] = `${a.rows[0].count}`;
     }
@@ -2475,7 +2475,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 2
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_3Way_2_Limps_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_3Way_2_Limps_EV'] = `${a.rows[0].count}`;
     }
@@ -2611,7 +2611,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_squeeze_opp
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_3Way_OR_NAI_and_SB_Call_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_3Way_OR_NAI_and_SB_Call_EV'] = `${a.rows[0].count}`;
     }
@@ -2788,7 +2788,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_squeeze_opp
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_3Max_BB_3Way_OS_and_SB_Call_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_BB_3Way_OS_and_SB_Call_EV'] = `${a.rows[0].count}`;
     }
@@ -2884,7 +2884,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_HU_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_HU_EV'] = `${a.rows[0].count}`;
     }
@@ -2905,7 +2905,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_HU_SB_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_HU_SB_EV'] = `${a.rows[0].count}`;
     }
@@ -3362,7 +3362,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_HU_BB_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_HU_BB_EV'] = `${a.rows[0].count}`;
     }
@@ -3411,7 +3411,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_HU_BB_vs_SB_Limp_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_HU_BB_vs_SB_Limp_EV'] = `${a.rows[0].count}`;
     }
@@ -3569,7 +3569,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_HU_BB_vs_SB_OR_2bb_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_HU_BB_vs_SB_OR_2bb_EV'] = `${a.rows[0].count}`;
     }
@@ -3760,7 +3760,7 @@ class Stats {
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_HU_BB_vs_SB_OR_more_2bb_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_HU_BB_vs_SB_OR_more_2bb_EV'] = `${a.rows[0].count}`;
     }
@@ -3950,7 +3950,7 @@ class Stats {
               AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) <= 3
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Preflop_HU_BB_vs_SB_OS_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_HU_BB_vs_SB_OS_EV'] = `${a.rows[0].count}`;
     }
@@ -4004,7 +4004,7 @@ class Stats {
                 AND LA_F.id_action != 0)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_EV'] = `${a.rows[0].count}`;
     }
@@ -4025,7 +4025,7 @@ class Stats {
                 AND LA_F.id_action != 0)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_Attack_IP_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Attack_IP_EV'] = `${a.rows[0].count}`;
     }
@@ -4046,7 +4046,7 @@ class Stats {
                 AND LA_F.id_action != 0)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_Attack_IP_3Max_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Attack_IP_3Max_EV'] = `${a.rows[0].count}`;
     }
@@ -4067,7 +4067,7 @@ class Stats {
                 AND LA_F.id_action != 0)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_Attack_IP_HU_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Attack_IP_HU_EV'] = `${a.rows[0].count}`;
     }
@@ -6084,7 +6084,7 @@ class Stats {
                 AND LA_F.id_action != 0)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_Attack_OOP_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Attack_OOP_EV'] = `${a.rows[0].count}`;
     }
@@ -6121,7 +6121,7 @@ class Stats {
                 AND LA_F.id_action != 0)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_Attack_OOP_3Max_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Attack_OOP_3Max_EV'] = `${a.rows[0].count}`;
     }
@@ -6147,7 +6147,7 @@ class Stats {
                 AND LA_F.id_action != 0)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_Attack_OOP_HU_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Attack_OOP_HU_EV'] = `${a.rows[0].count}`;
     }
@@ -8145,7 +8145,7 @@ class Stats {
                 AND LA_F.id_action != 0)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_Attack_IP_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Attack_IP_EV'] = `${a.rows[0].count}`;
     }
@@ -8166,7 +8166,7 @@ class Stats {
                 AND LA_F.id_action != 0)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_Defence_IP_3Max_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Defence_IP_3Max_EV'] = `${a.rows[0].count}`;
     }
@@ -8187,7 +8187,7 @@ class Stats {
                 AND LA_F.id_action != 0)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_Defence_IP_HU_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Defence_IP_HU_EV'] = `${a.rows[0].count}`;
     }
@@ -10654,7 +10654,7 @@ class Stats {
                 )
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_Defence_OOP_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Defence_OOP_EV'] = `${a.rows[0].count}`;
     }
@@ -10691,7 +10691,7 @@ class Stats {
                 )
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_Defence_OOP_3Max_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Defence_OOP_3Max_EV'] = `${a.rows[0].count}`;
     }
@@ -10716,7 +10716,7 @@ class Stats {
                 AND LA_F.id_action != 0)
         `);
 
-        let result = a.rows[0].count / 100;
+        let result = a.rows[0].count;
         this.data['Postflop_Defence_OOP_HU_EV'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Defence_OOP_HU_EV'] = `${a.rows[0].count}`;
     }
