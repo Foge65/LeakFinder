@@ -657,8 +657,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
               AND tourney_hand_player_statistics.flg_p_3bet
-              AND NOT (tourney_hand_player_statistics.enum_allin = 'P'
-                OR tourney_hand_player_statistics.enum_allin = 'p')
+              AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '0'
                 OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '')
         `);
@@ -670,16 +669,21 @@ class Stats {
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
               AND tourney_hand_player_statistics.flg_p_3bet_opp
-              AND NOT (tourney_hand_player_statistics.enum_allin = 'P'
-                OR tourney_hand_player_statistics.enum_allin = 'p')
-              AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '0'
-                OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '')
+              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
+              AND (LA_P.action = 'F'
+                       AND tourney_hand_summary.str_actors_p = '0'
+                OR LA_P.action = 'C'
+                       AND tourney_hand_summary.str_actors_p = '09'
+                       AND LA_F.id_action != 0
+                OR LA_P.action LIKE 'R%')
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
