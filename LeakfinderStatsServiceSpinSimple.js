@@ -816,12 +816,11 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb >= 2.21
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb > 2.2
+              AND substring(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
               AND tourney_hand_player_statistics.flg_p_3bet
-              AND NOT (tourney_hand_player_statistics.enum_allin = 'P'
-                OR tourney_hand_player_statistics.enum_allin = 'p')
-              AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '0'
-                OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '')
+              AND tourney_hand_player_statistics.amt_p_raise_made /
+                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
         `);
 
         let b = await this.DB.query(`
@@ -835,12 +834,10 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb >= 2.21
-              AND tourney_hand_player_statistics.flg_p_3bet_opp
-              AND NOT (tourney_hand_player_statistics.enum_allin = 'P'
-                OR tourney_hand_player_statistics.enum_allin = 'p')
-              AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '0'
-                OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '')
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb > 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing /
+                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+              AND substring(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
