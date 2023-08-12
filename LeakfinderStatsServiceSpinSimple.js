@@ -1176,7 +1176,7 @@ class Stats {
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
-              AND (LA_P.action = 'F' OR LA_P.action LIKE 'X%' OR LA_P.action LIKE 'C%' OR LA_P.action LIKE 'R%')
+              AND LA_P.id_action != 0
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
