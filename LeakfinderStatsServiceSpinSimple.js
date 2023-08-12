@@ -996,10 +996,21 @@ class Stats {
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
-              AND tourney_hand_player_statistics.flg_p_open_opp
+              AND (LA_P.action = 'C'
+                       AND LA_F.id_action != 0
+                OR LA_P.action = 'F'
+                OR LA_P.action LIKE 'R')
+              AND (tourney_hand_summary.str_actors_p LIKE '9%'
+                OR tourney_hand_summary.str_actors_p = '')
+              AND tourney_hand_player_statistics.amt_before / tourney_blinds.amt_bb > 2
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
