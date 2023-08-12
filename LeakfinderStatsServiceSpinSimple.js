@@ -1292,8 +1292,8 @@ class Stats {
                     OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = ''))
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
               AND LA_P.action LIKE 'R%'
-              AND NOT (tourney_hand_player_statistics.enum_allin = 'P'
-                OR tourney_hand_player_statistics.enum_allin = 'p')
+              AND tourney_hand_player_statistics.amt_p_raise_made /
+                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
         `);
 
         let b = await this.DB.query(`
@@ -1302,6 +1302,7 @@ class Stats {
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
@@ -1309,6 +1310,7 @@ class Stats {
                 AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = '8'
                     OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = ''))
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
+              AND tourney_hand_player_statistics.amt_before / tourney_blinds.amt_bb >= 6
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
