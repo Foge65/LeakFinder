@@ -1407,11 +1407,9 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
+              AND tourney_hand_summary.str_actors_p = '0'
               AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_hand_player_statistics.amt_blind <= 2.2
-              AND NOT (tourney_hand_player_statistics.enum_face_allin = 'P'
-                OR tourney_hand_player_statistics.enum_face_allin = 'p')
-              AND NOT tourney_hand_player_statistics.flg_p_4bet_opp
-              AND NOT tourney_hand_player_statistics.flg_p_squeeze_opp
+              AND NOT tourney_hand_player_statistics.enum_face_allin ILIKE 'P'
               AND LA_P.action = 'F'
         `);
 
@@ -1425,15 +1423,11 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
+              AND substring(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '0'
+              AND (substring(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = '8'
+                OR substring(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = '')
               AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_hand_player_statistics.amt_blind <= 2.2
-              AND NOT (tourney_hand_player_statistics.enum_face_allin = 'P'
-                OR tourney_hand_player_statistics.enum_face_allin = 'p')
-              AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '0'
-              AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = '8'
-                OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = '')
-              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 1 FOR 2) = '80'
-              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) <= 2
-              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) <= 2
+              AND NOT tourney_hand_player_statistics.enum_face_allin ILIKE 'P'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
