@@ -1492,8 +1492,8 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_hand_player_statistics.amt_blind <= 2.2
               AND tourney_hand_player_statistics.flg_p_3bet
-              AND NOT (tourney_hand_player_statistics.enum_allin = 'P'
-                OR tourney_hand_player_statistics.enum_allin = 'p')
+              AND tourney_hand_player_statistics.amt_p_raise_made /
+                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'
         `);
 
@@ -1508,9 +1508,9 @@ class Stats {
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_hand_player_statistics.amt_blind <= 2.2
-              AND NOT (tourney_hand_player_statistics.enum_face_allin = 'P'
-                OR tourney_hand_player_statistics.enum_face_allin = 'p')
               AND tourney_hand_player_statistics.flg_p_3bet_opp
+              AND tourney_hand_player_statistics.amt_p_raise_made /
+                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
               AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '0'
                 AND ((SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = '8')
                     OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = ''))
