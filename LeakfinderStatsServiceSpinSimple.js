@@ -1352,8 +1352,7 @@ class Stats {
                 AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = '8'
                     OR SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = ''))
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
-              AND LA_P.action LIKE 'R%'
-              AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 3 FOR 1) = '0'
+              AND LA_P.action SIMILAR TO 'RC|RF'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
