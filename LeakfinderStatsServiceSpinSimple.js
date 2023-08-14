@@ -734,8 +734,8 @@ class Stats {
         this.formulas['Preflop_3Max_SB_vs_BTN_OR_less_2_2bb_3Bet_AI'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_EV() {
-        if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_EV")
+    async Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_EV() {
+        if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_EV")
 
         let a = await this.DB.query(`
             SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
@@ -754,12 +754,12 @@ class Stats {
         `);
 
         let result = a.rows[0].count;
-        this.data['Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_EV'] = isNaN(result) ? 0 : result;
-        this.formulas['Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_EV'] = `${a.rows[0].count}`;
+        this.data['Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_EV'] = `${a.rows[0].count}`;
     }
 
-    async Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_Call() {
-        if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_Call")
+    async Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_Call() {
+        if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_Call")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -798,12 +798,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_Call'] = isNaN(result) ? 0 : result;
-        this.formulas['Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_Call'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_Call'] = isNaN(result) ? 0 : result;
+        this.formulas['Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_Call'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_3Bet_NAI() {
-        if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_3Bet_NAI")
+    async Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_3Bet_NAI() {
+        if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_3Bet_NAI")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -841,12 +841,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_3Bet_NAI'] = isNaN(result) ? 0 : result;
-        this.formulas['Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_3Bet_NAI'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_3Bet_NAI'] = isNaN(result) ? 0 : result;
+        this.formulas['Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_3Bet_NAI'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_3Bet_AI() {
-        if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_3Bet_AI")
+    async Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_3Bet_AI() {
+        if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_3Bet_AI")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -886,8 +886,8 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_3Bet_AI'] = isNaN(result) ? 0 : result;
-        this.formulas['Preflop_3Max_SB_vs_BTN_OR_more_2_21bb_3Bet_AI'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_3Bet_AI'] = isNaN(result) ? 0 : result;
+        this.formulas['Preflop_3Max_SB_vs_BTN_OR_more_2_2bb_3Bet_AI'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async Preflop_3Max_SB_vs_BB_EV() {
@@ -1623,8 +1623,8 @@ class Stats {
         this.formulas['Preflop_3Max_BB_vs_BTN_OR_less_2_2bb_3Bet_AI'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_EV() {
-        if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_EV")
+    async Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_EV() {
+        if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_EV")
 
         let a = await this.DB.query(`
             SELECT SUM(tourney_hand_player_statistics.amt_expected_won / tourney_blinds.amt_bb) * 100
@@ -1647,12 +1647,12 @@ class Stats {
         `);
 
         let result = a.rows[0].count;
-        this.data['Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_EV'] = isNaN(result) ? 0 : result;
-        this.formulas['Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_EV'] = `${a.rows[0].count}`;
+        this.data['Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_EV'] = isNaN(result) ? 0 : result;
+        this.formulas['Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_EV'] = `${a.rows[0].count}`;
     }
 
-    async Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_Fold() {
-        if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_Fold")
+    async Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_Fold() {
+        if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_Fold")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -1692,12 +1692,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_Fold'] = isNaN(result) ? 0 : result;
-        this.formulas['Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_Fold'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_Fold'] = isNaN(result) ? 0 : result;
+        this.formulas['Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_Fold'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_Call() {
-        if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_Call")
+    async Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_Call() {
+        if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_Call")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -1740,12 +1740,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_Call'] = isNaN(result) ? 0 : result;
-        this.formulas['Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_Call'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_Call'] = isNaN(result) ? 0 : result;
+        this.formulas['Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_Call'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_3Bet_NAI() {
-        if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_3Bet_NAI")
+    async Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_3Bet_NAI() {
+        if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_3Bet_NAI")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -1788,12 +1788,12 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_3Bet_NAI'] = isNaN(result) ? 0 : result;
-        this.formulas['Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_3Bet_NAI'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_3Bet_NAI'] = isNaN(result) ? 0 : result;
+        this.formulas['Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_3Bet_NAI'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_3Bet_AI() {
-        if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_3Bet_AI")
+    async Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_3Bet_AI() {
+        if (this.res) this.res.write("Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_3Bet_AI")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -1836,8 +1836,8 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_3Bet_AI'] = isNaN(result) ? 0 : result;
-        this.formulas['Preflop_3Max_BB_vs_BTN_OR_more_2_21bb_3Bet_AI'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_3Bet_AI'] = isNaN(result) ? 0 : result;
+        this.formulas['Preflop_3Max_BB_vs_BTN_OR_more_2_2bb_3Bet_AI'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async Preflop_3Max_BB_vs_BTN_OS_EV() {
