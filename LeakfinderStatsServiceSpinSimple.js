@@ -1974,7 +1974,7 @@ class Stats {
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
-              AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
+              AND tourney_hand_summary.str_actors_p = '9'
               AND LA_P.action = 'X'
         `);
 
