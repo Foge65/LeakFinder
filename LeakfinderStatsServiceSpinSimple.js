@@ -444,7 +444,7 @@ class Stats {
         this.data['Preflop_3Max_SB_vs_BTN_VPIP'] = isNaN(result) ? 0 : result;
         this.formulas['Preflop_3Max_SB_vs_BTN_VPIP'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
-//
+
     async Preflop_3Max_SB_vs_BTN_Limp_EV() {
         if (this.res) this.res.write("Preflop_3Max_SB_vs_BTN_Limp_EV")
 
