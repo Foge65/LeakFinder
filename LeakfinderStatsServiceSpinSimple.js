@@ -2021,16 +2021,13 @@ class Stats {
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
-                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
-              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) <= 2
-              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) <= 2
-              AND (LA_P.action = 'X'
-                OR LA_P.action = 'R')
+              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb >= 5
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
