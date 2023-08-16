@@ -2196,9 +2196,8 @@ class Stats {
               AND tourney_hand_player_statistics.position = 8
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.15
               AND LA_P.action = 'C'
         `);
 
@@ -2214,11 +2213,8 @@ class Stats {
               AND tourney_hand_player_statistics.position = 8
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
-              AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) <= 2
-              AND (LA_P.action = 'F'
-                OR LA_P.action = 'C'
-                OR LA_P.action = 'R')
+              AND tourney_hand_player_statistics.amt_p_raise_facing /
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.24
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
