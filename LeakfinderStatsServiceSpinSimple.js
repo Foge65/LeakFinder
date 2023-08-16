@@ -2273,16 +2273,16 @@ class Stats {
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
-                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
+              AND tourney_hand_player_statistics.amt_p_raise_facing /
+                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.3
               AND tourney_hand_player_statistics.flg_p_3bet
-              AND tourney_hand_player_statistics.enum_allin ILIKE 'P'
-              AND LA_P.action = 'R'
+              AND tourney_hand_player_statistics.amt_p_raise_made /
+                  tourney_hand_player_statistics.amt_p_effective_stack > 0.6
         `);
 
         let b = await this.DB.query(`
@@ -2297,12 +2297,9 @@ class Stats {
               AND tourney_hand_player_statistics.position = 8
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
+              AND tourney_hand_player_statistics.amt_p_raise_facing /
+                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.26
               AND tourney_hand_player_statistics.flg_p_3bet_opp
-              AND (LA_P.action = 'F'
-                OR LA_P.action = 'C'
-                OR LA_P.action = 'R')
-              AND CHAR_LENGTH(tourney_hand_summary.str_aggressors_p) <= 3
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
