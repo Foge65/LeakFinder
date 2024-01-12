@@ -152,7 +152,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
               AND tourney_hand_player_statistics.flg_p_first_raise
-              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb < 2.2
         `);
 
         let b = await this.DB.query(`
@@ -187,7 +187,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
               AND LA_P.action = 'RC'
-              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb < 2.2
               AND char_length(tourney_hand_summary.str_actors_p) = 3
               AND LA_F.id_action != 0
         `);
@@ -204,9 +204,9 @@ class Stats {
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
-              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb < 2.2
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND tourney_hand_player_statistics.flg_p_4bet_opp
               AND (LA_P.action = 'RF'
                        AND char_length(tourney_hand_summary.str_actors_p) = 2
@@ -240,7 +240,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
               AND LA_P.action = 'RC'
-              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb < 2.2
               AND char_length(tourney_hand_summary.str_actors_p) = 3
               AND LA_F.id_action = 0
         `);
@@ -251,11 +251,12 @@ class Stats {
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
                      INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
-                     INNER JOIN tourney_hand_summary ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
-              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb < 2.2
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.enum_face_allin ILIKE 'P'
               AND NOT tourney_hand_player_statistics.flg_p_4bet_opp
@@ -283,7 +284,7 @@ class Stats {
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
-              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb < 2.2
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.flg_p_4bet
               AND substring(tourney_hand_summary.str_actors_p FROM 1 FOR 3) SIMILAR TO '090|080'
@@ -297,7 +298,7 @@ class Stats {
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 0
-              AND (tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb <= 2.2
+              AND (tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb < 2.2
                 AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P')
               AND (tourney_hand_player_statistics.flg_p_3bet_def_opp
                 AND NOT tourney_hand_player_statistics.enum_face_allin ILIKE 'P')
@@ -518,7 +519,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
               AND tourney_hand_player_statistics.flg_p_first_raise
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.3
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let b = await this.DB.query(`
@@ -551,7 +552,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
               AND tourney_hand_player_statistics.flg_p_first_raise
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack >= 0.4
         `);
 
         let b = await this.DB.query(`
@@ -586,7 +587,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
               AND (tourney_hand_player_statistics.flg_f_saw
-              AND LA_F.id_action = 0
+                       AND LA_F.id_action = 0
                 OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
@@ -608,7 +609,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2.2
               AND LA_P.action = 'C'
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
         `);
@@ -627,7 +628,7 @@ class Stats {
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND substring(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '0'
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2.2
               AND amt_p_effective_stack / tourney_blinds.amt_bb >= 2
               AND (LA_P.action = 'F'
                 OR LA_P.action = 'C'
@@ -655,7 +656,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2.2
               AND tourney_hand_player_statistics.flg_p_3bet
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 3 FOR 1) = '0'
@@ -675,7 +676,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2.2
               AND tourney_hand_player_statistics.flg_p_3bet_opp
               AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
               AND (LA_P.action = 'F'
@@ -706,7 +707,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2.2
               AND substring(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
               AND LA_P.action = 'R'
               AND tourney_hand_player_statistics.amt_p_raise_made /
@@ -724,7 +725,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2.2
               AND substring(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
               AND tourney_hand_player_statistics.flg_p_3bet_opp
         `);
@@ -749,8 +750,8 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb > 2.2
               AND (tourney_hand_player_statistics.flg_f_saw
-              AND LA_F.id_action = 0
-              OR NOT tourney_hand_player_statistics.flg_f_saw)
+                       AND LA_F.id_action = 0
+                OR NOT tourney_hand_player_statistics.flg_f_saw)
         `);
 
         let result = a.rows[0].count;
@@ -773,10 +774,10 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb > 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb >= 2.2
               AND substring(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.3
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND LA_P.action = 'C'
         `);
 
@@ -791,10 +792,10 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb > 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb >= 2.2
               AND substring(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.3
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -816,11 +817,11 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb > 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb >= 2.2
               AND substring(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
               AND tourney_hand_player_statistics.flg_p_3bet
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let b = await this.DB.query(`
@@ -834,9 +835,9 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb > 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb >= 2.2
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND substring(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
         `);
 
@@ -859,10 +860,10 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb > 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb >= 2.2
               AND substring(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.5
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND tourney_hand_player_statistics.flg_p_3bet
               AND tourney_hand_player_statistics.enum_allin ILIKE 'P'
         `);
@@ -878,10 +879,10 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb > 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb >= 2.2
               AND substring(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.5
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND tourney_hand_player_statistics.flg_p_3bet_opp
         `);
 
@@ -988,7 +989,7 @@ class Stats {
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_first_raise
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND tourney_hand_summary.str_actors_p LIKE '9%'
         `);
 
@@ -1031,10 +1032,10 @@ class Stats {
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.3
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND LA_P.action = 'RF'
         `);
 
@@ -1048,10 +1049,10 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
               AND tourney_hand_player_statistics.flg_p_first_raise
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.3
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -1072,10 +1073,10 @@ class Stats {
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack >= 0.4
               AND LA_P.action = 'RF'
         `);
 
@@ -1089,10 +1090,10 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
               AND tourney_hand_player_statistics.flg_p_first_raise
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack >= 0.4
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -1113,7 +1114,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 0
               AND tourney_hand_player_statistics.flg_p_first_raise
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack >= 0.4
         `);
 
         let b = await this.DB.query(`
@@ -1379,7 +1380,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
               AND LA_P.action = 'R'
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack >= 0.4
         `);
 
         let b = await this.DB.query(`
@@ -1445,7 +1446,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2.2
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND NOT tourney_hand_player_statistics.flg_p_4bet_opp
               AND NOT tourney_hand_player_statistics.flg_p_squeeze_opp
@@ -1463,7 +1464,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2.2
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '0'
               AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 2 FOR 1) = '8'
@@ -1493,7 +1494,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2.2
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND NOT tourney_hand_player_statistics.flg_p_4bet_opp
               AND NOT tourney_hand_player_statistics.flg_p_squeeze_opp
@@ -1512,7 +1513,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2.2
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND NOT tourney_hand_player_statistics.flg_p_4bet_opp
               AND NOT tourney_hand_player_statistics.flg_p_squeeze_opp
@@ -1538,7 +1539,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2.2
               AND tourney_hand_player_statistics.flg_p_3bet
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 2) = '08'
@@ -1555,7 +1556,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2.2
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2.2
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND tourney_hand_player_statistics.flg_p_3bet_opp
               AND (SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '0'
@@ -1657,7 +1658,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb >= 2.201
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb >= 2.2
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND NOT tourney_hand_player_statistics.flg_p_4bet_opp
               AND NOT tourney_hand_player_statistics.flg_p_squeeze_opp
@@ -1675,7 +1676,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb >= 2.201
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb >= 2.2
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND SUBSTRING(tourney_hand_summary.str_aggressors_p FROM 2 FOR 1) = '0'
         `);
@@ -2012,7 +2013,7 @@ class Stats {
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
               AND tourney_hand_player_statistics.flg_p_first_raise
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let b = await this.DB.query(`
@@ -2157,7 +2158,7 @@ class Stats {
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.24
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND LA_P.action = 'F'
         `);
 
@@ -2173,7 +2174,7 @@ class Stats {
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.24
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -2197,7 +2198,7 @@ class Stats {
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.15
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND LA_P.action = 'C'
         `);
 
@@ -2214,7 +2215,7 @@ class Stats {
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack < 0.24
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -2237,7 +2238,7 @@ class Stats {
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.5
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND tourney_hand_player_statistics.flg_p_3bet
               AND tourney_hand_player_statistics.amt_p_raise_made /
                   tourney_hand_player_statistics.amt_p_effective_stack <= 0.6
@@ -2255,7 +2256,7 @@ class Stats {
               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.16
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND tourney_hand_player_statistics.flg_p_3bet_opp
         `);
 
@@ -2618,7 +2619,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND tourney_hand_player_statistics.flg_p_squeeze_opp
               AND tourney_hand_player_statistics.flg_p_3bet
@@ -2636,7 +2637,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 3
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND tourney_hand_player_statistics.flg_p_squeeze_opp
               AND tourney_hand_player_statistics.flg_p_3bet_opp
@@ -2899,7 +2900,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_limp
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND LA_P.action = 'CF'
         `);
 
@@ -2914,7 +2915,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_limp
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND (LA_P.action = 'CF'
                 OR LA_P.action = 'CC'
                 OR LA_P.action = 'CR')
@@ -2939,7 +2940,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_limp
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack >= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
               AND LA_P.action = 'CF'
         `);
 
@@ -2954,7 +2955,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_limp
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack >= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
               AND (LA_P.action = 'CF'
                 OR LA_P.action = 'CC')
         `);
@@ -2978,7 +2979,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_limp
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND LA_P.action = 'CC'
         `);
 
@@ -2993,7 +2994,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_limp
               AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND (LA_P.action = 'CF'
                 OR LA_P.action = 'CC'
                 OR LA_P.action = 'CR')
@@ -3125,7 +3126,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_first_raise
               AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb = 2
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND LA_P.action = 'RC'
         `);
 
@@ -3141,7 +3142,7 @@ class Stats {
               AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb = 2
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -3164,7 +3165,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_first_raise
               AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb = 2
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack >= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
               AND LA_P.action = 'RC'
         `);
 
@@ -3180,7 +3181,7 @@ class Stats {
               AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb = 2
               AND tourney_hand_player_statistics.flg_p_3bet_def_opp
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack >= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -3202,7 +3203,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_first_raise
               AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb > 2
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.3
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.3
         `);
 
         let b = await this.DB.query(`
@@ -3296,7 +3297,7 @@ class Stats {
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 9
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 1
+              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 2
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -3372,7 +3373,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
               AND LA_P.action LIKE 'R%'
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let b = await this.DB.query(`
@@ -3404,7 +3405,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
               AND LA_P.action = 'RF'
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let b = await this.DB.query(`
@@ -3419,7 +3420,7 @@ class Stats {
               AND LA_P.action LIKE 'R%'
               AND CHAR_LENGTH(LA_P.action) = 2
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -3441,7 +3442,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
               AND LA_P.action = 'R'
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack >= 0.4
         `);
 
         let b = await this.DB.query(`
@@ -3495,10 +3496,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2
-              AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
-              AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2
               AND LA_P.action = 'F'
         `);
 
@@ -3511,10 +3509,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2
-              AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
-              AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -3535,10 +3530,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2
-              AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
-              AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2
               AND LA_P.action = 'C'
         `);
 
@@ -3551,10 +3543,7 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2
-              AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
-              AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -3574,12 +3563,10 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2
-              AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2
               AND tourney_hand_player_statistics.flg_p_3bet
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let b = await this.DB.query(`
@@ -3591,12 +3578,10 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2
-              AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb < 2
               AND tourney_hand_player_statistics.flg_p_3bet_opp
               AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -3684,7 +3669,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb > 2
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
               AND LA_P.action = 'F'
         `);
 
@@ -3699,7 +3684,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_face_raise
               AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb > 2
               AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -4621,8 +4606,8 @@ class Stats {
               AND (tourney_hand_player_statistics.cnt_players = 2
                 AND (LA_P.action = 'C'
                     OR LA_P.action = 'R')
-                AND (LA_T.action LIKE 'B%'))
-
+                AND (LA_T.action LIKE 'B%')
+                )
         `);
 
         let b = await this.DB.query(`
@@ -4793,7 +4778,8 @@ class Stats {
               AND tourney_hand_player_statistics.flg_r_bet
               AND (tourney_hand_player_statistics.cnt_players = 2
                 AND (LA_P.action = 'C'
-                    OR LA_P.action = 'R'))
+                    OR LA_P.action = 'R')
+                )
         `);
 
         let b = await this.DB.query(`
@@ -4810,7 +4796,8 @@ class Stats {
                 AND (LA_P.action = 'C'
                     OR LA_P.action = 'R')
                 AND (LA_R.action LIKE 'B%'
-                    OR LA_R.action = 'X'))
+                    OR LA_R.action = 'X')
+                )
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -5099,8 +5086,8 @@ class Stats {
                         AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
                     OR
                     (tourney_hand_player_statistics.position = 8
-                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
-
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')
+                )
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -5234,7 +5221,8 @@ class Stats {
                         AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
                     OR
                     (tourney_hand_player_statistics.position = 8
-                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')
+                )
         `);
 
         let b = await this.DB.query(`
@@ -5389,7 +5377,8 @@ class Stats {
                         AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
                     OR
                     (tourney_hand_player_statistics.position = 8
-                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')
+                )
         `);
 
         let b = await this.DB.query(`
@@ -5413,7 +5402,8 @@ class Stats {
                         AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
                     OR
                     (tourney_hand_player_statistics.position = 8
-                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')
+                )
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -5546,7 +5536,8 @@ class Stats {
                         AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
                     OR
                     (tourney_hand_player_statistics.position = 8
-                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')
+                )
         `);
 
         let b = await this.DB.query(`
@@ -5570,7 +5561,8 @@ class Stats {
                         AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
                     OR
                     (tourney_hand_player_statistics.position = 8
-                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')
+                )
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -5708,7 +5700,8 @@ class Stats {
                         AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
                     OR
                     (tourney_hand_player_statistics.position = 8
-                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')
+                )
         `);
 
         let b = await this.DB.query(`
@@ -5734,7 +5727,8 @@ class Stats {
                         AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
                     OR
                     (tourney_hand_player_statistics.position = 8
-                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')
+                )
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -5876,7 +5870,8 @@ class Stats {
                         AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
                     OR
                     (tourney_hand_player_statistics.position = 8
-                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')
+                )
         `);
 
         let b = await this.DB.query(`
@@ -5902,7 +5897,8 @@ class Stats {
                         AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
                     OR
                     (tourney_hand_player_statistics.position = 8
-                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')
+                )
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -8168,13 +8164,11 @@ class Stats {
               AND tourney_hand_player_statistics.flg_f_has_position
               AND LA_F.action = 'F'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -8189,13 +8183,12 @@ class Stats {
               AND tourney_hand_player_statistics.flg_f_has_position
               AND tourney_hand_player_statistics.amt_f_bet_facing > 0
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR
+                     (tourney_hand_player_statistics.position = 8
+                         AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -8319,13 +8312,11 @@ class Stats {
               AND LA_F.action = 'C'
               AND LA_T.action = 'F'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -8342,13 +8333,11 @@ class Stats {
               AND LA_F.action = 'C'
               AND tourney_hand_player_statistics.amt_t_bet_facing > 0
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -8415,15 +8404,12 @@ class Stats {
               AND LA_T.action = 'C'
               AND LA_R.action = 'F'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -8444,15 +8430,12 @@ class Stats {
               AND LA_T.action = 'C'
               AND tourney_hand_player_statistics.amt_r_bet_facing > 0
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -8482,13 +8465,11 @@ class Stats {
               AND LA_T.action = 'C'
               AND LA_R.action = 'F'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -8507,13 +8488,11 @@ class Stats {
               AND LA_T.action = 'C'
               AND tourney_hand_player_statistics.amt_r_bet_facing > 0
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -8645,13 +8624,11 @@ class Stats {
               AND LA_F.action = 'X'
               AND LA_T.action = 'F'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -8668,13 +8645,11 @@ class Stats {
               AND LA_F.action = 'X'
               AND tourney_hand_player_statistics.amt_t_bet_facing > 0
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -8741,15 +8716,12 @@ class Stats {
               AND LA_T.action = 'C'
               AND LA_R.action = 'F'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -8770,15 +8742,12 @@ class Stats {
               AND LA_T.action = 'C'
               AND tourney_hand_player_statistics.amt_r_bet_facing > 0
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -8808,13 +8777,11 @@ class Stats {
               AND LA_T.action = 'C'
               AND LA_R.action = 'F'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -8833,13 +8800,11 @@ class Stats {
               AND LA_T.action = 'C'
               AND tourney_hand_player_statistics.amt_r_bet_facing > 0
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -8910,15 +8875,12 @@ class Stats {
               AND LA_T.action = 'X'
               AND LA_R.action = 'F'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -8939,15 +8901,12 @@ class Stats {
               AND LA_T.action = 'X'
               AND tourney_hand_player_statistics.amt_r_bet_facing > 0
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -8977,13 +8936,11 @@ class Stats {
               AND LA_T.action = 'X'
               AND LA_R.action = 'F'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9002,13 +8959,11 @@ class Stats {
               AND LA_T.action = 'X'
               AND tourney_hand_player_statistics.amt_r_bet_facing > 0
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9079,15 +9034,12 @@ class Stats {
               AND LA_T.action = 'X'
               AND LA_R.action = 'F'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -9108,15 +9060,12 @@ class Stats {
               AND LA_T.action = 'X'
               AND tourney_hand_player_statistics.amt_r_bet_facing > 0
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -9146,13 +9095,11 @@ class Stats {
               AND LA_T.action = 'X'
               AND LA_R.action = 'F'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9171,13 +9118,11 @@ class Stats {
               AND LA_T.action = 'X'
               AND tourney_hand_player_statistics.amt_r_bet_facing > 0
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9243,15 +9188,12 @@ class Stats {
               AND tourney_hand_player_statistics.flg_f_has_position
               AND tourney_hand_player_statistics.flg_f_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -9269,15 +9211,12 @@ class Stats {
               AND tourney_hand_player_statistics.flg_f_has_position
               AND LA_F.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -9302,13 +9241,11 @@ class Stats {
               AND tourney_hand_player_statistics.flg_f_has_position
               AND tourney_hand_player_statistics.flg_f_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9324,13 +9261,11 @@ class Stats {
               AND tourney_hand_player_statistics.flg_f_has_position
               AND LA_F.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9390,15 +9325,12 @@ class Stats {
               AND LA_F.action = 'C'
               AND tourney_hand_player_statistics.flg_t_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -9418,15 +9350,12 @@ class Stats {
               AND LA_F.action = 'C'
               AND LA_T.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -9453,13 +9382,11 @@ class Stats {
               AND LA_F.action = 'C'
               AND tourney_hand_player_statistics.flg_t_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9477,13 +9404,11 @@ class Stats {
               AND LA_F.action = 'C'
               AND LA_T.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9549,15 +9474,12 @@ class Stats {
               AND LA_T.action = 'C'
               AND tourney_hand_player_statistics.flg_r_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -9579,15 +9501,12 @@ class Stats {
               AND LA_T.action = 'C'
               AND LA_R.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -9616,13 +9535,11 @@ class Stats {
               AND LA_T.action = 'C'
               AND tourney_hand_player_statistics.flg_r_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9642,13 +9559,11 @@ class Stats {
               AND LA_T.action = 'C'
               AND LA_R.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9716,15 +9631,12 @@ class Stats {
               AND LA_F.action = 'B'
               AND tourney_hand_player_statistics.flg_t_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -9744,15 +9656,12 @@ class Stats {
               AND LA_F.action = 'B'
               AND LA_T.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -9779,13 +9688,11 @@ class Stats {
               AND LA_F.action = 'B'
               AND tourney_hand_player_statistics.flg_t_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9803,13 +9710,11 @@ class Stats {
               AND LA_F.action = 'B'
               AND LA_T.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9876,14 +9781,11 @@ class Stats {
               AND tourney_hand_player_statistics.flg_r_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
                        AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
+                           (tourney_hand_player_statistics.position = 0 AND LA_P.action = 'RC'
                                AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                           OR (tourney_hand_player_statistics.position = 8
+                           AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -9905,15 +9807,12 @@ class Stats {
               AND LA_T.action = 'B'
               AND LA_R.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -9942,13 +9841,11 @@ class Stats {
               AND LA_T.action = 'B'
               AND tourney_hand_player_statistics.flg_r_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -9968,13 +9865,11 @@ class Stats {
               AND LA_T.action = 'B'
               AND LA_R.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -10042,15 +9937,12 @@ class Stats {
               AND LA_F.action = 'X'
               AND tourney_hand_player_statistics.flg_t_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -10070,15 +9962,12 @@ class Stats {
               AND LA_F.action = 'X'
               AND LA_T.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -10105,13 +9994,11 @@ class Stats {
               AND LA_F.action = 'X'
               AND tourney_hand_player_statistics.flg_t_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -10129,13 +10016,11 @@ class Stats {
               AND LA_F.action = 'X'
               AND LA_T.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -10201,15 +10086,12 @@ class Stats {
               AND LA_T.action = 'B'
               AND tourney_hand_player_statistics.flg_r_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -10231,15 +10113,12 @@ class Stats {
               AND LA_T.action = 'B'
               AND LA_R.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -10268,13 +10147,11 @@ class Stats {
               AND LA_T.action = 'B'
               AND tourney_hand_player_statistics.flg_r_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -10294,13 +10171,11 @@ class Stats {
               AND LA_T.action = 'B'
               AND LA_R.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -10370,15 +10245,12 @@ class Stats {
               AND LA_T.action = 'X'
               AND tourney_hand_player_statistics.flg_r_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -10400,15 +10272,12 @@ class Stats {
               AND LA_T.action = 'X'
               AND LA_R.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
-                OR
-                   tourney_hand_player_statistics.cnt_players = 2
+                       AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
+                OR tourney_hand_player_statistics.cnt_players = 2
                        AND tourney_hand_player_statistics.position = 9
                        AND LA_P.action SIMILAR TO 'CC|RC'
                 )
@@ -10437,13 +10306,11 @@ class Stats {
               AND LA_T.action = 'X'
               AND tourney_hand_player_statistics.flg_r_bet
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
@@ -10463,13 +10330,11 @@ class Stats {
               AND LA_T.action = 'X'
               AND LA_R.action SIMILAR TO 'X|B%'
               AND (tourney_hand_player_statistics.cnt_players = 3
-                AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND LA_P.action = 'RC'
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND LA_P.action SIMILAR TO 'X|C'))
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND LA_P.action = 'RC'
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 3)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND LA_P.action SIMILAR TO 'X|C'))
                 )
         `);
 
