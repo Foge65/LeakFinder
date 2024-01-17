@@ -3041,8 +3041,9 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_limp
-              AND LA_P.action = 'CR'
-              AND tourney_hand_player_statistics.enum_allin ILIKE 'P'
+              AND tourney_hand_player_statistics.amt_p_raise_facing /
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
+              AND LA_P.action LIKE 'CR%'
         `);
 
         let b = await this.DB.query(`
@@ -3054,10 +3055,9 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_limp
-              AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
-              AND (LA_P.action = 'CF'
-                OR LA_P.action = 'CC'
-                OR LA_P.action = 'CR')
+              AND tourney_hand_player_statistics.amt_p_raise_facing /
+                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
+              AND LA_P.action ~ 'C(F|C|R)'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
