@@ -2868,7 +2868,6 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_limp
-              AND NOT tourney_hand_player_statistics.enum_allin ILIKE 'P'
         `);
 
         let b = await this.DB.query(`
