@@ -2975,7 +2975,7 @@ class Stats {
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_limp
               AND (tourney_hand_player_statistics.amt_p_raise_facing + 1 * tourney_blinds.amt_bb) /
-                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
               AND LA_P.action = 'CC'
         `);
 
@@ -2990,7 +2990,7 @@ class Stats {
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_limp
               AND (tourney_hand_player_statistics.amt_p_raise_facing + 1 * tourney_blinds.amt_bb) /
-                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
+                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
               AND LA_P.action SIMILAR TO 'C(F|C|R)'
         `);
 
