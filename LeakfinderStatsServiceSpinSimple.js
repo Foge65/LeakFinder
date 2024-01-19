@@ -2913,7 +2913,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_limp
               AND tourney_hand_player_statistics.amt_p_raise_facing /
                   tourney_hand_player_statistics.amt_p_effective_stack < 0.4
-              AND LA_P.action ~ 'C(F|C|R)'
+              AND LA_P.action SIMILAR TO 'C(F|C|R)'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -2985,7 +2985,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_limp
               AND tourney_hand_player_statistics.amt_p_raise_facing /
                   tourney_hand_player_statistics.amt_p_effective_stack < 0.4
-              AND LA_P.action ~ 'C(F|C|R)'
+              AND LA_P.action SIMILAR TO 'C(F|C|R)'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -3021,7 +3021,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_limp
               AND tourney_hand_player_statistics.amt_p_raise_facing /
                   tourney_hand_player_statistics.amt_p_effective_stack > 0.4
-              AND LA_P.action ~ 'C(F|C|R)'
+              AND LA_P.action SIMILAR TO 'C(F|C|R)'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -3057,7 +3057,7 @@ class Stats {
               AND tourney_hand_player_statistics.flg_p_limp
               AND tourney_hand_player_statistics.amt_p_raise_facing /
                   tourney_hand_player_statistics.amt_p_effective_stack < 0.4
-              AND LA_P.action ~ 'C(F|C|R)'
+              AND LA_P.action SIMILAR TO 'C(F|C|R)'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -3112,8 +3112,9 @@ class Stats {
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_first_raise
               AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb = 2
-              AND tourney_hand_player_statistics.amt_p_raise_facing /
+              AND (tourney_hand_player_statistics.amt_p_raise_facing + 2 * tourney_blinds.amt_bb) /
                   tourney_hand_player_statistics.amt_p_effective_stack < 0.4
+              AND NOT tourney_hand_player_statistics.enum_face_allin ILIKE 'P'
               AND LA_P.action = 'RC'
         `);
 
@@ -3122,14 +3123,16 @@ class Stats {
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
                      INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_first_raise
               AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb = 2
-              AND tourney_hand_player_statistics.flg_p_3bet_def_opp
-              AND tourney_hand_player_statistics.amt_p_raise_facing /
+              AND (tourney_hand_player_statistics.amt_p_raise_facing + 2 * tourney_blinds.amt_bb) /
                   tourney_hand_player_statistics.amt_p_effective_stack < 0.4
+              AND NOT tourney_hand_player_statistics.enum_face_allin ILIKE 'P'
+              AND LA_P.action SIMILAR TO 'R(F|C|R)'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
