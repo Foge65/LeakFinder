@@ -3049,8 +3049,8 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_limp
-              AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
+              AND tourney_hand_player_statistics.flg_p_face_raise
+              AND NOT tourney_hand_player_statistics.enum_face_allin ILIKE 'P'
               AND LA_P.action LIKE 'CR%'
         `);
 
@@ -3063,8 +3063,8 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 9
               AND tourney_hand_player_statistics.flg_p_limp
-              AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
+              AND tourney_hand_player_statistics.flg_p_face_raise
+              AND NOT tourney_hand_player_statistics.enum_face_allin ILIKE 'P'
               AND LA_P.action SIMILAR TO 'C(F|C|R)'
         `);
 
