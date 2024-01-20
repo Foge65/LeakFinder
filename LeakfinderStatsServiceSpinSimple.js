@@ -3294,11 +3294,11 @@ class Stats {
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 2
-              AND tourney_hand_player_statistics.position = 9
-              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.id_action != 0
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
