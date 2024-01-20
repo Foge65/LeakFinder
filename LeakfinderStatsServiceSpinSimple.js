@@ -3404,23 +3404,17 @@ class Stats {
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
               AND LA_P.action = 'RF'
-              AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
         `);
 
         let b = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
-                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.cnt_p_face_limpers = 1
-              AND LA_P.action LIKE 'R%'
-              AND CHAR_LENGTH(LA_P.action) = 2
-              AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack < 0.4
+              AND tourney_hand_player_statistics.flg_p_3bet_def_opp
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
