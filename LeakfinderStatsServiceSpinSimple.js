@@ -3607,12 +3607,10 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2
-              AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+              AND (tourney_hand_player_statistics.amt_p_raise_facing + 1 * tourney_blinds.amt_bb) / tourney_blinds.amt_bb = 2
               AND tourney_hand_player_statistics.flg_p_3bet
-              AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
+              AND tourney_hand_player_statistics.enum_allin ILIKE 'P'
+              AND tourney_hand_player_statistics.amt_p_raise_made / tourney_blinds.amt_bb > 4
         `);
 
         let b = await this.DB.query(`
@@ -3624,12 +3622,9 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing / tourney_blinds.amt_bb <= 2
-              AND tourney_hand_player_statistics.amt_p_raise_facing /
-                  tourney_hand_player_statistics.amt_p_effective_stack <= 0.4
+              AND (tourney_hand_player_statistics.amt_p_raise_facing + 1 * tourney_blinds.amt_bb) / tourney_blinds.amt_bb = 2
               AND tourney_hand_player_statistics.flg_p_3bet_opp
-              AND tourney_hand_player_statistics.amt_p_raise_made /
-                  tourney_hand_player_statistics.amt_p_effective_stack > 0.4
+              AND tourney_hand_player_statistics.amt_p_effective_stack / tourney_blinds.amt_bb > 4
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
