@@ -3048,9 +3048,6 @@ class Stats {
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 9
-              AND tourney_hand_player_statistics.flg_p_limp
-              AND tourney_hand_player_statistics.flg_p_face_raise
-              AND NOT tourney_hand_player_statistics.enum_face_allin ILIKE 'P'
               AND LA_P.action LIKE 'CR%'
         `);
 
@@ -3062,10 +3059,9 @@ class Stats {
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 9
-              AND tourney_hand_player_statistics.flg_p_limp
-              AND tourney_hand_player_statistics.flg_p_face_raise
               AND NOT tourney_hand_player_statistics.enum_face_allin ILIKE 'P'
-              AND LA_P.action SIMILAR TO 'C(F|C|R)'
+              AND tourney_hand_player_statistics.flg_p_3bet_opp
+              AND LA_P.action SIMILAR TO 'C(F|C|R%)'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
