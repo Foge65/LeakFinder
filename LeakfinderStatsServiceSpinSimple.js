@@ -11045,6 +11045,7 @@ class Stats {
               AND tourney_hand_player_statistics.position = 8
               AND LA_P.action SIMILAR TO 'X|C'
               AND tourney_hand_player_statistics.amt_f_bet_facing > 0
+              AND NOT tourney_hand_player_statistics.enum_face_allin ILIKE 'F'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
