@@ -4951,25 +4951,20 @@ class Stats {
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
             WHERE ${this.check_str}
-              AND tourney_hand_player_statistics.flg_f_has_position
-              AND tourney_hand_player_statistics.flg_f_bet
-              AND tourney_hand_player_statistics.flg_t_check
-              AND tourney_hand_player_statistics.flg_r_bet
-              AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND LA_P.action = 'R'
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 2
-                               AND NOT tourney_hand_player_statistics.flg_p_3bet_def_opp
-                               AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
-                OR
-                   (tourney_hand_player_statistics.cnt_players = 2
-                       AND (LA_P.action = 'C'
-                           OR LA_P.action = 'R'))
-                )
+              AND ((tourney_hand_player_statistics.cnt_players = 3
+                AND LA_P.action = 'R'
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 2
+                    AND NOT tourney_hand_player_statistics.flg_p_3bet_def_opp
+                    AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')))
+                OR (tourney_hand_player_statistics.cnt_players = 2
+                    AND tourney_hand_player_statistics.position = 9
+                    AND LA_P.action SIMILAR TO 'C|R'))
+              AND LA_F.action = 'B'
+              AND LA_T.action = 'X'
+              AND LA_R.action LIKE 'B%'
         `);
 
         let b = await this.DB.query(`
@@ -4980,26 +4975,20 @@ class Stats {
                      INNER JOIN tourney_hand_summary
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
             WHERE ${this.check_str}
-              AND tourney_hand_player_statistics.flg_f_has_position
-              AND tourney_hand_player_statistics.flg_f_bet
-              AND tourney_hand_player_statistics.flg_t_check
-              AND (tourney_hand_player_statistics.flg_r_bet
-                OR tourney_hand_player_statistics.flg_r_check)
-              AND (tourney_hand_player_statistics.cnt_players = 3
-                       AND LA_P.action = 'R'
-                       AND (
-                           (tourney_hand_player_statistics.position = 0
-                               AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 2
-                               AND NOT tourney_hand_player_statistics.flg_p_3bet_def_opp
-                               AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
-                           OR
-                           (tourney_hand_player_statistics.position = 8
-                               AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
-                OR
-                   (tourney_hand_player_statistics.cnt_players = 2
-                       AND (LA_P.action = 'C'
-                           OR LA_P.action = 'R'))
-                )
+              AND ((tourney_hand_player_statistics.cnt_players = 3
+                AND LA_P.action = 'R'
+                AND ((tourney_hand_player_statistics.position = 0
+                    AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 2
+                    AND NOT tourney_hand_player_statistics.flg_p_3bet_def_opp
+                    AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
+                    OR (tourney_hand_player_statistics.position = 8
+                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')))
+                OR (tourney_hand_player_statistics.cnt_players = 2
+                    AND tourney_hand_player_statistics.position = 9
+                    AND LA_P.action SIMILAR TO 'C|R'))
+              AND LA_F.action = 'B'
+              AND LA_T.action = 'X'
+              AND LA_R.action SIMILAR TO 'X|B%'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -5019,19 +5008,16 @@ class Stats {
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
+              AND ((tourney_hand_player_statistics.position = 0
+                AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 2
+                AND NOT tourney_hand_player_statistics.flg_p_3bet_def_opp
+                AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
+                OR (tourney_hand_player_statistics.position = 8
+                    AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
               AND LA_P.action = 'R'
-              AND tourney_hand_player_statistics.flg_f_has_position
-              AND tourney_hand_player_statistics.flg_f_bet
-              AND tourney_hand_player_statistics.flg_t_check
-              AND tourney_hand_player_statistics.flg_r_bet
-              AND (
-                    (tourney_hand_player_statistics.position = 0
-                        AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 2
-                        AND NOT tourney_hand_player_statistics.flg_p_3bet_def_opp
-                        AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
-                    OR
-                    (tourney_hand_player_statistics.position = 8
-                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
+              AND LA_F.action = 'B'
+              AND LA_T.action = 'X'
+              AND LA_R.action LIKE 'B%'
         `);
 
         let b = await this.DB.query(`
@@ -5043,21 +5029,16 @@ class Stats {
                                 ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 3
+              AND ((tourney_hand_player_statistics.position = 0
+                AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 2
+                AND NOT tourney_hand_player_statistics.flg_p_3bet_def_opp
+                AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
+                OR (tourney_hand_player_statistics.position = 8
+                    AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9'))
               AND LA_P.action = 'R'
-              AND tourney_hand_player_statistics.flg_f_has_position
-              AND tourney_hand_player_statistics.flg_f_bet
-              AND tourney_hand_player_statistics.flg_t_check
-              AND (tourney_hand_player_statistics.flg_r_bet
-                OR tourney_hand_player_statistics.flg_r_check)
-              AND (
-                    (tourney_hand_player_statistics.position = 0
-                        AND CHAR_LENGTH(tourney_hand_summary.str_actors_p) = 2
-                        AND NOT tourney_hand_player_statistics.flg_p_3bet_def_opp
-                        AND NOT tourney_hand_player_statistics.flg_p_squeeze_def_opp)
-                    OR
-                    (tourney_hand_player_statistics.position = 8
-                        AND SUBSTRING(tourney_hand_summary.str_actors_p FROM 1 FOR 1) = '9')
-                )
+              AND LA_F.action = 'B'
+              AND LA_T.action = 'X'
+              AND LA_R.action SIMILAR TO 'X|B%'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
@@ -5075,12 +5056,11 @@ class Stats {
                      INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 2
-              AND tourney_hand_player_statistics.flg_f_has_position
-              AND tourney_hand_player_statistics.flg_f_bet
-              AND tourney_hand_player_statistics.flg_t_check
-              AND tourney_hand_player_statistics.flg_r_bet
-              AND (LA_P.action = 'C'
-                OR LA_P.action = 'R')
+              AND tourney_hand_player_statistics.position = 9
+              AND LA_P.action SIMILAR TO 'C|R'
+              AND LA_F.action = 'B'
+              AND LA_T.action = 'X'
+              AND LA_R.action LIKE 'B%'
         `);
 
         let b = await this.DB.query(`
@@ -5090,13 +5070,11 @@ class Stats {
                      INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 2
-              AND tourney_hand_player_statistics.flg_f_has_position
-              AND tourney_hand_player_statistics.flg_f_bet
-              AND tourney_hand_player_statistics.flg_t_check
-              AND (tourney_hand_player_statistics.flg_r_bet
-                OR tourney_hand_player_statistics.flg_r_check)
-              AND (LA_P.action = 'C'
-                OR LA_P.action = 'R')
+              AND tourney_hand_player_statistics.position = 9
+              AND LA_P.action SIMILAR TO 'C|R'
+              AND LA_F.action = 'B'
+              AND LA_T.action = 'X'
+              AND LA_R.action SIMILAR TO 'X|B%'
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
