@@ -3847,25 +3847,28 @@ class Stats {
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
                      INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.enum_allin ILIKE 'P'
-              AND LA_P.action = 'C'
+              AND tourney_hand_player_statistics.amt_p_raise_facing + 1 * tourney_blinds.amt_bb >=
+                  tourney_hand_player_statistics.amt_p_effective_stack
+              AND LA_P.action SIMILAR TO 'C|R'
         `);
 
         let b = await this.DB.query(`
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_2bet_facing >=
-                  tourney_hand_player_statistics.amt_p_effective_stack * 0.8
+              AND tourney_hand_player_statistics.amt_p_raise_facing + 1 * tourney_blinds.amt_bb >=
+                  tourney_hand_player_statistics.amt_p_effective_stack
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
