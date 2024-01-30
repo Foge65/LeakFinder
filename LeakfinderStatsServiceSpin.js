@@ -7446,7 +7446,6 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND LA_P.action = 'R'
-              AND NOT tourney_hand_player_statistics.flg_f_has_position
               AND LA_F.action = 'XF'
         `);
 
@@ -7459,7 +7458,6 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND LA_P.action = 'R'
-              AND NOT tourney_hand_player_statistics.flg_f_has_position
               AND tourney_hand_player_statistics.amt_f_bet_facing > 0
         `);
 
