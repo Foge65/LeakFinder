@@ -3048,6 +3048,8 @@ class Stats {
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 9
+              AND tourney_hand_player_statistics.amt_p_raise_facing <
+                  tourney_hand_player_statistics.amt_p_effective_stack
               AND LA_P.action LIKE 'CR%'
         `);
 
@@ -3055,12 +3057,13 @@ class Stats {
             SELECT COUNT(*)
             FROM tourney_hand_player_statistics
                      INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_blinds ON tourney_hand_player_statistics.id_blinds = tourney_blinds.id_blinds
                      INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
             WHERE ${this.check_str}
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 9
-              AND NOT tourney_hand_player_statistics.enum_face_allin ILIKE 'P'
-              AND tourney_hand_player_statistics.flg_p_3bet_opp
+              AND (tourney_hand_player_statistics.amt_p_raise_facing + 1 * tourney_blinds.amt_bb)
+                < tourney_hand_player_statistics.amt_p_effective_stack * 0.6
               AND LA_P.action SIMILAR TO 'C(F|C|R%)'
         `);
 
