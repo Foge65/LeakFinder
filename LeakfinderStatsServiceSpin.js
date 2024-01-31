@@ -5976,6 +5976,40 @@ class Stats {
         this.formulas['Postflop_Attack_IP_HU_X_X_F'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
+    async Postflop_Attack_IP_HU_Bet_Fold_River() {
+        if (this.res) this.res.write("Postflop_Attack_IP_HU_Bet_Fold_River")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 9
+              AND LA_P.action SIMILAR TO 'C|R'
+              AND LA_R.action = 'BF'
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 9
+              AND LA_P.action SIMILAR TO 'C|R'
+              AND tourney_hand_player_statistics.flg_r_bet
+              AND tourney_hand_player_statistics.amt_r_raise_facing > 0
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_IP_HU_Bet_Fold_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_HU_Bet_Fold_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
     async Postflop_Attack_OOP_EV() {
         if (this.res) this.res.write("Postflop_Attack_OOP_EV")
 
