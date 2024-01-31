@@ -337,6 +337,50 @@ class Stats {
         this.formulas['Preflop_3Max_BTN_OS'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
+    async Preflop_3Max_BTN_OR_more_2_2bb() {
+        if (this.res) this.res.write("Preflop_3Max_BTN_OR_more_2_2bb")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+            WHERE ${this.check_str}
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+            WHERE ${this.check_str}
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Preflop_3Max_BTN_OR_more_2_2bb'] = isNaN(result) ? 0 : result;
+        this.formulas['Preflop_3Max_BTN_OR_more_2_2bb'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Preflop_3Max_BTN_Limp() {
+        if (this.res) this.res.write("Preflop_3Max_BTN_Limp")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+            WHERE ${this.check_str}
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+            WHERE ${this.check_str}
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Preflop_3Max_BTN_Limp'] = isNaN(result) ? 0 : result;
+        this.formulas['Preflop_3Max_BTN_Limp'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
     async Preflop_3Max_SB_EV() {
         if (this.res) this.res.write("Preflop_3Max_SB_EV")
 
@@ -12849,5 +12893,42 @@ class Stats {
         let result = (a.rows[0].count / b.rows[0].count) * 100;
         this.data['Postflop_Defence_OOP_HU_Check_Raise_and_Bet_Bet'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Defence_OOP_HU_Check_Raise_and_Bet_Bet'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
+
+    async Postflop_Attack_IP_BTN_Bet_Flop() {
+        if (this.res) this.res.write("Postflop_Attack_IP_BTN_Bet_Flop")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 3
+              AND tourney_hand_player_statistics.position = 0
+              AND tourney_hand_summary.cnt_players_f = 2
+              AND LA_F.action LIKE 'B%'
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN tourney_hand_summary
+                                ON tourney_hand_player_statistics.id_hand = tourney_hand_summary.id_hand
+                     INNER JOIN lookup_actions AS LA_F ON tourney_hand_player_statistics.id_action_f = LA_F.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 3
+              AND tourney_hand_player_statistics.position = 0
+              AND tourney_hand_summary.cnt_players_f = 2
+              AND tourney_hand_player_statistics.amt_f_bet_facing = 0
+              AND LA_F.id_action != 0
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Attack_IP_BTN_Bet_Flop'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Attack_IP_BTN_Bet_Flop'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 }
