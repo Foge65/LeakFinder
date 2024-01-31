@@ -3856,8 +3856,8 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing + 1 * tourney_blinds.amt_bb >=
-                  tourney_hand_player_statistics.amt_p_effective_stack
+              AND (tourney_hand_player_statistics.amt_p_raise_facing + 1 * tourney_blinds.amt_bb)
+                >= tourney_hand_player_statistics.amt_p_effective_stack
               AND LA_P.action SIMILAR TO 'C|R'
         `);
 
@@ -3870,8 +3870,8 @@ class Stats {
               AND tourney_hand_player_statistics.cnt_players = 2
               AND tourney_hand_player_statistics.position = 8
               AND tourney_hand_player_statistics.flg_p_face_raise
-              AND tourney_hand_player_statistics.amt_p_raise_facing + 1 * tourney_blinds.amt_bb >=
-                  tourney_hand_player_statistics.amt_p_effective_stack
+              AND (tourney_hand_player_statistics.amt_p_raise_facing + 1 * tourney_blinds.amt_bb)
+                >= tourney_hand_player_statistics.amt_p_effective_stack
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
