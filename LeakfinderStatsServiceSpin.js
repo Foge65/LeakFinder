@@ -12614,4 +12614,42 @@ class Stats {
         this.data['Postflop_Defence_OOP_HU_Donk_Turn'] = isNaN(result) ? 0 : result;
         this.formulas['Postflop_Defence_OOP_HU_Donk_Turn'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
+
+    async Postflop_Defence_OOP_HU_Donk_River() {
+        if (this.res) this.res.write("Postflop_Defence_OOP_HU_Donk_River")
+
+        let a = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action SIMILAR TO 'X|C'
+              AND LA_T.action LIKE '%C'
+              AND LA_R.action LIKE 'B%'
+        `);
+
+        let b = await this.DB.query(`
+            SELECT COUNT(*)
+            FROM tourney_hand_player_statistics
+                     INNER JOIN player ON tourney_hand_player_statistics.id_player = player.id_player
+                     INNER JOIN lookup_actions AS LA_P ON tourney_hand_player_statistics.id_action_p = LA_P.id_action
+                     INNER JOIN lookup_actions AS LA_T ON tourney_hand_player_statistics.id_action_t = LA_T.id_action
+                     INNER JOIN lookup_actions AS LA_R ON tourney_hand_player_statistics.id_action_r = LA_R.id_action
+            WHERE ${this.check_str}
+              AND tourney_hand_player_statistics.cnt_players = 2
+              AND tourney_hand_player_statistics.position = 8
+              AND LA_P.action SIMILAR TO 'X|C'
+              AND LA_T.action LIKE '%C'
+              ANd LA_R.id_action != 0
+        `);
+
+        let result = (a.rows[0].count / b.rows[0].count) * 100;
+        this.data['Postflop_Defence_OOP_HU_Donk_River'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Defence_OOP_HU_Donk_River'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+    }
 }
