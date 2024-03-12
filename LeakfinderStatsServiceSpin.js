@@ -9238,8 +9238,8 @@ class Stats {
         this.formulas['Postflop_Defence_IP_3Max_Fold_vs_B_X_B'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
-    async Postflop_Defence_IP_HUFold_vs_B_X_B() {
-        if (this.res) this.res.write("Postflop_Defence_IP_HUFold_vs_B_X_B")
+    async Postflop_Defence_IP_HU_Fold_vs_B_X_B() {
+        if (this.res) this.res.write("Postflop_Defence_IP_HU_Fold_vs_B_X_B")
 
         let a = await this.DB.query(`
             SELECT COUNT(*)
@@ -9277,8 +9277,8 @@ class Stats {
         `);
 
         let result = (a.rows[0].count / b.rows[0].count) * 100;
-        this.data['Postflop_Defence_IP_HUFold_vs_B_X_B'] = isNaN(result) ? 0 : result;
-        this.formulas['Postflop_Defence_IP_HUFold_vs_B_X_B'] = `${a.rows[0].count} / ${b.rows[0].count}`;
+        this.data['Postflop_Defence_IP_HU_Fold_vs_B_X_B'] = isNaN(result) ? 0 : result;
+        this.formulas['Postflop_Defence_IP_HU_Fold_vs_B_X_B'] = `${a.rows[0].count} / ${b.rows[0].count}`;
     }
 
     async Postflop_Defence_IP_Float_Bet_Flop() {
